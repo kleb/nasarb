@@ -1,0 +1,2 @@
+#!/bin/csh
+enscript -r2cGfTimes-Roman14 --color -o $1.ps $1

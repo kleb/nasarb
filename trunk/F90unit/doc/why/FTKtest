@@ -1,0 +1,66 @@
+#!/usr/bin/env ruby
+#
+# $Id$
+#
+# Generates a Fortran 90 code which runs all the mobility
+# test suites in this directory (or only those test suites
+# specified on the command line).
+
+require 'FTKfunctions'
+require 'TestSuite'
+
+checkForCompiler
+
+writeTestRunner(testSuites = parseCommandLine)
+
+# convert each *TS.ftk file into a pure Fortran9x file:
+
+threads = Array.new
+
+testSuites.each do |testSuite|
+
+ threads << Thread.new(testSuite) do |testSuite|
+
+  testSuiteF90 = TestSuite.new(testSuite)
+
+  ftkFile = "#{testSuite}TS.ftk"
+  $stderr.puts "parsing #{ftkFile}"
+
+  File.open(ftkFile) do |tsftkFile|
+
+   testSuiteF90.puts $_ until tsftkFile.gets =~ $keyword || !$_
+   testSuiteF90.puts " contains\n\n"
+
+   loop do
+    case $_
+    when $commentLine
+     testSuiteF90.puts $_
+    when /beginSetup/i
+     testSuiteF90.addtoSetup tsftkFile
+    when /beginTeardown/i
+     testSuiteF90.addtoTeardown tsftkFile
+    when /beginTest\s+(\w+)/i
+     testSuiteF90.aTest($1,testSuite,tsftkFile)
+    when /beginTest/i
+     syntaxError "no name given for beginTest", testSuite
+    when /end(Setup|Teardown|Test)/i
+     syntaxError "no matching begin#$1", testSuite
+    when $assertRegEx
+     syntaxError "#$1 assert not in a test block", testSuite
+    else
+     testSuiteF90.puts $_
+    end
+    break unless tsftkFile.gets
+   end
+
+  end
+
+  $stderr.puts "completed #{ftkFile}"
+  testSuiteF90.close
+
+ end
+end
+
+threads.each{ |thread| thread.join }
+
+runTests testSuites
