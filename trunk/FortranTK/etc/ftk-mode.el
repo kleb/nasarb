@@ -45,16 +45,16 @@
    ("\\<endSetup\\>"		. font-lock-builtin-face))
 )
 
-;; make a key-binding to run FTK on the current buffer
-(define-key ftk-mode-map "\C-c\C-c" 'ftk-execute-buffer)
-
 ;; run FTK on the current buffer:
-(defun ftk-execute-buffer ()
+(defun ftk-test-buffer ()
   "Run FTK on the file associated with the current buffer."
   (interactive)
   (save-buffer)
-  (shell-command-on-region (point-min) (point-max) "FTKtest" (buffer-file-name))
+  (shell-command-on-region (point-min) (point-max) "FTKtest")
 )
+
+;; key-binding for running FTK on the current buffer
+(define-key ftk-mode-map "\C-c\C-c" 'ftk-test-buffer)
 
 (provide 'ftk-mode)
 
