@@ -12,4 +12,4 @@ Currently everything in the src directory needs to be in your
 working directory.  This will change to something more sane soon...
 
 Set the F9X environment variable to your Fortran compiler of choice.
-(FTKtest will explain how to do this if it is not set.)
+(The script will explain how to do this if it is not set.)
