@@ -45,12 +45,16 @@
    ("\\<endSetup\\>"		. font-lock-builtin-face))
 )
 
+(defvar ftk-buffer-command "FTKtest"
+  "Shell command used by the \\[ftk-test-buffer] function.")
+
 ;; run FTK on the current buffer:
 (defun ftk-test-buffer ()
-  "Run FTK on the file associated with the current buffer."
+  "Excute \\[ftk-buffer-command] on the file associated
+   with the current buffer."
   (interactive)
   (save-buffer)
-  (shell-command-on-region (point-min) (point-max) "FTKtest")
+  (shell-command-on-region (point-min) (point-max) ftk-buffer-command)
 )
 
 ;; key-binding for running FTK on the current buffer
