@@ -1,33 +1,24 @@
 ! $Id$
 
-subroutine TestSuiteFluxFunctions
+implicit none
 
-  use FortranTK
-  use FluxFunctions
+real :: Flux
 
-  implicit none
+real :: rightState = 0
+real :: leftState  = 1
 
-  Setup
+TestSub CentralFlux( leftState, rightState, Flux )
 
-   real :: Flux
+ IsFloatEqual(Flux, 0.5, 0.001)
+ IsFloatEqual(Flux, 0.5, 0.00000001)
+ IsEqual(Flux, 0.5)
+ IsEqual(Flux, 1.0)
 
-   real :: rightState = 0
-   real :: leftState  = 1
+TestSub RoeFlux( leftState, rightState, Flux)
 
-  TestSub CentralFlux( leftState, rightState, Flux )
+!real :: rightState = 0.5
 
-   IsFloatEqual(Flux, 0.5, 0.001)
-   IsFloatEqual(Flux, 0.5, 0.00000001)
-   IsEqual(Flux, 0.5)
-   IsEqual(Flux, 1.0)
-
-  TestSub RoeFlux( leftState, rightState, Flux)
-
-!  real :: rightState = 0.5
-
-   IsFloatEqual(Flux, 0.25, 0.001)
-   IsFloatEqual(Flux, 0.25, 0.00000001)
-   IsEqual(Flux, 0.25)
-   IsEqual(Flux, 0)
-
-end subroutine TestSuiteFluxFunctions
+IsFloatEqual(Flux, 0.25, 0.001)
+IsFloatEqual(Flux, 0.25, 0.00000001)
+IsEqual(Flux, 0.25)
+IsEqual(Flux, 0)

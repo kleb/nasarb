@@ -23,7 +23,7 @@ test: $(EXECUTABLE)
 	./$(EXECUTABLE)
 
 clean:
-	/bin/rm -f *.mod *.o $(EXECUTABLE) 
+	/bin/rm -f *.mod *.o *Test.f90 $(RUNNER) TestBits.mk $(EXECUTABLE)
 
-realclean: clean
-	/bin/rm -f $(RUNNER) TestBits.mk *Test.f90
+TestBits.mk:
+	GatherTests
