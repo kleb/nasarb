@@ -47,8 +47,8 @@ module Asserts
   puts "  numAsserts = numAsserts + 1"
   puts "  if (noAssertFailed) then"
   puts "   if (#{@condition}) then"
-  puts "    print *, \" FAILURE: #@type in test #{@testName} &\n" \
-       "                       &(Line #$. of #{@testSuite}TS.ftk)\""
+  puts "    print *, \" FAILURE: #@type in test #{@testName}, &\n" \
+       "                       &line #$. of #{@testSuite}TS.ftk\""
   puts "    print *, \"   \", #@message"
   puts "    noAssertFailed = .false."
   puts "    numFailures    = numFailures + 1"

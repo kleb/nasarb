@@ -58,7 +58,7 @@ module #{@suiteName}TS
     puts $_
    end
   end
-  warning("no asserts in test", testSuite) if numOfAsserts==0
+  warning("no asserts in test", testSuite) if numOfAsserts == 0
 
   puts "\n  numTests = numTests + 1\n\n"
   puts " end subroutine Test#{testName}\n\n"
