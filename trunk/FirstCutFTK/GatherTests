@@ -66,3 +66,26 @@ end
 testRunner.puts <<-TAILER
 end program TestRunner
 TAILER
+
+testMakefile = File.new "TestBits.mk", "w"
+
+sources = []
+tests.each do |test|
+ sources.push(test) if FileTest.exists?(test+".f90")
+end
+
+sourceFiles = sources.join(".f90 ") + ".f90"
+
+testFiles = tests.join("Test.F90 ") + "Test.F90"
+
+testMakefile.puts <<-MAKEBITS
+
+EXECUTABLE = TestRunner
+
+SOURCES = #{sourceFiles}
+
+TESTS   = #{testFiles}
+
+RUNNER  = TestRunner.f90
+
+MAKEBITS

@@ -5,18 +5,12 @@
 F9X = lf95		# Lahey compiler
 F9X = f90 -macro_expand # SGI compiler
 
-EXECUTABLE = TestRunner
-
-SOURCES = GasModel.f90\
-	  FluxFunctions.f90
 TESTKIT = FTK.f90
-TESTS   = GasModelTest.F90\
-	  FluxFunctionsTest.F90\
-	  GenericTest.F90
-RUNNER  = TestRunner.f90
-CODE    = $(SOURCES) $(TESTKIT) $(TESTS) $(RUNNER)
-
 INCLUDE = FTK.h
+
+include TestBits.mk
+
+CODE    = $(SOURCES) $(TESTKIT) $(TESTS) $(RUNNER)
 
 default: $(EXECUTABLE) test
 
@@ -27,4 +21,4 @@ test: $(EXECUTABLE)
 	./$(EXECUTABLE)
 
 clean:
-	/bin/rm -f *.mod *.o $(EXECUTABLE)
+	/bin/rm -f *.mod *.o $(EXECUTABLE) $(RUNNER)
