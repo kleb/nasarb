@@ -10,10 +10,10 @@
     "beginTeardown"
     "endTeardown"
    )
-   '(("\\(IsFalse\\)"		1	'font-lock-function-name-face)
-     ("\\(IsTrue\\)"		1	'font-lock-function-name-face)
-     ("\\(IsEqual\\)"		1	'font-lock-function-name-face)
-     ("\\(IsFloatEqual\\)"	1	'font-lock-function-name-face))
+   '(("\\(IsFalse\\)"           1       'font-lock-function-name-face)
+     ("\\(IsTrue\\)"            1       'font-lock-function-name-face)
+     ("\\(IsEqual\\)"           1       'font-lock-function-name-face)
+     ("\\(IsFloatEqual\\)"      1       'font-lock-function-name-face))
    (list "\\.ftk\\'")
    nil
    "Generic mode for Fortran Test Kit files.")

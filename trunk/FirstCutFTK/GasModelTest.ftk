@@ -11,7 +11,7 @@ beginTest PerfectPZeroed
 endTest
 
 beginTest PerfectPKnown
-  Density = 1
+  real :: Density = 1
   Energy  = 1
   call PerfectP( Density, Energy, Pressure )
   IsFloatEqual( Pressure, 0.4, epsilon )
