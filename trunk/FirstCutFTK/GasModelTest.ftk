@@ -1,19 +1,20 @@
 ! $Id$
 
-implicit none
+real            :: Pressure, Density, Energy
+real, parameter :: epsilon = 1e-6
 
-real :: Pressure
+beginTest PerfectPZeroed
+ real, parameter :: zero = 0
+ call PerfectP( zero, zero, Pressure)
+ IsFloatEqual( Pressure, 0, epsilon )
+ IsFloatEqual( Pressure, 0, 0.0000000001 )
+endTest
 
-real :: Density = 1.0
-real :: Energy  = 1.0
-
-TestSub PerfectP( Density, Energy, Pressure)
-
- IsFloatEqual(Pressure, 0.4, 0.0001)
- IsFloatEqual(Pressure, 0.4, 0.000000001)
- IsFloatEqual(Pressure, 0.8, 0.0001)
-
- IsFalse(Pressure.gt.1)
- IsFalse(Pressure.lt.1)
- IsTrue(Pressure.gt.1)
- IsTrue(Pressure.lt.1)
+beginTest PerfectPKnown
+ Density = 1
+ Energy  = 1
+ call PerfectP( Density, Energy, Pressure )
+ IsFloatEqual( Pressure, 0.4, epsilon )
+ IsTrue( Pressure .gt. 0 )
+ IsFalse( Pressure .lt. 0 )
+endTest

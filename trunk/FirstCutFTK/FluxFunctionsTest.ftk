@@ -1,24 +1,48 @@
 ! $Id$
 
-implicit none
+real :: leftState, rightState, interfaceFlux
 
-real :: Flux
+beginSetup
+ leftState  = 0
+ rightState = 1
+endSetup
 
-real :: rightState = 0
-real :: leftState  = 1
+beginTest FluxZero
+ real :: state
+ state = 0
+ IsFloatEqual( Flux(state), 0, 0.00001 )
+endTest
+ 
+beginTest FluxOne
+ real :: state = 1
+ IsFloatEqual( Flux(state), 0.5, 0.00001 )
+endTest
 
-TestSub CentralFlux( leftState, rightState, Flux )
+beginTest RoeAvgZero
+ IsFloatEqual( RoeAvg(0.0,0.0), 0, 0.0001 )
+endTest
 
- IsFloatEqual(Flux, 0.5, 0.001)
- IsFloatEqual(Flux, 0.5, 0.00000001)
- IsEqual(Flux, 0.5)
- IsEqual(Flux, 1.0)
+beginTest RoeAvgKnown
+ IsFloatEqual( RoeAvg(leftState,rightState), 0.5, 0.0001 )
+endTest
 
-TestSub RoeFlux( leftState, rightState, Flux)
+beginTest CentralFluxKnown
+ call CentralFlux( leftState, rightState, interfaceFlux )
+ IsFloatEqual( interfaceFlux, 0.5, 0.001 )
+ IsFloatEqual( interfaceFlux, 0.5, 0.00000001 )
+ IsEqual( interfaceFlux, 0.5 )
+endTest
 
-!real :: rightState = 0.5
+beginTest RoeFluxExpansionShock
+ leftState = -1
+ call RoeFlux( leftState, rightState, interfaceFlux )
+ IsFloatEqual( interfaceFlux, 0, 0.001 )
+ IsEqual( interfaceFlux, 0 )
+endTest
 
-IsFloatEqual(Flux, 0.25, 0.001)
-IsFloatEqual(Flux, 0.25, 0.00000001)
-IsEqual(Flux, 0.25)
-IsEqual(Flux, 0)
+beginTest RoeFluxZero
+ rightState = 0
+ call RoeFlux( leftState, rightState, interfaceFlux )
+ IsFloatEqual( interfaceFlux, 0, 1e-6 )
+ IsEqual( interfaceFlux, 0 )
+endTest
