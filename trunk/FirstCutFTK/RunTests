@@ -6,6 +6,14 @@
 # test suites in this directory (or only those test suites
 # specified on the command line).
 
+# check for a Fortran Compiler:
+unless ENV['F9X']
+ puts "\nFortran 9X compiler environment variable F9X not set"
+ puts "for bourne-based shells (sh, bash):  export F9X=lf95"
+ puts "     for c-based shells (csh, tcsh): setenv F9X lf95"
+ exit 1
+end
+
 # find all the tests in the current directory:
 
 testSuites = Dir["*Test.ftk"]
@@ -87,7 +95,7 @@ TOP
  lineNumber = 0
 
  IO.foreach(testSuite+"Test.ftk") do |line|
-  if line=~/beginSetup/||line=~/beginTeardown/||line=~/beginTest/ && noMacros
+  if line=~/begin(Setup|Teardown|Test)/ && noMacros
    testSuiteCode.puts "  logical :: noAssertFailed\n\n"
    testSuiteCode.puts " public"
    testSuiteCode.puts " contains\n\n"
