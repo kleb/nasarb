@@ -1,0 +1,10 @@
+$Id$
+
+FortranTK - a Fortran9X Test Kit
+
+MANIFEST
+
+doc      - documentation
+etc      - emacs mode, etc.
+examples - two samples
+src      - the source code
