@@ -3,8 +3,8 @@
 %%Title: Enscript Output
 %%For: Bil Kleb
 %%Creator: GNU enscript 1.6.1
-%%CreationDate: Wed Nov  7 09:26:36 2001
-%%Orientation: Landscape
+%%CreationDate: Wed Nov 14 13:22:35 2001
+%%Orientation: Portrait
 %%Pages: (atend)
 %%DocumentMedia: Letter 612 792 0 () ()
 %%DocumentNeededResources: (atend)
@@ -433,127 +433,109 @@ gs_languagelevel 1 gt {
   grestore
 } def
 %%EndResource
-/d_page_w 744 def
-/d_page_h 564 def
+/d_page_w 564 def
+/d_page_h 744 def
 /d_header_x 0 def
-/d_header_y 528 def
-/d_header_w 744 def
+/d_header_y 708 def
+/d_header_w 564 def
 /d_header_h 36 def
 /d_footer_x 0 def
 /d_footer_y 0 def
-/d_footer_w 744 def
+/d_footer_w 564 def
 /d_footer_h 0 def
-/d_output_w 744 def
-/d_output_h 528 def
-/cols 2 def
+/d_output_w 564 def
+/d_output_h 708 def
+/cols 1 def
 %%EndSetup
 %%Page: (1) 1
 %%BeginPageSetup
 _S
-90 rotate
-24 -588 translate
+24 24 translate
 /pagenum 1 def
-/fname (FTKtest) def
+/fname (F90testRun) def
 /fdir () def
-/ftail (FTKtest) def
+/ftail (F90testRun) def
 % User defined strings:
 /pagenumstr (1) def
-/moddatestr (11/07/01) def
-/modtimestr (09:26:02) def
+/moddatestr (11/14/01) def
+/modtimestr (13:22:13) def
 /user_header_p false def
 %%EndPageSetup
-column_lines
 do_header
+5 691 M
+(parsing GasModelTS.ftk) s
+5 676 M
+(parsing FluxFunctionsTS.ftk) s
+5 646 M
+( *Warning: no asserts in test [GasModelTS.ftk:13]) s
+5 631 M
+(completed GasModelTS.ftk) s
+5 616 M
+(completed FluxFunctionsTS.ftk) s
+5 571 M
+(Compiling file Gammas.f90.) s
+5 556 M
+(Encountered 0 errors, 0 warnings in file Gammas.f90.) s
+5 541 M
+(Compiling file GasModel.f90.) s
+5 526 M
+(Encountered 0 errors, 0 warnings in file GasModel.f90.) s
 5 511 M
-(#!/usr/bin/env ruby) s
+(Compiling file FluxFunctions.f90.) s
 5 496 M
-(#) s
+(Encountered 0 errors, 0 warnings in file FluxFunctions.f90.) s
 5 481 M
-(# $Id$) s
+(Compiling file GasModelTS.f90.) s
 5 466 M
-(#) s
+(Encountered 0 errors, 0 warnings in file GasModelTS.f90.) s
 5 451 M
-(# Generates a Fortran 90 code which runs all the mobility) s
+(Compiling file FluxFunctionsTS.f90.) s
 5 436 M
-(# test suites in this directory \(or only those test suites) s
+(Encountered 0 errors, 0 warnings in file FluxFunctionsTS.f90.) s
 5 421 M
-(# specified on the command line\).) s
+(Compiling file TestRunner.f90.) s
+5 406 M
+(Encountered 0 errors, 0 warnings in file TestRunner.f90.) s
 5 391 M
-(require 'FTKfunctions') s
+(Linking:) s
 5 376 M
-(require 'TestSuite') s
+( ) s
+5 361 M
+( GasModel test suite:) s
 5 346 M
-(checkForCompiler) s
+( Passed 5 of 5 possible asserts comprising 3 of 3 tests.) s
+5 331 M
+( ) s
 5 316 M
-(writeTestRunner\(testSuites = parseCommandLine\)) s
+( FluxFunctions test suite:) s
+5 301 M
+(  *IsFalse failed* in test RoeAvgZero [FluxFunctionsTS.ftk:23]) s
 5 286 M
-(# convert each *TS.ftk file into a pure Fortran9x file:) s
+(    RoeAvg\(0.0,0.0\).ne.1  is not false) s
+5 271 M
+( ) s
 5 256 M
-(testSuites.each do |testSuite|) s
+(  *IsTrue failed* in test RoeAvgKnown [FluxFunctionsTS.ftk:28]) s
+5 241 M
+(    RoeAvg\(leftState,rightState\).lt.0  is not true) s
 5 226 M
-( testSuiteF90 = TestSuite.new\(testSuite\)) s
+( ) s
+5 211 M
+(  *IsEqualWithin failed* in test CentralFluxKnown [FluxFunctionsTS.ftk:33]) s
 5 196 M
-( ftkFile = "#{testSuite}TS.ftk") s
+(    interfaceFlux \( 0.250000000 \) is not 0.500000000 within 1.00000005E-03) s
 5 181 M
-( $stderr.print "parsing #{ftkFile}.. ") s
+( ) s
+5 166 M
+(  *IsEqual failed* in test RoeFluxExpansionShock [FluxFunctionsTS.ftk:41]) s
 5 151 M
-( File.open\(ftkFile\) do |$stdin|) s
+(    interfaceFlux \( 0.500000000 \) is not 0) s
+5 136 M
+( ) s
 5 121 M
-(  testSuiteF90.puts $_ until $stdin.gets =~ $keyword || !$_) s
+( Passed 6 of 12 possible asserts comprising 3 of 7 tests.) s
 5 106 M
-(  testSuiteF90.puts " contains\\n\\n") s
-5 76 M
-(  loop do) s
-5 61 M
-(   case $_) s
-5 46 M
-(    when $commentLine) s
-5 31 M
-(     testSuiteF90.puts $_) s
-5 16 M
-(    when /beginSetup/) s
-377 511 M
-(     testSuiteF90.addtoSetup) s
-377 496 M
-(    when /beginTeardown/) s
-377 481 M
-(     testSuiteF90.addtoTeardown) s
-377 466 M
-(    when /beginTest\\s+\(\\w+\)/) s
-377 451 M
-(     testSuiteF90.aTest\($1,testSuite\)) s
-377 436 M
-(    when /beginTest/) s
-377 421 M
-(     syntaxError "no name given for beginTest", testSuite) s
-377 406 M
-(    when /end\(Setup|Teardown|Test\)/) s
-377 391 M
-(     syntaxError "no matching begin#$1", testSuite) s
-377 376 M
-(    when $assertRegEx) s
-377 361 M
-(     syntaxError "#$1 assert not in a test block", testSuite) s
-377 346 M
-(    else) s
-377 331 M
-(     testSuiteF90.puts $_) s
-377 316 M
-(   end) s
-377 301 M
-(   break unless $stdin.gets) s
-377 286 M
-(  end) s
-377 256 M
-( end) s
-377 226 M
-( $stderr.puts "complete.") s
-377 211 M
-( testSuiteF90.close) s
-377 181 M
-(end) s
-377 151 M
-(runTests testSuites) s
+( ) s
 _R
 S
 %%Trailer
