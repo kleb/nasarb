@@ -26,4 +26,4 @@ contains
 
   end subroutine PerfectP
 
-end module
+end module GasModel
