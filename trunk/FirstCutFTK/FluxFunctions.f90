@@ -16,11 +16,6 @@ contains
 
     InterfaceFlux = 0.5*(LeftState+RightState)
 
-    print *, "CentralFlux subroutine was called:"
-    print *, "    LeftState: ", LeftState
-    print *, "   RightState: ", RightState
-    print *, "InterfaceFlux: ", InterfaceFlux
-
   end subroutine CentralFlux
 
 end module FluxFunctions
