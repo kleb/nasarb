@@ -10,11 +10,19 @@ module Asserts
   writeAssert
  end
 
+ def IsFalse(line)
+  line=~/\((.+)\)/
+  @type = 'IsFalse'
+  @condition = "#$1"
+  @message = "\"#$1 is not false\""
+  writeAssert
+ end
+
  def IsRealEqual(line)
   line=~/\((.+),(.+)\)/
   @type = 'IsRealEqual'
   @condition = ".not.(#$2+2*spacing(real(#$2)).ge.#$1 &\n             .and.#$2-2*spacing(real(#$2)).le.#$1)"
-  @message = "\"#$1 is not\",#$2,\"within\",2*spacing(real(#$2))"
+  @message = "\"#$1 (\",#$1,\") is not\",#$2,\"within\",2*spacing(real(#$2))"
   writeAssert
  end
 
@@ -22,7 +30,7 @@ module Asserts
   line=~/\((.+),(.+),(.+)\)/
   @type = 'IsEqualWithin'
   @condition = ".not.(#$2+#$3.ge.#$1 &\n             .and.#$2-#$3.le.#$1)"
-  @message = "\"#$1 is not\",#$2,\"within\",#$3"
+  @message = "\"#$1 (\",#$1,\") is not\",#$2,\"within\",#$3"
   writeAssert
  end
 
@@ -30,15 +38,7 @@ module Asserts
   line=~/\((.+),(.+)\)/
   @type = 'IsEqual'
   @condition = ".not.(#$1==#$2)"
-  @message = "\"#$1 is not\", #$2"
-  writeAssert
- end
-
- def IsFalse(line)
-  line=~/\((.+)\)/
-  @type = 'IsFalse'
-  @condition = "#$1"
-  @message = "\"#$1 is not false\""
+  @message = "\"#$1 (\",#$1,\") is not\", #$2"
   writeAssert
  end
 
