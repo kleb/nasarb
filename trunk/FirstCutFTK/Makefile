@@ -21,4 +21,7 @@ test: $(EXECUTABLE)
 	./$(EXECUTABLE)
 
 clean:
-	/bin/rm -f *.mod *.o $(EXECUTABLE) $(RUNNER)
+	/bin/rm -f *.mod *.o $(EXECUTABLE)
+
+realclean: clean
+	/bin/rm -f $(RUNNER) TestBits.mk
