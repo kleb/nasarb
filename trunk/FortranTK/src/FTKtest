@@ -13,6 +13,7 @@ unless ENV['F9X']
  puts <<-ENVIRON
 
 Fortran compiler environment variable 'F9X' not set:
+
  for bourne-based shells: export F9X=lf95 (in .profile)
       for c-based shells: setenv F9X lf95 (in .login)
              for windows: set F9X=C:\Program Files\lf95 (in autoexec.bat)
@@ -43,6 +44,18 @@ unless $*.empty?
  end
 end
 
+
+class TestRunner < Array
+ def writeTest(testName, testFilename)
+  testFilename.puts " subroutine Test#{testName}\n\n"
+  push "\n  call Setup"
+  push "  call Test#{testName}"
+  push "  call Teardown"
+  testFilename.puts $_ until gets=~/endTest/
+  testFilename.puts "\n  numTests = numTests + 1\n\n"
+  testFilename.puts " end subroutine Test#{testName}\n\n"
+ end
+end
 
 # create the Fortran9X program which calls all the test suites:
 
@@ -85,9 +98,9 @@ testRunner.close
 
 testSuites.each do |testSuite|
 
- testSuiteCode = File.new(testSuite+"TS.f90","w")
+ testSuiteF90 = File.new(testSuite+"TS.f90","w")
 
- testSuiteCode.puts <<TOP
+ testSuiteF90.puts <<TOP
 ! #{testSuite}TS.f90 - a Fortran mobility test suite
 !
 ! [dynamically generated from #{testSuite}TS.ftk
@@ -112,10 +125,10 @@ module #{testSuite}TestSuite
 
 TOP
 
- inTest     = false
- inSetup    = false
- inTeardown = false
- noMacrosYet   = true
+ inTest      = false
+ inSetup     = false
+ inTeardown  = false
+ noMacrosYet = true
 
  setupCode     = []
  teardownCode  = []
@@ -124,60 +137,53 @@ TOP
  testName   = ""
  lineNumber = 0
 
- def expandAssert( name, condition, message, lineNumber, testName, testSuite, testSuiteCode )
-  testSuiteCode.puts "\n  ! #{name} assertion"
-  testSuiteCode.puts "  numAsserts = numAsserts + 1"
-  testSuiteCode.puts "  if (noAssertFailed) then"
-  testSuiteCode.puts "   if (#{condition})then"
-  testSuiteCode.puts "    print *, \"  Test #{testName}: #{name} FAILED (Line #{lineNumber} of #{testSuite}TS.ftk)\""
-  testSuiteCode.puts "    print *, \"   \",#{message}"
-  testSuiteCode.puts "    noAssertFailed = .false."
-  testSuiteCode.puts "    numFailures = numFailures + 1"
-  testSuiteCode.puts "   else"
-  testSuiteCode.puts "    numAssertsTested = numAssertsTested + 1"
-  testSuiteCode.puts "   endif"
-  testSuiteCode.puts "  endif"
+ def expandAssert( name, condition, message, lineNumber, testName, testSuite, testSuiteF90 )
+  testSuiteF90.puts "\n  ! #{name} assertion"
+  testSuiteF90.puts "  numAsserts = numAsserts + 1"
+  testSuiteF90.puts "  if (noAssertFailed) then"
+  testSuiteF90.puts "   if (#{condition})then"
+  testSuiteF90.puts "    print *, \"  Test #{testName}: #{name} FAILED (Line #{lineNumber} of #{testSuite}TS.ftk)\""
+  testSuiteF90.puts "    print *, \"   \",#{message}"
+  testSuiteF90.puts "    noAssertFailed = .false."
+  testSuiteF90.puts "    numFailures = numFailures + 1"
+  testSuiteF90.puts "   else"
+  testSuiteF90.puts "    numAssertsTested = numAssertsTested + 1"
+  testSuiteF90.puts "   endif"
+  testSuiteF90.puts "  endif"
  end
 
- IO.foreach(testSuite+"TS.ftk") do |line|
-  if line=~/begin(Setup|Teardown|Test)/ && noMacrosYet
-   testSuiteCode.puts " contains\n\n"
-   noMacrosYet = false
+ File.open(testSuite+"TS.ftk") do |$stdin|
+  testSuiteF90.puts $_ until gets=~/begin(Setup|Teardown|Test)/
+  testSuiteF90.puts " contains\n\n"
+  loop do
+   case $_
+    when /beginSetup/
+     setup.build
+    when /beginTeardown/
+     teardown.build
+    when /beginTest \s*(.*)/
+     testName = $1
+     writeTest(testName,testSuiteF90)
+    when /beginTest/
+     $stderr.print "No test name following beginTest: " \
+                   "Line #{lineNumber} of #{testSuite}TS.ftk\n"
+     exit 1
+    when /Is(RealEqual|Equal|False|True|EqualWithin)/
+     $stderr.print "Error: assertion outside of a test block: " \
+                   "Line #{lineNumber} of #{testSuite}TS.ftk\n"
+     exit 1
+    else
+     puts $_
+   end
+   break unless gets
   end
-  lineNumber += 1
-  case line
-   when /^\s*!/
-    testSuiteCode.puts line
-   when /beginSetup/
-    inSetup = true
-   when /endSetup/
-    inSetup = false
-   when /beginTearDown/
-    inTeardown = true
-   when /endTeardown/
-    inTeardown = false
-   when /beginTest \s*(.*)/
-    inTest = true
-    testName = $1
-    testSuiteCode.puts " subroutine Test#{testName}\n\n"
-    callTestsCode.push "\n  call Setup"
-    callTestsCode.push "  call Test#{testName}"
-    callTestsCode.push "  call Teardown"
-   when /beginTest/
-    $stderr.puts "No test name following beginTest: Line #{lineNumber} of #{testSuite}TS.ftk"
-    exit 1
-   when /endTest/
-    inTest = false
-    testSuiteCode.puts "\n  numTests = numTests + 1\n\n"
-    testSuiteCode.puts " end subroutine Test#{testName}\n\n"
+
    when /(IsRealEqual)\s*\((.*),(.*)\)/
     if !inTest
-     $stderr.puts "Error: assertion outside of a test block: Line #{lineNumber} of #{testSuite}TS.ftk"
-     exit 1
     end
     condition = ".not.(#$3+2*spacing(real(#$3)).ge.#$2.and.#$3-2*spacing(real(#$3)).le.#$2)"
     message = "#$2,\"is not\",#$3,\"within\",2*spacing(real(#$3))"
-    expandAssert( $1, condition, message, lineNumber, testName, testSuite, testSuiteCode )
+    expandAssert( $1, condition, message, lineNumber, testName, testSuite, testSuiteF90 )
    when /(IsEqualWithin)\s*\((.*),(.*),(.*)\)/
     if !inTest
      $stderr.puts "Error: assertion outside of a test block: Line #{lineNumber} of #{testSuite}TS.ftk"
@@ -185,7 +191,7 @@ TOP
     end
     condition = ".not.(#$3+#$4.ge.#$2.and.#$3-#$4.le.#$2)"
     message = "#$2,\"is not\",#$3,\"within\",#$4"
-    expandAssert( $1, condition, message, lineNumber, testName, testSuite, testSuiteCode )
+    expandAssert( $1, condition, message, lineNumber, testName, testSuite, testSuiteF90 )
    when /(IsEqual)\s*\((.*),(.*)\)/
     if !inTest
      $stderr.puts "Error: assertion outside of a test block: Line #{lineNumber} of #{testSuite}TS.ftk"
@@ -193,7 +199,7 @@ TOP
     end
     condition = ".not.(#$2==#$3)"
     message = "#$2, \"is not\", #$3"
-    expandAssert( $1, condition, message, lineNumber, testName, testSuite, testSuiteCode )
+    expandAssert( $1, condition, message, lineNumber, testName, testSuite, testSuiteF90 )
    when /(IsTrue)\s*\((.*)\)/
     if !inTest
      $stderr.puts "Error: assertion outside of a test block: Line #{lineNumber} of #{testSuite}TS.ftk"
@@ -201,7 +207,7 @@ TOP
     end
     condition = ".not.(#$2)"
     message = "#$2, \"is not true\""
-    expandAssert( $1, condition, message, lineNumber, testName, testSuite, testSuiteCode )
+    expandAssert( $1, condition, message, lineNumber, testName, testSuite, testSuiteF90 )
    when /(IsFalse)\s*\((.*)\)/
     if !inTest
      $stderr.puts "Error: assertion outside of a test block: Line #{lineNumber} of #{testSuite}TS.ftk"
@@ -209,28 +215,28 @@ TOP
     end
     condition = "#$2"
     message = "#$2, \"is not false\""
-    expandAssert( $1, condition, message, lineNumber, testName, testSuite, testSuiteCode )
+    expandAssert( $1, condition, message, lineNumber, testName, testSuite, testSuiteF90 )
    else
     if inSetup
      setupCode.push line
     elsif inTeardown
      teardownCode.push line
     else
-     testSuiteCode.puts line
+     testSuiteF90.puts line
     end
   end
  end
 
- testSuiteCode.puts "\n subroutine Setup"
- testSuiteCode.puts "  noAssertFailed = .true."
- setupCode.each    { |line| testSuiteCode.puts line }
- testSuiteCode.puts " end subroutine Setup\n\n"
+ testSuiteF90.puts "\n subroutine Setup"
+ testSuiteF90.puts "  noAssertFailed = .true."
+ setupCode.each    { |line| testSuiteF90.puts line }
+ testSuiteF90.puts " end subroutine Setup\n\n"
 
- testSuiteCode.puts "\n subroutine Teardown"
- teardownCode.each { |line| testSuiteCode.puts line }
- testSuiteCode.puts " end subroutine Teardown\n\n"
+ testSuiteF90.puts "\n subroutine Teardown"
+ teardownCode.each { |line| testSuiteF90.puts line }
+ testSuiteF90.puts " end subroutine Teardown\n\n"
 
- testSuiteCode.puts <<-NEXTONE
+ testSuiteF90.puts <<-NEXTONE
 
  subroutine TS#{testSuite}( nTests, nAsserts, nAssertsTested, nFailures )
 
@@ -242,9 +248,9 @@ TOP
   continue
  NEXTONE
 
- callTestsCode.each { |line| testSuiteCode.puts line }
+ callTestsCode.each { |line| testSuiteF90.puts line }
 
- testSuiteCode.puts <<LASTONE
+ testSuiteF90.puts <<LASTONE
 
   nTests          = numTests
   nAsserts        = numAsserts
@@ -256,7 +262,7 @@ TOP
 end module #{testSuite}TestSuite
 LASTONE
 
- testSuiteCode.close
+ testSuiteF90.close
 
 end
 
