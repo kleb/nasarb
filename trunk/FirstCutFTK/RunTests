@@ -200,4 +200,4 @@ sources = testSuites.join(".f90 ") + ".f90"
 tests   = testSuites.join("Test.f90 ") + "Test.f90"
 
 system "TestRunner" \
- if (system "lf95 -o TestRunner #{sources} #{tests} TestRunner.f90")
+  if (system "#{ENV['F9X']} -o TestRunner #{sources} #{tests} TestRunner.f90")
