@@ -20,12 +20,14 @@ contains
                   - 0.5*RoeAvg(leftState,rightState)*(rightState-leftState)
   end subroutine RoeFlux
 
-  real function Flux( state )
+  function Flux( state )
+    real             :: Flux
     real, intent(in) :: state
     Flux = 0.5*state**2
   end function Flux
 
-  real function RoeAvg( leftState, rightState )
+  function RoeAvg( leftState, rightState )
+    real             :: RoeAvg
     real, intent(in) :: leftState, rightState
     RoeAvg = 0.5*(leftState+rightState)
   end function RoeAvg

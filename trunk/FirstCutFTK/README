@@ -4,12 +4,12 @@ FortranTK (Fortran Test Kit)
 
 RUN ALL TESTS:
 
- RunTests
+ FTKtest
  make
 
 RUN SPECIFIC TEST(S):
 
- RunTests FluxFunctions [...]
+ FTKtest FluxFunctions [...]
  make
 
 OVERVIEW:
@@ -19,13 +19,13 @@ OVERVIEW:
  a mixture of Fortran9X commands and Fortran Toolkit commands.  These
  *Test.ftk files provide tests for the corresponding Fortran9X routines.
 
- The RunTests Ruby script translates the Fortran Toolkit files
+ The FTKtest Ruby script translates the Fortran Toolkit files
  into valid Fortran9X routines and creates a program called TestRunner.f90
  which, after compilation and linking, runs the tests.
 
 MANIFEST:
 
- RunTests     - a Ruby script which converts the *Test.ftk pseudo-Fortran
+ FTKtest      - a Ruby script which converts the *Test.ftk pseudo-Fortran
                 test suites into pure Fortran, generates the Fortran test-
                 runner program, and then compiles, links, and runs the tests.
  *.f90        - Fortran routines to be tested.
@@ -34,9 +34,9 @@ MANIFEST:
 
 TODO:
 
- o Assertion/test counters
  o Timing data for tests
- o Summary of test results
+ o Summary of all test results
  o Add dependency checks to compile, e.g., module under test having use modules
  o Only recompile what's necessary
  o Green/red bar
+ o some sort of clean command line option to remove dynamically generated files
