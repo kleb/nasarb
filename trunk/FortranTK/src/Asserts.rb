@@ -13,7 +13,7 @@ module Asserts
  def IsRealEqual(line)
   line=~/\((.+),(.+)\)/
   @type = 'IsRealEqual'
-  @condition = ".not.(#$2+2*spacing(real(#$2)).ge.#$1.and.#$2-2*spacing(real(#$2)).le.#$1)"
+  @condition = ".not.(#$2+2*spacing(real(#$2)).ge.#$1 &\n             .and.#$2-2*spacing(real(#$2)).le.#$1)"
   @message = "\"#$1 is not\",#$2,\"within\",2*spacing(real(#$2))"
   writeAssert
  end
@@ -21,7 +21,7 @@ module Asserts
  def IsEqualWithin(line)
   line=~/\((.+),(.+),(.+)\)/
   @type = 'IsEqualWithin'
-  @condition = ".not.(#$2+#$3.ge.#$1.and.#$2-#$3.le.#$1)"
+  @condition = ".not.(#$2+#$3.ge.#$1 &\n             .and.#$2-#$3.le.#$1)"
   @message = "\"#$1 is not\",#$2,\"within\",#$3"
   writeAssert
  end
@@ -47,8 +47,8 @@ module Asserts
   puts "  numAsserts = numAsserts + 1"
   puts "  if (noAssertFailed) then"
   puts "   if (#{@condition}) then"
-  puts "    print *, \"  FAILURE: #@type in test #{@testName} " \
-                        "(Line #$. of #{@testSuite}TS.ftk)\""
+  puts "    print *, \" FAILURE: #@type in test #{@testName} &\n" \
+       "                       &(Line #$. of #{@testSuite}TS.ftk)\""
   puts "    print *, \"   \", #@message"
   puts "    noAssertFailed = .false."
   puts "    numFailures    = numFailures + 1"
