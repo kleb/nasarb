@@ -14,7 +14,17 @@ RUN SPECIFIC TEST(S):
 
 OVERVIEW:
 
- [Need.]
+ We are given a directory containing Fortran9X routines, i.e., *.f90
+ files.  Also included are corresponding *Test.ftk files which contain
+ a mixture of Fortran9X commands and Fortran Toolkit commands used
+ to test the corresponding Fortran9X routine.
+
+ The GatherTests Ruby script translates the Fortran Toolkit files
+ into valid Fortran9X routines and spits out the proper makefile
+ targets to a file named TestBits.mk which is included in the
+ resident Makefile.
+
+ The user then runs make and the test suites are run.
 
 MANIFEST:
 
@@ -29,9 +39,11 @@ MANIFEST:
                  linked, and run.
 
  *.f90         - sample Fortran routines to be tested
- *Test.F90     - corresponding mobility test suites with FortranTK macros
+ *Test.ftk     - corresponding mobility test suites with FortranTK macros
 
 TODO:
 
  o Assertion/test counters
- o File and line number output for assertion failures
+ o Summary of test results
+ o Obviate make for compile
+ o Run tests
