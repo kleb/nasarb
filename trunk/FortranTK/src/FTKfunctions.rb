@@ -120,7 +120,7 @@ def runTests testSuites
 
  depends.uniq!
  depends = depends - testSuites
- dependents = depends.join(".f90 ") + ".f90"
+ dependents = depends.join(".f90 ") + ".f90" unless depends.size
  
  compile = "#{ENV['F9X']} #{ENV['F9X_LDFLAGS']} -o TestRunner StopWatch.f90 #{dependents} #{sources} #{tests} TestRunner.f90"
 
