@@ -119,9 +119,10 @@ def runTests testSuites
  end
 
  depends = depends - testSuites
+ depends.uniq!
  dependents = depends.join(".f90 ") + ".f90"
  
- compile = "#{ENV['F9X']} -o TestRunner StopWatch.f90 #{dependents} #{sources} #{tests} TestRunner.f90"
+ compile = "#{ENV['F9X']} #{ENV['F9X_LDFLAGS']} -o TestRunner StopWatch.f90 #{dependents} #{sources} #{tests} TestRunner.f90"
 
  if system(compile)
   system "./TestRunner"
