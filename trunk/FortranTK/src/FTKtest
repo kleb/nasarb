@@ -11,11 +11,9 @@ require 'TestSuite'
 
 checkForCompiler
 
-puts
-
 writeTestRunner(testSuites = parseCommandLine)
 
-# convert each *TS.ftk file into pure Fortran9x files:
+# convert each *TS.ftk file into a pure Fortran9x file:
 
 testSuites.each do |testSuite|
 
@@ -25,6 +23,7 @@ testSuites.each do |testSuite|
  $stderr.print "parsing #{ftkFile}.. "
 
  File.open(ftkFile) do |$stdin|
+
   testSuiteF90.puts $_ \
    until $stdin.gets =~ \
     /(begin|end)(Setup|Teardown|Test)|Is(RealEqual|Equal|False|True|EqualWithin)\(.*\)/

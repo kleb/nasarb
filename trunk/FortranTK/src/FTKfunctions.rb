@@ -12,6 +12,7 @@ Fortran compiler environment variable 'F9X' not set:
   ENVIRON
   exit 1
  end
+ puts
 end
 
 
