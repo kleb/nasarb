@@ -48,17 +48,67 @@
 (defvar ftk-buffer-command "FTKtest"
   "Shell command used by the \\[ftk-test-buffer] function.")
 
+;;(defvar compilation-buffer-name-function "* F90unit output *")
+
 ;; run FTK on the current buffer:
 (defun ftk-test-buffer ()
   "Excute \\[ftk-buffer-command] on the file associated
    with the current buffer."
   (interactive)
+;  (compile ftk-buffer-command);; (file-name-nondirectory buffer-file-name)))
   (save-buffer)
-  (shell-command-on-region (point-min) (point-max) ftk-buffer-command)
+  (shell-command-on-region (point-min) (point-max) ftk-buffer-command ftk-error-buffer)
 )
 
 ;; key-binding for running FTK on the current buffer
 (define-key ftk-mode-map "\C-c\C-c" 'ftk-test-buffer)
+
+;; add F90unit error regex to compilation mode:
+;;   blah, blah, blak [FluxFunctionsTS.ftk:34]
+;(require 'compile)
+;(setq compilation-error-regexp-alist
+;      (cons '("\\[\\(.+\\):\\([0-9]+\\)\\]" 1 2) compilation-error-regexp-alist)
+;)
+
+
+(defvar ftk-error-buffer
+  "*F90unit output-buffer*"
+  "Buffer name for error messages used by `ftk-next-error'")
+
+(defvar ftk-error-message-regexp
+  "\\[.+:\\([0-9]+\\)\\]"
+  "Regular expression used by `ftk-next-error' to find error messages.
+The sub-expression between the first capturing parens must be the line
+number where the error occured")
+
+
+(defun ftk-next-error ()
+  "Goto line in current buffer indicated by next error message in `ftk-error-buffer'
+
+Assumes that the point is positioned before the first occurance of
+`ftk-error-message-regexp' in the `ftk-error-buffer' before the first
+call to this function.
+
+See also `ftk-error-message-regexp' `ftk-error-buffer'"
+  
+  (interactive)
+  (let ((error-line-number))
+    (save-current-buffer
+      (set-buffer (or (get-buffer ftk-error-buffer)
+                      (error
+                       (concat
+                        "Can't find the error buffer: "
+                        ftk-error-buffer))))
+      (if (re-search-forward ftk-error-message-regexp nil t)
+          (progn
+            (setq error-line-number
+                  (string-to-number
+                   (buffer-substring (match-beginning 1)
+                                     (match-end 1))))
+            (goto-char (1+ (match-end 1))))))
+    (if error-line-number
+        (goto-line error-line-number)
+      (message "No more errors"))))
 
 (provide 'ftk-mode)
 
