@@ -1,6 +1,8 @@
+require 'Asserts'
+
 class TestSuite < File
 
- require 'Asserts'
+ include Asserts
 
  def initialize suiteName
 
@@ -9,12 +11,12 @@ class TestSuite < File
   @tests, @setup, @teardown = [], [], []
 
   puts <<-TOP
-! #{@suiteName}TS.f90 - a Fortran mobility test suite
+! #{@suiteName}TS.f90 - a Fortran mobility test suite for #{@suiteName}.f90
 !
 ! [dynamically generated from #{@suiteName}TS.ftk
 !  by #{File.basename $0} Ruby script #{Time.now}]
 
-module #{@suiteName}TestSuite
+module #{@suiteName}TS
 
  use #{@suiteName}
 
@@ -35,24 +37,23 @@ module #{@suiteName}TestSuite
  end
 
  def addtoSetup
-  @setup.push($_) until gets=~/endSetup/
+  @setup.push($_) until $stdin.gets=~/endSetup/
  end
 
  def addtoTeardown
-  @teardown.push($_) until gets=~/endTeardown/
+  @teardown.push($_) until $stdin.gets=~/endTeardown/
  end
 
- def aTest testName
+ def aTest testName, testSuite
+  @testName, @testSuite = testName, testSuite
   @tests.push(testName)
   puts " subroutine Test#{testName}\n\n"
 
-  asserts = Asserts.new(testName,@suiteName)
-  until gets=~/endTest/
-   case $_
-    when /Is.*\(.*\)/
-     puts "Assertion Expanded Here"
-    else
-     puts $_
+  until $stdin.gets=~/endTest/
+   if /Is\w+/
+    send $&, $_
+   else
+    puts $_
    end
   end
 
@@ -97,7 +98,7 @@ module #{@suiteName}TestSuite
 
  end subroutine TS#{@suiteName}
 
-end module #{@suiteName}TestSuite
+end module #{@suiteName}TS
   LASTONE
   super
  end

@@ -1,46 +1,53 @@
-class Asserts
- def initialize(testName, testSuiteName)
-  @testName, @testSuiteName = testName, testSuiteName
+module Asserts
+
+ def IsTrue(line)
+  line=~/\((.+)\)/
+  @type = 'IsTrue'
+  @condition = ".not.(#$1)"
+  @message = "\"#$1 is not true\""
+  writeAssert
  end
- def IsRealEqual(line, lineNumber)
-  line =~ /(IsRealEqual)\s*\((.*),(.*)\)/
-  condition = ".not.(#$3+2*spacing(real(#$3)).ge.#$2.and.#$3-2*spacing(real(#$3)).le.#$2)"
-  message = "#$2,\"is not\",#$3,\"within\",2*spacing(real(#$3))"
-  expandAssert( $1, condition, message, lineNumber )
+
+ def IsRealEqual(line)
+  line=~/\((.+),(.+)\)/
+  @type = 'IsRealEqual'
+  @condition = ".not.(#$2+2*spacing(real(#$2)).ge.#$1.and.#$2-2*spacing(real(#$2)).le.#$1)"
+  @message = "\"#$1 is not\",#$2,\"within\",2*spacing(real(#$2))"
+  writeAssert
  end
- def IsEqualWithin(line, lineNumber)
-  line =~ /(IsEqualWithin)\s*\((.*),(.*),(.*)\)/
-  condition = ".not.(#$3+#$4.ge.#$2.and.#$3-#$4.le.#$2)"
-  message = "#$2,\"is not\",#$3,\"within\",#$4"
-  expandAssert( $1, condition, message, lineNumber )
+
+ def IsEqualWithin(line)
+  line=~/\((.+),(.+),(.+)\)/
+  @type = 'IsEqualWithin'
+  @condition = ".not.(#$2+#$3.ge.#$1.and.#$2-#$3.le.#$1)"
+  @message = "\"#$1 is not\",#$2,\"within\",#$3"
+  writeAssert
  end
- def IsEqual(line, lineNumber)
-  line =~ /(IsEqual)\s*\((.*),(.*)\)/
-  condition = ".not.(#$2==#$3)"
-  message = "#$2, \"is not\", #$3"
-  expandAssert( $1, condition, message, lineNumber )
+
+ def IsEqual(line)
+  line=~/\((.+),(.+)\)/
+  @type = 'IsEqual'
+  @condition = ".not.(#$1==#$2)"
+  @message = "\"#$1 is not\", #$2"
+  writeAssert
  end
- def IsTrue(line, lineNumber)
-  line =~ /(IsTrue)\s*\((.*)\)/
-  condition = ".not.(#$2)"
-  message = "#$2, \"is not true\""
-  expandAssert( $1, condition, message, lineNumber )
+
+ def IsFalse(line)
+  line=~/\((.+)\)/
+  @type = 'IsFalse'
+  @condition = "#$1"
+  @message = "\"#$1 is not false\""
+  writeAssert
  end
- def IsFalse(line, lineNumber)
-  line =~ /(IsFalse)\s*\((.*)\)/
-  condition = "#$2"
-  message = "#$2, \"is not false\""
-  expandAssert( $1, condition, message, lineNumber )
- end
- private
- def expandAssert( assertName, condition, message, lineNumber )
-  puts "\n  ! #{assertName} assertion"
+
+ def writeAssert
+  puts "\n  ! #@type assertion"
   puts "  numAsserts = numAsserts + 1"
   puts "  if (noAssertFailed) then"
-  puts "   if (#{condition}) then"
-  puts "    print *, \"  FAILURE: #{assertName} in test #{@testName} " \
-                        "(Line #{lineNumber} of #{@testSuiteName}TS.ftk)\""
-  puts "    print *, \"   \", #{message}"
+  puts "   if (#{@condition}) then"
+  puts "    print *, \"  FAILURE: #@type in test #{@testName} " \
+                        "(Line #$. of #{@testSuite}TS.ftk)\""
+  puts "    print *, \"   \", #@message"
   puts "    noAssertFailed = .false."
   puts "    numFailures    = numFailures + 1"
   puts "   else"
@@ -48,4 +55,5 @@ class Asserts
   puts "   endif"
   puts "  endif"
  end
+
 end

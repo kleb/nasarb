@@ -6,19 +6,11 @@
 # test suites in this directory (or only those test suites
 # specified on the command line).
 
-require 'checkForCompiler'
-require 'checkCommandLine'
-require 'writeTestRunner'
+require 'FTKfunctions'
 require 'TestSuite'
-require 'runTests'
 
 checkForCompiler
-
-testSuites = Dir["*TS.ftk"]
-testSuites.each { |suiteName| suiteName.chomp! "TS.ftk" }
-testSuites = checkCommandLineFor testSuites
-
-writeTestRunner testSuites
+writeTestRunner(testSuites = parseCommandLine)
 
 # convert each *TS.ftk file into pure Fortran9x files:
 
@@ -26,9 +18,8 @@ testSuites.each do |testSuite|
 
  testSuiteF90 = TestSuite.new(testSuite)
 
- File.open(testSuite+"TS.ftk") do |$stdin|
-
-  testSuiteF90.puts $_ until gets=~/begin(Setup|Teardown|Test)/
+ File.open("#{testSuite}TS.ftk") do |$stdin|
+  testSuiteF90.puts $_ until $stdin.gets=~/begin(Setup|Teardown|Test)/
   testSuiteF90.puts " contains\n\n"
 
   loop do
@@ -38,19 +29,15 @@ testSuites.each do |testSuite|
     when /beginTeardown/
      testSuiteF90.addtoTeardown
     when /beginTest \s*(.*)/
-     testSuiteF90.aTest($1)
+     testSuiteF90.aTest($1,testSuite)
     when /beginTest/
-     $stderr.print "No test name following beginTest: " \
-                   "Line #{lineNumber} of #{testSuite}TS.ftk\n"
-     exit 1
+     syntaxError "No test name following beginTest:"
     when /Is(RealEqual|Equal|False|True|EqualWithin)/
-     $stderr.print "Error: assertion outside of a test block: " \
-                   "Line #{lineNumber} of #{testSuite}TS.ftk\n"
-     exit 1
+     syntaxError "Error: assertion outside of a test block:"
     else
      puts $_
    end
-   break unless gets
+   break unless $stdin.gets
   end
 
  end
