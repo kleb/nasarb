@@ -1,8 +1,14 @@
 % $Id$
 
-% latex slides
-% xdvi -papertype usr slides
-% dvips -t landscape -o slides.ps slides
+% Previewing and making Postscript version:
+%  latex slides
+%  xdvi -papertype usr slides
+%  dvips -t landscape -o slides.ps slides
+%  gv -seascape slides.ps [optional]
+
+% Making and previewing a PDF version:
+%  pdflatex slides
+%  acroread slides.pdf
 
 \documentclass[landscape]{slides}
 \usepackage{url}
@@ -14,8 +20,8 @@
   {\bf\Large F90 Testkit}\\
   \vspace{0.5in}
   \begin{minipage}{6.5in}
-    {\bf Goal:} to make Fortran~90 unit/\-mobility/\-developer testing as painless
-    as possible.
+    {\bf Goal:} to make Fortran~90 unit/\-mobility/\-developer testing
+    as painless as possible.
   \end{minipage}
  \end{center}
 \end{slide}
