@@ -244,9 +244,9 @@ sources = testSuites.join(".f90 ") + ".f90"
 tests   = testSuites.join("Test.f90 ") + "Test.f90"
 
 compile = "#{ENV['F9X']} -o TestRunner #{sources} #{tests} TestRunner.f90"
-status = `#{compile}`
-if (status)
+
+if system(compile)
  system "./TestRunner" if File.exists? "TestRunner"
 else
- print "Compile failed"
+ print "\nCompile failed.\n"
 end
