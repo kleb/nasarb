@@ -73,7 +73,6 @@ program TestRunner
  implicit none
 
  integer :: numTests, numAsserts, numAssertsTested, numFailures
- real :: time
  DECLARE
 
  testSuites.each do |testSuite|
