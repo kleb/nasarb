@@ -8,7 +8,7 @@ PREREQUISITES
 
 INSTALLATION
 
-Place the F90unit Ruby script in a directory searched by your path,
+Place the src/F90test Ruby script in a directory searched by your path,
 e.g., ~/local/bin.
 
 Set the F9X environment variable to your Fortran compiler of choice.
