@@ -76,7 +76,7 @@ end
 
 sourceFiles = sources.join(".f90 ") + ".f90"
 
-testFiles = tests.join("Test.F90 ") + "Test.F90"
+testFiles = tests.join("Test.f90 ") + "Test.f90"
 
 testMakefile.puts <<-MAKEBITS
 
@@ -89,3 +89,42 @@ TESTS   = #{testFiles}
 RUNNER  = TestRunner.f90
 
 MAKEBITS
+
+tests.each do |testName|
+ testCode = File.new(testName+"Test.f90","w")
+ IO.foreach(testName+"Test.F90") do |line|
+  case line
+   when /IsFalse\((.*)\)/
+    testCode.puts "! BEGIN IsFalse macro expansion"
+    testCode.puts "if (#$1) then"
+    testCode.puts " testKitHasFailed = .true."
+    testCode.puts " print *, \"FAILURE: #$1 (\", #$1, \") is not false\""
+    testCode.puts "endif"
+    testCode.puts "! END IsFalse macro expansion"
+   when /IsTrue\((.*)\)/
+    testCode.puts "! BEGIN IsTrue macro expansion"
+    testCode.puts "if (.not.(#$1)) then"
+    testCode.puts " testKitHasFailed = .true."
+    testCode.puts " print *, \"FAILURE: #$1 (\", #$1, \") is not true\""
+    testCode.puts "endif"
+    testCode.puts "! END IsTrue macro expansion"
+   when /IsEqual\((.*),(.*)\)/
+    testCode.puts "! BEGIN IsEqual macro expansion"
+    testCode.puts "if (.not.(#$1==#$2)) then"
+    testCode.puts " testKitHasFailed = .true."
+    testCode.puts " print *, \"FAILURE: #$1 (\", #$1, \") is not #$2\""
+    testCode.puts "endif"
+    testCode.puts "! END IsEqual macro expansion"
+   when /IsFloatEqual\((.*),(.*),(.*)\)/
+    testCode.puts "! BEGIN IsFloatEqual macro expansion"
+    testCode.puts "if (.not.(#$2+#$3.ge.#$1.and.#$2-#$3.le.#$1))then"
+    testCode.puts " testKitHasFailed = .true."
+    testCode.puts " print *, \"FAILURE: #$1 (\",#$1,\") is not #$2 within #$3\""
+    testCode.puts "endif"
+    testCode.puts "! END IsFloatEqual macro expansion"
+   else
+    testCode.puts line
+  end
+ end
+ testCode.close
+end

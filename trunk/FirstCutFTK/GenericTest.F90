@@ -1,5 +1,4 @@
 ! $Id$
-#include "FTK.h"
 
 subroutine TestGeneric
 

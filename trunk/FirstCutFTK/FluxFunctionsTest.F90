@@ -1,5 +1,4 @@
 ! $Id$
-#include "FTK.h"
 
 subroutine TestFluxFunctions
 
@@ -16,5 +15,7 @@ subroutine TestFluxFunctions
 
   IsFloatEqual(Flux, 0.5, 0.001)
   IsFloatEqual(Flux, 0.5, 0.00000001)
+  IsEqual(Flux, 0.5)
+  IsEqual(Flux, 1.0)
 
 end subroutine TestFluxFunctions
