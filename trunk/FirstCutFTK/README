@@ -1,6 +1,6 @@
-FTK = Fortran Test Kit
+FTK (Fortran Test Kit)
 
- The beginnings of a Fortran90 mobility testing framework.
+ A Fortran9X mobility-testing framework (aka unit-testing framework).
 
 RUN ALL TESTS:
 
@@ -14,20 +14,24 @@ RUN SPECIFIC TEST(S):
 
 OVERVIEW:
 
- (Too lazy to write this now.)
+ [Need.]
 
 MANIFEST:
 
  FTK.f90     - module which holds global variables and definitions
- FTK.h       - macro definitions which are expanded via the compiler
-               pre-processor
 
  Makefile    - compiles and runs the tests
 
- GatherTests - Ruby script which generates the Fortran test runner
-               code and a file which is included by the Makefile to
-               define which tests are to be compiled.
+ GatherTests - a Ruby script which expands the assertion macros
+               in the test code(s), generates the Fortran90 test-
+               runner code, and a file which is included by the
+               Makefile to define which tests are to be compiled,
+               linked, and run.
 
  *.f90       - sample Fortran routines
- *Test.F90   - corresponding mobility tests
+ *Test.F90   - corresponding mobility tests with FTK macros
 
+TODO:
+
+ o Assertion/test counters
+ o File and line number output for assertion failures

@@ -56,10 +56,10 @@ program TestRunner
 
 HEADER
 
-tests.each do |testName|
+tests.each do |testSuiteName|
  testRunner.puts " print *, \"\""
- testRunner.puts " print *, \"#{testName}Test:\""
- testRunner.puts " call Test#{testName}"
+ testRunner.puts " print *, \"#{testSuiteName}Test:\""
+ testRunner.puts " call Test#{testSuiteName}"
  testRunner.puts ""
 end
 
@@ -90,38 +90,60 @@ RUNNER  = TestRunner.f90
 
 MAKEBITS
 
-tests.each do |testName|
- testCode = File.new(testName+"Test.f90","w")
- IO.foreach(testName+"Test.F90") do |line|
+tests.each do |testSuiteName|
+
+ testCode = File.new(testSuiteName+"Test.f90","w")
+
+ inTest = false
+
+ lineNumber = 0
+
+ IO.foreach(testSuiteName+"Test.F90") do |line|
+
+  lineNumber += 1
+
   case line
+   when /FTKSetup/
+    testCode.puts "! BEGIN FTKSetup macro expansion"
+   when /FTKTestSub \s*(.*)\s*\((.*)\)/
+    testName = $1
+    testCode.puts "! BEGIN FTKTestSub macro expansion"
+    if inTest
+     testCode.puts "! END   A Test\n\n\n"
+     inTest = false
+    end
+    testCode.puts "! BEGIN A Test ======================"
+    inTest = true
+    testCode.puts "call #{testName} ( #$2 )"
+    testCode.puts "! END   FTKTestSub macro expansion\n"
    when /IsFalse\((.*)\)/
     testCode.puts "! BEGIN IsFalse macro expansion"
     testCode.puts "if (#$1) then"
     testCode.puts " testKitHasFailed = .true."
     testCode.puts " print *, \"FAILURE: #$1 (\", #$1, \") is not false\""
     testCode.puts "endif"
-    testCode.puts "! END IsFalse macro expansion"
+    testCode.puts "! END   IsFalse macro expansion\n\n"
    when /IsTrue\((.*)\)/
     testCode.puts "! BEGIN IsTrue macro expansion"
     testCode.puts "if (.not.(#$1)) then"
     testCode.puts " testKitHasFailed = .true."
     testCode.puts " print *, \"FAILURE: #$1 (\", #$1, \") is not true\""
     testCode.puts "endif"
-    testCode.puts "! END IsTrue macro expansion"
+    testCode.puts "! END   IsTrue macro expansion\n\n"
    when /IsEqual\((.*),(.*)\)/
     testCode.puts "! BEGIN IsEqual macro expansion"
     testCode.puts "if (.not.(#$1==#$2)) then"
     testCode.puts " testKitHasFailed = .true."
     testCode.puts " print *, \"FAILURE: #$1 (\", #$1, \") is not #$2\""
     testCode.puts "endif"
-    testCode.puts "! END IsEqual macro expansion"
+    testCode.puts "! END   IsEqual macro expansion\n\n"
    when /IsFloatEqual\((.*),(.*),(.*)\)/
     testCode.puts "! BEGIN IsFloatEqual macro expansion"
     testCode.puts "if (.not.(#$2+#$3.ge.#$1.and.#$2-#$3.le.#$1))then"
     testCode.puts " testKitHasFailed = .true."
     testCode.puts " print *, \"FAILURE: #$1 (\",#$1,\") is not #$2 within #$3\""
     testCode.puts "endif"
-    testCode.puts "! END IsFloatEqual macro expansion"
+    testCode.puts "! END   IsFloatEqual macro expansion\n\n"
    else
     testCode.puts line
   end
