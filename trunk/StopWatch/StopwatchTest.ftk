@@ -1,0 +1,23 @@
+integer, dimension(8) :: dateAndTime1, dateAndTime2
+real :: seconds
+
+beginTest SystemDateAndTimeWorks
+ call date_and_time(values=dateAndTime1)
+ IsFalse( dateAndTime1(1) == -huge(0) )
+ IsTrue( dateAndTime1(1) <> -huge(0) )
+ IsTrue( size(dateAndTime1,1) == 8 )
+endTest
+
+beginTest OneMSecDifference
+  dateAndTime1 = (/ 2000, 1, 1, 0, 0, 0, 0, 0 /)
+  dateAndTime2 = (/ 2000, 1, 1, 0, 0, 0, 0, 1 /)
+  seconds = SecBetween(dateAndTime1, dateAndTime2)
+  IsFloatEqual(seconds, 0.001 , 2*epsilon(0.0) )
+endTest
+
+beginTest MinuteRollover
+  dateAndTime1 = (/ 2000, 1, 1, 0, 0, 0,59, 0 /)
+  dateAndTime2 = (/ 2000, 1, 1, 0, 0, 1, 0, 0 /)
+  seconds = SecBetween(dateAndTime1, dateAndTime2)
+  IsFloatEqual(seconds, 1.0 , 2*epsilon(0.0) )
+endTest
