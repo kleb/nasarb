@@ -15,45 +15,52 @@ writeTestRunner(testSuites = parseCommandLine)
 
 # convert each *TS.ftk file into a pure Fortran9x file:
 
+threads = Array.new
+
 testSuites.each do |testSuite|
 
- testSuiteF90 = TestSuite.new(testSuite)
+ threads << Thread.new(testSuite) do |testSuite|
 
- ftkFile = "#{testSuite}TS.ftk"
- $stderr.print "parsing #{ftkFile}.. "
+  testSuiteF90 = TestSuite.new(testSuite)
 
- File.open(ftkFile) do |$stdin|
+  ftkFile = "#{testSuite}TS.ftk"
+  $stderr.puts "parsing #{ftkFile}"
 
-  testSuiteF90.puts $_ until $stdin.gets =~ $keyword || !$_
-  testSuiteF90.puts " contains\n\n"
+  File.open(ftkFile) do |tsftkFile|
 
-  loop do
-   case $_
+   testSuiteF90.puts $_ until tsftkFile.gets =~ $keyword || !$_
+   testSuiteF90.puts " contains\n\n"
+
+   loop do
+    case $_
     when $commentLine
      testSuiteF90.puts $_
-    when /beginSetup/
-     testSuiteF90.addtoSetup
-    when /beginTeardown/
-     testSuiteF90.addtoTeardown
-    when /beginTest\s+(\w+)/
-     testSuiteF90.aTest($1,testSuite)
-    when /beginTest/
+    when /beginSetup/i
+     testSuiteF90.addtoSetup tsftkFile
+    when /beginTeardown/i
+     testSuiteF90.addtoTeardown tsftkFile
+    when /beginTest\s+(\w+)/i
+     testSuiteF90.aTest($1,testSuite,tsftkFile)
+    when /beginTest/i
      syntaxError "no name given for beginTest", testSuite
-    when /end(Setup|Teardown|Test)/
+    when /end(Setup|Teardown|Test)/i
      syntaxError "no matching begin#$1", testSuite
     when $assertRegEx
      syntaxError "#$1 assert not in a test block", testSuite
     else
      testSuiteF90.puts $_
+    end
+    break unless tsftkFile.gets
    end
-   break unless $stdin.gets
+
   end
 
+  $stderr.puts "completed #{ftkFile}"
+  testSuiteF90.close
+
  end
-
- $stderr.puts "complete."
- testSuiteF90.close
-
 end
+
+threads.each{ |thread| thread.join }
 
 runTests testSuites

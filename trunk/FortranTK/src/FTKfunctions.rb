@@ -40,6 +40,7 @@ end
 
 def writeTestRunner testSuites
 
+ File.delete("TestRunner.f90") if File.exists?("TestRunner.f90")
  testRunner = File.new "TestRunner.f90", "w"
 
  testRunner.puts <<-HEADER
@@ -51,6 +52,8 @@ program TestRunner
 
  HEADER
 
+ testRunner.puts " use StopWatch"
+
  testSuites.each { |testSuite| testRunner.puts " use #{testSuite}TS" }
 
  testRunner.puts <<-DECLARE
@@ -58,33 +61,38 @@ program TestRunner
  implicit none
 
  integer :: numTests, numAsserts, numAssertsTested, numFailures
+ real :: time
  DECLARE
 
+ testRunner.puts " time = secSinceLast()"
  testSuites.each do |testSuite|
   testRunner.puts <<-TRYIT
 
  print *, ""
  print *, "#{testSuite} test suite:"
- call TS#{testSuite}( numTests, numAsserts, numAssertsTested, numFailures )
- print *, "Completed", numTests-numFailures, "of", numTests, &
-  "tests comprising", numAssertsTested, "of", numAsserts, "possible asserts."
+ call TS#{testSuite}( numTests, &
+        numAsserts, numAssertsTested, numFailures )
+ time = secSinceLast()
+ print *, "Passed", numAssertsTested, "of", numAsserts, &
+          "possible asserts comprising", &
+           numTests-numFailures, "of", numTests, "tests" 
+ write (*,'(" in ",f5.3," seconds.")') time
   TRYIT
  end
 
  testRunner.puts "\n print *, \"\""
  testRunner.puts "\nend program TestRunner"
  testRunner.close
-
+ File.chmod(0444,"TestRunner.f90")
 end
 
 def syntaxError( message, testSuite )
- $stderr.puts "\n\n Syntax error:"
- $stderr.puts "  #{message}, line #$. of #{testSuite}TS.ftk\n\n"
+ $stderr.puts "\n   *Error: #{message} [#{testSuite}TS.ftk:#$.]\n\n"
  exit 1
 end
 
 def warning( message, testSuite )
- $stderr.puts "\n *Warning: #{message}, line #$. of #{testSuite}TS.ftk"
+ $stderr.puts "\n *Warning: #{message} [#{testSuite}TS.ftk:#$.]"
 end
 
 def runTests testSuites
@@ -94,10 +102,10 @@ def runTests testSuites
  sources = testSuites.join(".f90 ") + ".f90"
  tests   = testSuites.join("TS.f90 ") + "TS.f90"
 
- compile = "#{ENV['F9X']} -o TestRunner #{sources} #{tests} TestRunner.f90"
+ compile = "#{ENV['F9X']} -o TestRunner StopWatch.f90 #{sources} #{tests} TestRunner.f90"
 
  if system(compile)
-  system "./TestRunner" if File.exists? "TestRunner"
+  system "./TestRunner"
  else
   print "\nCompile failed.\n"
  end
@@ -105,5 +113,5 @@ def runTests testSuites
 end
 
 # set some regular expressions:
-$keyword = /(begin|end)(Setup|Teardown|Test)|Is(RealEqual|Equal|False|True|EqualWithin)\(.*\)/
+$keyword = /(begin|end)(Setup|Teardown|Test)|Is(RealEqual|Equal|False|True|EqualWithin)\(.*\)/i
 $commentLine = /^\s*!/

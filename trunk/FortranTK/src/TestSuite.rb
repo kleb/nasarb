@@ -7,6 +7,7 @@ class TestSuite < File
  def initialize suiteName
 
   @suiteName = suiteName
+  File.delete(suiteName+"TS.f90") if File.exists?(suiteName+"TS.f90")
   super(suiteName+"TS.f90","w")
   @tests, @setup, @teardown = [], [], []
 
@@ -36,24 +37,29 @@ module #{@suiteName}TS
   TOP
  end
 
- def addtoSetup
-  @setup.push($_) until $stdin.gets=~/endSetup/
+ def addtoSetup ftkFile
+  @setup.push($_) until ftkFile.gets=~/endSetup/i
  end
 
- def addtoTeardown
-  @teardown.push($_) until $stdin.gets=~/endTeardown/
+ def addtoTeardown ftkFile
+  @teardown.push($_) until ftkFile.gets=~/endTeardown/i
  end
 
- def aTest testName, testSuite
+ def aTest testName, testSuite, ftkFile
   @testName, @testSuite = testName, testSuite
   @tests.push(testName)
+  syntaxError("test name #@testName not unique",@testSuite) if (@tests.uniq!)
+
   puts " subroutine Test#{testName}\n\n"
 
   numOfAsserts = 0
-  until $stdin.gets=~/endTest/
-   if /Is\w+/
+  until ftkFile.gets=~/endTest/i
+   case $_
+   when $commentLine
+    puts $_
+   when /Is(RealEqual|False|True|EqualWithin|Equal)/i
     numOfAsserts += 1
-    send $&, $_
+    send $&.downcase!, $_
    else
     puts $_
    end
@@ -104,6 +110,7 @@ module #{@suiteName}TS
 end module #{@suiteName}TS
   LASTONE
   super
+  File.chmod(0444,@suiteName+"TS.f90")
  end
 
 end
