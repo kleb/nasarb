@@ -1,5 +1,7 @@
 module Asserts
 
+ $assertRegEx = /Is(RealEqual|Equal|False|True|EqualWithin)\(.*\)/
+
  def IsTrue(line)
   line=~/\((.+)\)/
   @type = 'IsTrue'

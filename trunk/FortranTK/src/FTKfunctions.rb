@@ -76,12 +76,19 @@ program TestRunner
 
 end
 
-def syntaxError message
- $stderr.print message, " Line #{lineNumber} of #{testSuite}TS.ftk\n"
+def syntaxError( message, testSuite )
+ $stderr.puts "\n\n Syntax error:"
+ $stderr.puts "  #{message}, line #$. of #{testSuite}TS.ftk\n\n"
  exit 1
 end
 
+def warning( message, testSuite )
+ $stderr.puts "\n *Warning: #{message}, line #$. of #{testSuite}TS.ftk"
+end
+
 def runTests testSuites
+
+ puts
 
  sources = testSuites.join(".f90 ") + ".f90"
  tests   = testSuites.join("TS.f90 ") + "TS.f90"

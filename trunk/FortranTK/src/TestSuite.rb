@@ -49,13 +49,16 @@ module #{@suiteName}TS
   @tests.push(testName)
   puts " subroutine Test#{testName}\n\n"
 
+  numOfAsserts = 0
   until $stdin.gets=~/endTest/
    if /Is\w+/
+    numOfAsserts += 1
     send $&, $_
    else
     puts $_
    end
   end
+  warning("no asserts in test", testSuite) if numOfAsserts==0
 
   puts "\n  numTests = numTests + 1\n\n"
   puts " end subroutine Test#{testName}\n\n"

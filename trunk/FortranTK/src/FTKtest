@@ -10,6 +10,9 @@ require 'FTKfunctions'
 require 'TestSuite'
 
 checkForCompiler
+
+puts
+
 writeTestRunner(testSuites = parseCommandLine)
 
 # convert each *TS.ftk file into pure Fortran9x files:
@@ -18,30 +21,40 @@ testSuites.each do |testSuite|
 
  testSuiteF90 = TestSuite.new(testSuite)
 
- File.open("#{testSuite}TS.ftk") do |$stdin|
-  testSuiteF90.puts $_ until $stdin.gets=~/begin(Setup|Teardown|Test)/
+ ftkFile = "#{testSuite}TS.ftk"
+ $stderr.print "parsing #{ftkFile}.. "
+
+ File.open(ftkFile) do |$stdin|
+  testSuiteF90.puts $_ \
+   until $stdin.gets =~ \
+    /(begin|end)(Setup|Teardown|Test)|Is(RealEqual|Equal|False|True|EqualWithin)\(.*\)/
   testSuiteF90.puts " contains\n\n"
 
   loop do
    case $_
+    when /^\s*!/
+     testSuiteF90.puts $_
     when /beginSetup/
      testSuiteF90.addtoSetup
     when /beginTeardown/
      testSuiteF90.addtoTeardown
-    when /beginTest \s*(.*)/
+    when /beginTest\s+(\w+)/
      testSuiteF90.aTest($1,testSuite)
     when /beginTest/
-     syntaxError "No test name following beginTest:"
-    when /Is(RealEqual|Equal|False|True|EqualWithin)/
-     syntaxError "Error: assertion outside of a test block:"
+     syntaxError "no name given for beginTest", testSuite
+    when /end(Setup|Teardown|Test)/
+     syntaxError "no matching begin#$1", testSuite
+    when $assertRegEx
+     syntaxError "#$1 assert not in a test block", testSuite
     else
-     puts $_
+     testSuiteF90.puts $_
    end
    break unless $stdin.gets
   end
 
  end
 
+ $stderr.puts "complete."
  testSuiteF90.close
 
 end
