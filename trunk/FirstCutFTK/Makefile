@@ -3,7 +3,7 @@
 # Fortran TestKit sample makefile
 
 F9X = lf95		# Lahey compiler
-#F9X = f90 -macro_expand # SGI compiler
+F9X = f90 -macro_expand # SGI compiler
 
 EXECUTABLE = TestRunner
 
