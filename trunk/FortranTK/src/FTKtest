@@ -24,14 +24,12 @@ testSuites.each do |testSuite|
 
  File.open(ftkFile) do |$stdin|
 
-  testSuiteF90.puts $_ \
-   until $stdin.gets =~ \
-    /(begin|end)(Setup|Teardown|Test)|Is(RealEqual|Equal|False|True|EqualWithin)\(.*\)/
+  testSuiteF90.puts $_ until $stdin.gets =~ $keyword || !$_
   testSuiteF90.puts " contains\n\n"
 
   loop do
    case $_
-    when /^\s*!/
+    when $commentLine
      testSuiteF90.puts $_
     when /beginSetup/
      testSuiteF90.addtoSetup
