@@ -72,7 +72,8 @@ testSuites.each do |testSuite|
  print *, ""
  print *, "#{testSuite} test suite:"
  call Test#{testSuite}( numTests, numAsserts, numAssertsTested, numFailures )
- print *, "Completed", numTests-numFailures, "of", numTests, "tests comprising", numAssertsTested, "of", numAsserts, "possible asserts."
+ print *, "Completed", numTests-numFailures, "of", numTests,&
+   "tests comprising", numAssertsTested, "of", numAsserts, "possible asserts."
  TRYIT
 end
 
