@@ -4,9 +4,9 @@ module StopWatch
 
   public
 
-  logical :: NotInitialized = .TRUE.
+  logical :: notInitialized = .TRUE.
 
-  integer, dimension(8) :: initial, last
+  integer, dimension(8) :: last
 
   contains
 
@@ -31,4 +31,20 @@ module StopWatch
 
   end function SecBetween
     
+  real function secSinceLast()
+
+    integer, dimension(8) :: now
+
+    if (notInitialized) then
+      notInitialized = .FALSE.
+      secSinceLast = 0.0
+      call date_and_time(values=last)
+    else
+      call date_and_time(values=now)
+      secSinceLast = secBetween(last, now)
+      last = now
+    endif
+
+  end function secSinceLast
+
 end module StopWatch
