@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+ #!/usr/bin/env ruby
 #
 # $Id$
 #
@@ -175,7 +175,7 @@ TOP
      $stderr.puts "Error: assertion outside of a test block: Line #{lineNumber} of #{testSuite}TS.ftk"
      exit 1
     end
-    condition = ".not.(#$3+2*spacing(real(#$3)).ge.#$2.and.#$3-2*spacing(real(#$3).le.#$2)"
+    condition = ".not.(#$3+2*spacing(real(#$3)).ge.#$2.and.#$3-2*spacing(real(#$3)).le.#$2)"
     message = "#$2,\"is not\",#$3,\"within\",2*spacing(real(#$3))"
     expandAssert( $1, condition, message, lineNumber, testName, testSuite, testSuiteCode )
    when /(IsEqualWithin)\s*\((.*),(.*),(.*)\)/
