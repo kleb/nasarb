@@ -2,10 +2,10 @@
 
  real :: leftState, rightState, interfaceFlux
 
-beginSetup
+beginsetup
   leftState  = 0
   rightState = 1
-endSetup
+endsetup
 
 beginTest FluxZero
   real :: state
