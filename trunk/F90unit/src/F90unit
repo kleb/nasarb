@@ -29,6 +29,10 @@ end
 def parseCommandLine
 
  allTestSuites = Dir["*TS.ftk"]
+ if (allTestSuites.size==0) then
+  $stderr.puts "   *Error: no test suites found in this directory\n\n"
+  exit 1
+ end
  allTestSuites.each { |suiteName| suiteName.chomp! "TS.ftk" }
 
  return allTestSuites if $*.empty?
@@ -62,8 +66,6 @@ program TestRunner
 
  HEADER
 
- testRunner.puts " use StopWatch"
-
  testSuites.each { |testSuite| testRunner.puts " use #{testSuite}TS" }
 
  testRunner.puts <<-DECLARE
@@ -74,7 +76,6 @@ program TestRunner
  real :: time
  DECLARE
 
- testRunner.puts " time = secSinceLast()"
  testSuites.each do |testSuite|
   testRunner.puts <<-TRYIT
 
@@ -82,11 +83,9 @@ program TestRunner
  print *, "#{testSuite} test suite:"
  call TS#{testSuite}( numTests, &
         numAsserts, numAssertsTested, numFailures )
- time = secSinceLast()
  print *, "Passed", numAssertsTested, "of", numAsserts, &
           "possible asserts comprising", &
-           numTests-numFailures, "of", numTests, "tests" 
- write (*,'(" in ",f5.3," seconds.")') time
+           numTests-numFailures, "of", numTests, "tests." 
   TRYIT
  end
 
@@ -130,9 +129,9 @@ def runTests testSuites
 
  depends.uniq!
  depends = depends - testSuites
- dependents = depends.join(".f90 ") + ".f90" unless depends.size
+ dependents = depends.join(".f90 ") + ".f90" unless depends.size == 0
  
- compile = "#{ENV['F9X']} #{ENV['F9X_LDFLAGS']} -o TestRunner StopWatch.f90 #{dependents} #{sources} #{tests} TestRunner.f90"
+ compile = "#{ENV['F9X']} #{ENV['F9X_LDFLAGS']} -o TestRunner #{dependents} #{sources} #{tests} TestRunner.f90"
 
  if system(compile)
   system "./TestRunner"

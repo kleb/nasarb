@@ -1,11 +1,9 @@
 ! $Id$
 module GasModel
 
- use Gammas  !! not handled yet
+ use Gammas
 
   implicit none
-
-!  real, parameter   :: Gamma = 1.4
 
 contains
 
