@@ -1,0 +1,96 @@
+\documentclass[landscape]{slides}
+\usepackage{url}
+\pagestyle{empty}
+\begin{document}
+\begin{slide}
+ \begin{center}
+  {\Large F90 Testkit}\\
+  \vspace{0.5in}
+  \begin{minipage}{6.5in}
+    {\bf Goal:} to make Fortran~90 unit/\-mobility/\-developer testing as painless
+    as possible.
+  \end{minipage}
+ \end{center}
+\end{slide}
+\begin{slide}
+  \begin{center}
+    {\Large Why Write Tests?}\\
+    \vspace{0.5in}
+    \begin{minipage}[t]{3in}
+     \begin{itemize}
+      \item Shame
+      \item Embarrassment
+      \item Speed
+      \item Confidence
+     \end{itemize}
+    \end{minipage}
+    \begin{minipage}[t]{3in}
+     \begin{itemize}
+      \item Trust
+      \item Change
+      \item Documentation
+     \end{itemize}
+    \end{minipage}
+  \end{center}
+\end{slide}
+\begin{slide}
+  \begin{center}
+    {\Large Why Write Tests First?}\\
+    \vspace{0.5in}
+    \begin{minipage}{3in}
+    \begin{itemize}
+     \item Tests get written
+     \item Succinctness
+     \item Clarity
+     \item Closure
+    \end{itemize}
+    \end{minipage}
+    \begin{quotation}
+      ``No code should be written or changed unless there is a failing test.''
+    \end{quotation}
+  \end{center}
+\end{slide}
+\begin{slide}
+  {\Large Adding Tests to Legacy Code}
+  \vspace{0.5in}
+  \begin{itemize}
+   \item Bugs
+     \begin{itemize}
+      \item write test which fails due to bug
+      \item write code to satisfy failing test
+      \item write tests/code for similar cases
+     \end{itemize}
+   \item Features
+     \begin{itemize}
+      \item write test for feature {\small (which better fail)}
+      \item write code to satisfy failing test
+     \end{itemize}
+   \item Refactoring
+  \end{itemize}
+\end{slide}
+\begin{slide}
+  \begin{center}
+   \begin{itemize}
+    \item Crazy enough to learn more?
+     \begin{itemize}
+      \item \url{http://c2.com/cgi/wiki?UnitTests}\\[-10pt]
+      \item \url{http://xprogramming.com/software.htm}
+     \end{itemize}
+    \item Want to try F90 testkit?
+     \begin{itemize}
+      \item Have your SA install Ruby (or install it yourself)\\[5pt]
+       \hspace{1em}\url{http://www.ruby-lang.org/}
+      \item Check out the FTK repostory\\[5pt]
+       \hspace{1em}\verb+cvs -d :pserver:[username]@abnode3:/usr/local/cvsroot \+\\
+       \hspace{1em}\verb+checkout -P FTK+\\[5pt]
+       where \verb+[username]+ is your CVS username on \verb+abnode3+
+     \end{itemize}
+   \end{itemize}
+  \end{center}
+\end{slide}
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
