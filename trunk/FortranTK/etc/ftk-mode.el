@@ -24,22 +24,36 @@
 
 (define-derived-mode ftk-mode
   f90-mode  "FortranTK"
-  "Major mode for Fortran Test Kit files (derived from F90 mode).
+  "Major mode for Fortran Test Kit files (derived from F90 mode).\n\n
   \\{ftk-mode-map}"
- (font-lock-add-keywords
-  'ftk-mode
-  '(("\\<IsFalse\\>"		. font-lock-function-name-face)
-    ("\\<IsEqual\\>"		. font-lock-function-name-face)
-    ("\\<IsRealEqual\\>"	. font-lock-function-name-face)
-    ("\\<IsTrue\\>"		. font-lock-function-name-face)
-    ("\\<IsEqualWithin\\>"	. font-lock-function-name-face)
-    ("\\<beginTest\\>"		. font-lock-builtin-face)
-    ("\\<endTest\\>"		. font-lock-builtin-face)
-    ("\\<beginTeardown\\>"	. font-lock-builtin-face)
-    ("\\<endTeardown\\>"	. font-lock-builtin-face)
-    ("\\<beginSetup\\>"		. font-lock-builtin-face)
-    ("\\<endSetup\\>"		. font-lock-builtin-face))
- )
+  (interactive)
+  (message "Fortran Test Kit mode.")
+)
+
+;; add some new font-locks to f90's extensive list
+(font-lock-add-keywords 'ftk-mode
+ '(("\\<IsFalse\\>"		. font-lock-function-name-face)
+   ("\\<IsEqual\\>"		. font-lock-function-name-face)
+   ("\\<IsRealEqual\\>"		. font-lock-function-name-face)
+   ("\\<IsTrue\\>"		. font-lock-function-name-face)
+   ("\\<IsEqualWithin\\>"	. font-lock-function-name-face)
+   ("\\<beginTest\\>"		. font-lock-builtin-face)
+   ("\\<endTest\\>"		. font-lock-builtin-face)
+   ("\\<beginTeardown\\>"	. font-lock-builtin-face)
+   ("\\<endTeardown\\>"		. font-lock-builtin-face)
+   ("\\<beginSetup\\>"		. font-lock-builtin-face)
+   ("\\<endSetup\\>"		. font-lock-builtin-face))
+)
+
+;; make a key-binding to run FTK on the current buffer
+(define-key ftk-mode-map "\C-c\C-c" 'ftk-execute-buffer)
+
+;; run FTK on the current buffer:
+(defun ftk-execute-buffer ()
+  "Run FTK on the file associated with the current buffer."
+  (interactive)
+  (save-buffer)
+  (shell-command-on-region (point-min) (point-max) "FTKtest" (buffer-file-name))
 )
 
 (provide 'ftk-mode)
