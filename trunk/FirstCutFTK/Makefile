@@ -15,4 +15,4 @@ $(EXECUTABLE): $(SOURCES) $(INCLUDE)
 	$(F9X) -o $(EXECUTABLE) $(SOURCES) 
 
 clean:
-	/bin/rm -f *.mod *.o TestAll
+	/bin/rm -f *.mod *.o $(EXECUTABLE)
