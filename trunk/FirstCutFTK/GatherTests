@@ -108,7 +108,6 @@ testSuites.each do |testSuite|
     inTest = true
     testCode.puts "print *, \" #{testName} subroutine test:\""
     testCode.puts "call #{testName} ( #$2 )"
-    testCode.puts "! END   TestSub macro expansion\n"
    when /(IsFloatEqual)\s*\((.*),(.*),(.*)\)/
     testCode.puts "! BEGIN #$1 macro expansion"
     testCode.puts "if (.not.(#$3+#$4.ge.#$2.and.#$3-#$4.le.#$2))then"
@@ -118,7 +117,6 @@ testSuites.each do |testSuite|
     testCode.puts "else"
     testCode.puts " testKitHasPassed = .true."
     testCode.puts "endif"
-    testCode.puts "! END   #$1 macro expansion\n\n"
    when /(IsEqual)\s*\((.*),(.*)\)/
     testCode.puts "! BEGIN #$1 macro expansion"
     testCode.puts "if (.not.(#$2==#$3)) then"
@@ -128,7 +126,6 @@ testSuites.each do |testSuite|
     testCode.puts "else"
     testCode.puts " testKitHasPassed = .true."
     testCode.puts "endif"
-    testCode.puts "! END   #$1 macro expansion\n\n"
    when /(IsTrue)\s*\((.*)\)/
     testCode.puts "! BEGIN #$1 macro expansion"
     testCode.puts "if (.not.(#$2)) then"
@@ -138,7 +135,6 @@ testSuites.each do |testSuite|
     testCode.puts "else"
     testCode.puts " testKitHasPassed = .true."
     testCode.puts "endif"
-    testCode.puts "! END   #$1 macro expansion\n\n"
    when /(IsFalse)\s*\((.*)\)/
     testCode.puts "! BEGIN $1 macro expansion"
     testCode.puts " if (#$2) then"
@@ -148,7 +144,6 @@ testSuites.each do |testSuite|
     testCode.puts " else"
     testCode.puts "  testKitHasPassed = .true."
     testCode.puts " endif"
-    testCode.puts " ! END   #$1 macro expansion\n\n"
    else
     testCode.puts line
   end
