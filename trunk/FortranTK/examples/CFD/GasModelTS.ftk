@@ -9,6 +9,9 @@ beginTest PerfectPZeroed
   IsEqualWithin( Pressure, 0, 0.0000000001 )
 endTest
 
+beginTest Warbler
+endTest
+
 beginTest PerfectPKnown
   real :: Density = 1
   Energy  = 1
