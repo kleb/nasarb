@@ -102,7 +102,26 @@ def runTests testSuites
  sources = testSuites.join(".f90 ") + ".f90"
  tests   = testSuites.join("TS.f90 ") + "TS.f90"
 
- compile = "#{ENV['F9X']} -o TestRunner StopWatch.f90 #{sources} #{tests} TestRunner.f90"
+ depends = Array.new
+
+ testSuites.each do |testSuite|
+  IO.foreach(testSuite+".f90") do |$_|
+   next unless /^\s*use\s+(\w+)/i
+   depends << $1
+  end
+ end
+
+ testSuites.each do |testSuite|
+  IO.foreach(testSuite+"TS.f90") do |$_|
+   next unless /^\s*use\s+(\w+)/i
+   depends << $1
+  end
+ end
+
+ depends = depends - testSuites
+ dependents = depends.join(".f90 ") + ".f90"
+ 
+ compile = "#{ENV['F9X']} -o TestRunner StopWatch.f90 #{dependents} #{sources} #{tests} TestRunner.f90"
 
  if system(compile)
   system "./TestRunner"
