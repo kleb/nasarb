@@ -45,7 +45,7 @@
    ("\\<endSetup\\>"		. font-lock-builtin-face))
 )
 
-(defvar ftk-buffer-command "FTKtest"
+(defvar ftk-buffer-command "F90test"
   "Shell command used by the \\[ftk-test-buffer] function.")
 
 ;;(defvar compilation-buffer-name-function "* F90unit output *")
