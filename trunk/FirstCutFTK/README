@@ -35,8 +35,8 @@ MANIFEST:
 TODO:
 
  o Assertion/test counters
- o Add timing data to tests
+ o Timing data for tests
  o Summary of test results
- o Add dependency checks to compile, e.g.,  module under test having use modules
+ o Add dependency checks to compile, e.g., module under test having use modules
  o Only recompile what's necessary
  o Green/red bar
