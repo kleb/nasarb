@@ -24,8 +24,8 @@ end
 
 # find all the test suites in the current directory:
 
-testSuites = Dir["*Test.ftk"]
-testSuites.each { |testSuite| testSuite.chomp! "Test.ftk" }
+testSuites = Dir["*TS.ftk"]
+testSuites.each { |testSuite| testSuite.chomp! "TS.ftk" }
 
 # optionally, handle test suites given as command line arguments:
 
@@ -36,7 +36,7 @@ unless $*.empty?
   testSuitesNotFound.each {|testSuiteNotFound| print " #{testSuiteNotFound}"}
   print "\n\n Test suites available in this directory:\n"
   testSuites.each { |testSuite| print "  #{testSuite}\n" }
-  print "\nUsage: #{File.basename $0} [test names (w/o Test.ftk suffix)]\n\n"
+  print "\nUsage: #{File.basename $0} [test names (w/o TS.ftk suffix)]\n\n"
   exit 1
  else
   testSuites = $*
@@ -57,7 +57,7 @@ program TestRunner
 
 HEADER
 
-testSuites.each { |testSuite| testRunner.puts " use #{testSuite}Test" }
+testSuites.each { |testSuite| testRunner.puts " use #{testSuite}TestSuite" }
 
 testRunner.puts <<DECLARE
 
@@ -71,7 +71,7 @@ testSuites.each do |testSuite|
 
  print *, ""
  print *, "#{testSuite} test suite:"
- call Test#{testSuite}( numTests, numAsserts, numAssertsTested, numFailures )
+ call TS#{testSuite}( numTests, numAsserts, numAssertsTested, numFailures )
  print *, "Completed", numTests-numFailures, "of", numTests,&
    "tests comprising", numAssertsTested, "of", numAsserts, "possible asserts."
  TRYIT
@@ -81,28 +81,27 @@ testRunner.puts "\n print *, \"\""
 testRunner.puts "\nend program TestRunner"
 testRunner.close
 
-
-# convert each *Test.ftk file into pure Fortran9x:
+# convert each *TS.ftk file into pure Fortran9x:
 
 testSuites.each do |testSuite|
 
- testSuiteCode = File.new(testSuite+"Test.f90","w")
+ testSuiteCode = File.new(testSuite+"TS.f90","w")
 
  testSuiteCode.puts <<TOP
-! #{testSuite}Test.f90 - a Fortran mobility test suite
+! #{testSuite}TS.f90 - a Fortran mobility test suite
 !
-! [dynamically generated from #{testSuite}Test.ftk
+! [dynamically generated from #{testSuite}TS.ftk
 !  by #{File.basename $0} Ruby script #{Time.now}]
 
-module #{testSuite}Test
+module #{testSuite}TestSuite
 
  use #{testSuite}
 
  implicit none
 
- public :: Test#{testSuite}
-
  private
+
+ public :: TS#{testSuite}
 
  logical :: noAssertFailed
 
@@ -130,7 +129,7 @@ TOP
   testSuiteCode.puts "  numAsserts = numAsserts + 1"
   testSuiteCode.puts "  if (noAssertFailed) then"
   testSuiteCode.puts "   if (#{condition})then"
-  testSuiteCode.puts "    print *, \"  Test#{testName}: #{name} FAILED (Line #{lineNumber} of #{testSuite}Test.ftk)\""
+  testSuiteCode.puts "    print *, \"  Test #{testName}: #{name} FAILED (Line #{lineNumber} of #{testSuite}TS.ftk)\""
   testSuiteCode.puts "    print *, \"   \",#{message}"
   testSuiteCode.puts "    noAssertFailed = .false."
   testSuiteCode.puts "    numFailures = numFailures + 1"
@@ -140,7 +139,7 @@ TOP
   testSuiteCode.puts "  endif"
  end
 
- IO.foreach(testSuite+"Test.ftk") do |line|
+ IO.foreach(testSuite+"TS.ftk") do |line|
   if line=~/begin(Setup|Teardown|Test)/ && noMacrosYet
    testSuiteCode.puts " contains\n\n"
    noMacrosYet = false
@@ -164,27 +163,50 @@ TOP
     callTestsCode.push "\n  call Setup"
     callTestsCode.push "  call Test#{testName}"
     callTestsCode.push "  call Teardown"
+   when /beginTest/
+    $stderr.puts "No test name following beginTest: Line #{lineNumber} of #{testSuite}TS.ftk"
+    exit 1
    when /endTest/
     inTest = false
     testSuiteCode.puts "\n  numTests = numTests + 1\n\n"
     testSuiteCode.puts " end subroutine Test#{testName}\n\n"
-   when /(IsFloatEqual)\s*\((.*),(.*),(.*)\)/
-    print "Error: assertion outside of a test block" if !inTest
+   when /(IsRealEqual)\s*\((.*),(.*)\)/
+    if !inTest
+     $stderr.puts "Error: assertion outside of a test block: Line #{lineNumber} of #{testSuite}TS.ftk"
+     exit 1
+    end
+    condition = ".not.(#$3+2*epsilon(0.0).ge.#$2.and.#$3-2*epsilon(0.0).le.#$2)"
+    message = "#$2,\"is not\",#$3,\"within\",2*epsilon(0.0)"
+    expandAssert( $1, condition, message, lineNumber, testName, testSuite, testSuiteCode )
+   when /(IsEqualWithin)\s*\((.*),(.*),(.*)\)/
+    if !inTest
+     $stderr.puts "Error: assertion outside of a test block: Line #{lineNumber} of #{testSuite}TS.ftk"
+     exit 1
+    end
     condition = ".not.(#$3+#$4.ge.#$2.and.#$3-#$4.le.#$2)"
     message = "#$2,\"is not\",#$3,\"within\",#$4"
     expandAssert( $1, condition, message, lineNumber, testName, testSuite, testSuiteCode )
    when /(IsEqual)\s*\((.*),(.*)\)/
-    print "Error: assertion outside of a test block" if !inTest
+    if !inTest
+     $stderr.puts "Error: assertion outside of a test block: Line #{lineNumber} of #{testSuite}TS.ftk"
+     exit 1
+    end
     condition = ".not.(#$2==#$3)"
     message = "#$2, \"is not\", #$3"
     expandAssert( $1, condition, message, lineNumber, testName, testSuite, testSuiteCode )
    when /(IsTrue)\s*\((.*)\)/
-    print "Error: assertion outside of a test block" if !inTest
+    if !inTest
+     $stderr.puts "Error: assertion outside of a test block: Line #{lineNumber} of #{testSuite}TS.ftk"
+     exit 1
+    end
     condition = ".not.(#$2)"
     message = "#$2, \"is not true\""
     expandAssert( $1, condition, message, lineNumber, testName, testSuite, testSuiteCode )
    when /(IsFalse)\s*\((.*)\)/
-    print "Error: assertion outside of a test block" if !inTest
+    if !inTest
+     $stderr.puts "Error: assertion outside of a test block: Line #{lineNumber} of #{testSuite}TS.ftk"
+     exit 1
+    end
     condition = "#$2"
     message = "#$2, \"is not false\""
     expandAssert( $1, condition, message, lineNumber, testName, testSuite, testSuiteCode )
@@ -210,7 +232,7 @@ TOP
 
  testSuiteCode.puts <<-NEXTONE
 
- subroutine Test#{testSuite}( nTests, nAsserts, nAssertsTested, nFailures )
+ subroutine TS#{testSuite}( nTests, nAsserts, nAssertsTested, nFailures )
 
   integer :: nTests
   integer :: nAsserts
@@ -229,9 +251,9 @@ TOP
   nAssertsTested  = numAssertsTested
   nFailures       = numFailures
 
- end subroutine Test#{testSuite}
+ end subroutine TS#{testSuite}
 
-end module #{testSuite}Test
+end module #{testSuite}TestSuite
 LASTONE
 
  testSuiteCode.close
@@ -242,7 +264,7 @@ end
 # Comple, link, and run:
 
 sources = testSuites.join(".f90 ") + ".f90"
-tests   = testSuites.join("Test.f90 ") + "Test.f90"
+tests   = testSuites.join("TS.f90 ") + "TS.f90"
 
 compile = "#{ENV['F9X']} -o TestRunner #{sources} #{tests} TestRunner.f90"
 
