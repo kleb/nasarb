@@ -103,3 +103,7 @@ def runTests testSuites
  end
 
 end
+
+# set some regular expressions:
+$keyword = /(begin|end)(Setup|Teardown|Test)|Is(RealEqual|Equal|False|True|EqualWithin)\(.*\)/
+$commentLine = /^\s*!/
