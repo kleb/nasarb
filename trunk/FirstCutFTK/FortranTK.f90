@@ -1,8 +1,8 @@
 ! $Id$
-module FTK
+module FortranTK
 
   logical, public :: testKitHasFailed, testKitHasPassed
 
 !contains
 
-end module FTK
+end module FortranTK

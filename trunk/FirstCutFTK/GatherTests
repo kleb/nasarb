@@ -20,11 +20,9 @@ else
 end
 
 testSuitesNotFound = []
-
 testSuites.each do |testSuite|
  testSuitesNotFound.push(testSuite) unless FileTest.exist?(testSuite+"Test.F90")
 end
-
 if (!testSuitesNotFound.empty?)
  print "\n"
  print " Error: could not find test"
@@ -48,7 +46,7 @@ testRunner.puts <<HEADER
 !
 program TestRunner
 
- use FTK
+ use FortranTK
 
  implicit none
 
@@ -58,8 +56,8 @@ HEADER
 
 testSuites.each do |testSuite|
  testRunner.puts " print *, \"\""
- testRunner.puts " print *, \"#{testSuite}Test:\""
- testRunner.puts " call Test#{testSuite}"
+ testRunner.puts " print *, \"#{testSuite} Test Suite:\""
+ testRunner.puts " call TestSuite#{testSuite}"
  testRunner.puts ""
 end
 
@@ -90,62 +88,71 @@ RUNNER  = TestRunner.f90
 MAKEBITS
 
 testSuites.each do |testSuite|
-
  testCode = File.new(testSuite+"Test.f90","w")
-
  inTest = false
-
+ testName = ""
  lineNumber = 0
-
  IO.foreach(testSuite+"Test.F90") do |line|
-
   lineNumber += 1
-
   case line
-   when /FTKSetup/
-    testCode.puts "! BEGIN FTKSetup macro expansion"
-   when /FTKTestSub \s*(.*)\s*\((.*)\)/
+   when /Setup/
+    testCode.puts "! BEGIN Setup macro expansion"
+   when /TestSub \s*(.*)\s*\((.*)\)/
     testName = $1
-    testCode.puts "! BEGIN FTKTestSub macro expansion"
+    testCode.puts "! BEGIN TestSub macro expansion"
     if inTest
      testCode.puts "! END   A Test\n\n\n"
      inTest = false
     end
     testCode.puts "! BEGIN A Test ======================"
     inTest = true
+    testCode.puts "print *, \" #{testName} subroutine test(s):\""
     testCode.puts "call #{testName} ( #$2 )"
-    testCode.puts "! END   FTKTestSub macro expansion\n"
-   when /IsFalse\((.*)\)/
-    testCode.puts "! BEGIN IsFalse macro expansion"
-    testCode.puts "if (#$1) then"
+    testCode.puts "! END   TestSub macro expansion\n"
+   when /(IsFalse)\s*\((.*)\)/
+    testCode.puts "! BEGIN #$1 macro expansion"
+    testCode.puts "if (#$2) then"
     testCode.puts " testKitHasFailed = .true."
-    testCode.puts " print *, \"FAILURE: #$1 (\", #$1, \") is not false\""
+    testCode.puts " print *, \"  FAILURE! #$1: Line #{lineNumber}\""
+    testCode.puts " print *, \"   #$2 (\", #$2, \") is not false\""
+    testCode.puts "else"
+    testCode.puts " testKitHasPassed = .true."
     testCode.puts "endif"
-    testCode.puts "! END   IsFalse macro expansion\n\n"
-   when /IsTrue\((.*)\)/
-    testCode.puts "! BEGIN IsTrue macro expansion"
-    testCode.puts "if (.not.(#$1)) then"
+    testCode.puts "! END   #$1 macro expansion\n\n"
+   when /(IsTrue)\s*\((.*)\)/
+    testCode.puts "! BEGIN #$1 macro expansion"
+    testCode.puts "if (.not.(#$2)) then"
     testCode.puts " testKitHasFailed = .true."
-    testCode.puts " print *, \"FAILURE: #$1 (\", #$1, \") is not true\""
+    testCode.puts " print *, \"  FAILURE! #$1: Line #{lineNumber}\""
+    testCode.puts " print *, \"   #$2 (\", #$2, \") is not true\""
+    testCode.puts "else"
+    testCode.puts " testKitHasPassed = .true."
     testCode.puts "endif"
-    testCode.puts "! END   IsTrue macro expansion\n\n"
-   when /IsEqual\((.*),(.*)\)/
-    testCode.puts "! BEGIN IsEqual macro expansion"
-    testCode.puts "if (.not.(#$1==#$2)) then"
+    testCode.puts "! END   #$1 macro expansion\n\n"
+   when /(IsEqual)\s*\((.*),(.*)\)/
+    testCode.puts "! BEGIN #$1 macro expansion"
+    testCode.puts "if (.not.(#$2==#$3)) then"
     testCode.puts " testKitHasFailed = .true."
-    testCode.puts " print *, \"FAILURE: #$1 (\", #$1, \") is not #$2\""
+    testCode.puts " print *, \"  FAILURE! #$1: Line #{lineNumber}\""
+    testCode.puts " print *, \"   #$2 (\", #$2, \") is not #$3\""
+    testCode.puts "else"
+    testCode.puts " testKitHasPassed = .true."
     testCode.puts "endif"
-    testCode.puts "! END   IsEqual macro expansion\n\n"
-   when /IsFloatEqual\((.*),(.*),(.*)\)/
-    testCode.puts "! BEGIN IsFloatEqual macro expansion"
-    testCode.puts "if (.not.(#$2+#$3.ge.#$1.and.#$2-#$3.le.#$1))then"
+    testCode.puts "! END   #$1 macro expansion\n\n"
+   when /(IsFloatEqual)\s*\((.*),(.*),(.*)\)/
+    testCode.puts "! BEGIN #$1 macro expansion"
+    testCode.puts "if (.not.(#$3+#$4.ge.#$2.and.#$3-#$4.le.#$2))then"
     testCode.puts " testKitHasFailed = .true."
-    testCode.puts " print *, \"FAILURE: #$1 (\",#$1,\") is not #$2 within #$3\""
+    testCode.puts " print *, \"  FAILURE! #$1: Line #{lineNumber}\""
+    testCode.puts " print *, \"   #$2 (\",#$2,\") is not #$3 within #$4\""
+    testCode.puts "else"
+    testCode.puts " testKitHasPassed = .true."
     testCode.puts "endif"
-    testCode.puts "! END   IsFloatEqual macro expansion\n\n"
+    testCode.puts "! END   #$1 macro expansion\n\n"
    else
     testCode.puts line
   end
+#  print "#{lineNumber}: #{testName}"
  end
  testCode.close
 end
