@@ -1,0 +1,18 @@
+require 'rake/clean'
+require 'erb'
+require 'redcloth'
+
+TEMPLATE = 'page.erb'
+
+TXT = FileList['*.txt']
+HTML = TXT.ext('html')
+
+CLEAN.include(HTML)
+
+task :default => HTML
+
+rule '.html' => '.txt' do |target|
+  contents = RedCloth.new( File.read(target.source) ).to_html
+  template = ERB.new( File.read(TEMPLATE) )
+  File.open( target.name, 'w' ){ |f| f.puts template.result( binding ) }
+end
