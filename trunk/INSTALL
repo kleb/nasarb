@@ -1,16 +1,19 @@
-$Id$
+Prerequisites
+-------------
 
-PREREQUISITES
+ 1) A Fortran 90/95/2003 compiler.
 
-1) A Fortran 90 compiler.
+ 2) The Ruby language -- see http://www.ruby-lang.org/
 
-2) The Ruby language -- the source is available from http://www.ruby-lang.org/
+ 3) RubyGems package manager -- see http://rubyforge.org/projects/rubygems/
 
-INSTALLATION
 
-Place the src/F90test Ruby script in a directory searched by your path,
-e.g., ~/local/bin or have your System Administrator place it
-somewhere more global like /usr/local/bin.
+Installation
+------------
 
-Set the F9X environment variable to your Fortran compiler of choice.
-(The script will explain how to do this if it is not set.)
+ gem install funit
+
+
+At some point, we plan to make installation easier by creating
+a single executable with Erik Veenstra's RubyScript2Exe
+<http://www.erikveen.dds.nl/rubyscript2exe/>.
