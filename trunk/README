@@ -1,10 +1,3 @@
-$Id$
+fUnit - a Fortran Unit Testing Framework
 
-F90testkit - a Fortran 90 Unit/Mobiility/Developer Testing Framework
-
-MANIFEST
-
-doc      - documentation
-etc      - emacs mode, etc.
-examples - two samples
-src      - the source code
+See docs/ for more information.
