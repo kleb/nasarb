@@ -16,7 +16,7 @@ Government Agency: NASA Langley Research Center
 Government Agency Original Software Designation: LAR-17081-1
 Government Agency Original Software Title: fUnit
 User Registration Requested: please see clause 3.F.
-Government Agency Point of Contact: funit_support@larc.nasa.gov
+Government Agency Point of Contact: funit-support@rubyforge.org
 
 1. DEFINITIONS
 
@@ -259,4 +259,4 @@ Recipient hereby agrees to all terms and conditions herein.
 
 F. Point of Contact: Any Recipient contact with Government Agency is
 to be directed to the designated representative as follows:
-funit_support@larc.nasa.gov.
+funit-support@rubyforge.org.
