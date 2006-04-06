@@ -15,4 +15,5 @@ rule '.html' => '.txt' do |target|
   contents = RedCloth.new( File.read(target.source) ).to_html
   template = ERB.new( File.read(TEMPLATE) )
   File.open( target.name, 'w' ){ |f| f.puts template.result( binding ) }
+  system "scp #{target.name} rubyforge.org:/var/www/gforge-projects/funit"
 end
