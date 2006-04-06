@@ -1,8 +1,0 @@
-h1. fUnit: A Fortran Unit Testing Framework
-
-A unit testing framework for Fortran has been developed
-to facilatate the use of the Scientific Method
-during the development of Fortran applications.
-
-For more information, see the RubyForge project page,
-"rubyforge.org/projects/funit":http://rubyforge.org/projects/funit/.
