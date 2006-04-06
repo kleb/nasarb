@@ -1,9 +1,10 @@
 module Funit
 
+  include Funit::Assertions
+
   class TestSuite < File
 
     include Funit
-    include Funit::Assertions
 
     def initialize suiteName
       @lineNumber = 'blank'

@@ -4,14 +4,14 @@ module Funit
 
     attr_reader :name
 
-    def initialize name=ENV['F9X']
+    def initialize( name=ENV['F9X'] )
       errorMessage = <<-ENVIRON
 
 Fortran compiler environment variable 'F9X' not set:
 
  for bourne-based shells: export F9X=lf95 (in .profile)
       for c-based shells: setenv F9X lf95 (in .login)
-             for windows: set F9X=C:\Program Files\lf95 (in autoexec.bat)
+             for windows: set F9X=C:\\Program Files\\lf95 (in autoexec.bat)
 
       ENVIRON
       raise(errorMessage) unless @name = name
@@ -21,7 +21,7 @@ Fortran compiler environment variable 'F9X' not set:
 
   def requestedModules(moduleNames)
     if (moduleNames.empty?)
-      moduleNames = Dir["*MT.ftk"].each { |mod| mod.chomp! "MT.ftk" }
+      moduleNames = Dir["*MT.ftk"].each{ |mod| mod.chomp! "MT.ftk" }
     end
     moduleNames
   end
@@ -104,7 +104,7 @@ program TestRunner
   end
 
   def compileTests testSuites
-    require 'Depend'
+    require 'fortran_deps'
 
     puts "computing dependencies"
     dependencies = Depend.new(['.', '../LibF90', '../PHYSICS_DEPS'])
