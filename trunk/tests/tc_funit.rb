@@ -1,19 +1,21 @@
 $:.unshift File.join( File.dirname(__FILE__), '..', 'lib' )
+require 'test/unit'
 require 'funit'
+require 'ftools'
 
 class TestFunit < Test::Unit::TestCase
 
  include Funit
  include Funit::Assertions
 
- def testMainDriverCompiles
+ def test_main_driver_compiles
   writeTestRunner []
   assert File.exists?("TestRunner.f90")
-  assert system("#{Funit::Compiler.new.name} TestRunner.f90")
+  assert system("#{Compiler.new.name} TestRunner.f90")
   assert File.exists?("a.out")
  end
 
- def testIsEqual
+ def test_is_equal
   @suiteName = "dummy"
   @testName = "dummy"
   @lineNumber = "dummy"
@@ -21,7 +23,7 @@ class TestFunit < Test::Unit::TestCase
   assert_equal '.not.(1.0==m(1,1))', @condition
  end 
 
- def testIsRealEqual
+ def test_is_real_equal
   @suiteName = "dummy"
   @testName = "dummy"
   @lineNumber = "dummy"
@@ -41,7 +43,7 @@ EOF
   assert_equal ans.chomp, @condition
  end
 
- def testHandlesDependency
+ def test_handles_dependency
   File.open('unit.f90','w') do |f|
    f.printf "module unit\n  use unita, only : a\nend module unit\n"
   end
@@ -54,7 +56,7 @@ EOF
   assert_nothing_raised{runAllFtks}
  end
 
- def testEmbeddedDependencies
+ def test_embedded_dependencies
   File.open('unit.f90','w') do |f|
    f.printf "module unit\n  use unita, only : a\nend module unit\n"
   end
@@ -67,28 +69,28 @@ EOF
   File.open('unitMT.ftk','w') do |f|
    f.printf "beginTest A\n  IsEqual(5, a)\nendTest\n"
   end  
-  assert_nothing_raised{Funit::runAllFtks}
+  assert_nothing_raised{runAllFtks}
  end
 
- def testRequestedModules
+ def test_requested_modules
   assert_equal ["asdfga"], requestedModules(["asdfga"])
   assert_equal ["asd","fga"], requestedModules(["asd","fga"])
-  assert requestedModules([]).empty?
+   assert requestedModules([]).empty?
   modules = %w[ldfdl lmzd]
   ftks = modules.map{|f| f+'MT.ftk'}.join(' ')
   system "touch "+ftks
   assert_equal modules, requestedModules([])
  end
 
- def testFTKExists
+ def test_FTK_exists
   moduleName = "ydsbe"
   File.rm_f(moduleName+"MT.ftk")
   assert_equal false, ftkExists?(moduleName)
   system "touch "+moduleName+"MT.ftk"
-  assert Funit::ftkExists?(moduleName)
+  assert ftkExists?(moduleName)
  end
 
- def tear_down
+ def teardown
   File.rm_f(*Dir["dummyunit*"])
   File.rm_f(*Dir["unit*"])
   File.rm_f(*Dir["ydsbe*"])

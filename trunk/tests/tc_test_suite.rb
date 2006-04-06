@@ -1,19 +1,20 @@
 $:.unshift File.join( File.dirname(__FILE__), '..', 'lib' )
+require 'test/unit'
 require 'funit/test_suite'
 
 class TestTestSuite < Test::Unit::TestCase
 
- def set_up
+ def setup
   File.rm_f(*Dir["dummyf90test*"])
  end 
 
- def testNonexistentFtkFileIsNotCreated
+ def test_nonexistent_FTK_file_is_not_created
   Funit::TestSuite.new 'dummyf90test'
   assert !File.exists?("dummyf90testMT.ftk")
   assert !File.exists?("dummyf90testMT.f90")
  end
 
- def createFtkFile ftkContents
+ def create_FTK_file ftkContents
   File.open('dummyf90test.f90','w') do |f|
    f.puts "module dummyf90test\nend module dummyf90test"
   end
@@ -24,38 +25,38 @@ class TestTestSuite < Test::Unit::TestCase
 
  @@compileCommand = "#{Funit::Compiler.new.name} -c dummyf90test.f90 dummyf90testMT.f90"
 
- def testBareMinimumFtkFileCompiles
-  createFtkFile ""
+ def test_bare_minimum_FTK_file_compiles
+  create_FTK_file ""
   Funit::TestSuite.new 'dummyf90test'
   assert system(@@compileCommand)
  end
 
- def testModuleVariablesAllowed
-  createFtkFile "integer :: a"
+ def test_module_variables_allowed
+  create_FTK_file "integer :: a"
   Funit::TestSuite.new 'dummyf90test'
   assert system(@@compileCommand)
  end
 
- def testBlankSetupCompiles
-  createFtkFile "beginSetup\nendSetup"
+ def test_blank_setup_compiles
+  create_FTK_file "beginSetup\nendSetup"
   Funit::TestSuite.new 'dummyf90test'
   assert system(@@compileCommand)
  end
 
- def testBlankTestGivesWarning
-  createFtkFile "beginTest bob\nendTest"
+ def test_blank_test_gives_warning
+  create_FTK_file "beginTest bob\nendTest"
   Funit::TestSuite.new 'dummyf90test'
   assert system(@@compileCommand)
  end
 
- def testSingleAssertTestCompiles
-  createFtkFile "beginTest assertTrue\nIsTrue(.true.)\nendTest"
+ def test_single_assert_test_compiles
+  create_FTK_file "beginTest assertTrue\nIsTrue(.true.)\nendTest"
   Funit::TestSuite.new 'dummyf90test'
   assert system(@@compileCommand)
  end
 
- def testMatrixAssertCompiles
-  createFtkFile <<-MATFTK
+ def test_matrix_assert_compiles
+  create_FTK_file <<-MATFTK
  beginTest assertTrue
   integer :: a(2,2)
   a = 1
@@ -68,13 +69,13 @@ class TestTestSuite < Test::Unit::TestCase
   assert system(@@compileCommand)
  end
 
- def testIgnoreCommentedTest
-  createFtkFile "XbeginTest bob\nendTest"
+ def test_ignore_commented_test
+  create_FTK_file "XbeginTest bob\nendTest"
   Funit::TestSuite.new 'dummyf90test'
   assert_no_match( /Testbob/i, IO.readlines('dummyf90testMT.f90').join )
  end
 
- def tear_down
+ def teardown
   File.rm_f(*Dir["dummyf90test*"])
  end 
 
