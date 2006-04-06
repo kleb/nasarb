@@ -1,7 +1,7 @@
-#!/usr/bin/env ruby
-#
-# Generates a Fortran 90 code which runs all the mobility
-# test suites in this directory (or only those test suites
-# specified on the command line).
-require 'funit'
-runAllFtks 
+begin
+  require 'funit'
+resque LoadError
+  require 'rubygems'
+  require 'funit'
+end
+Funit::runAllFtks 
