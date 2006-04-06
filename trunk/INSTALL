@@ -14,6 +14,6 @@ Installation
  gem install funit
 
 
-At some point, we plan to make installation easier by creating
+At some point, we plan to reduce the prerequisites by creating
 a single executable with Erik Veenstra's RubyScript2Exe
 <http://www.erikveen.dds.nl/rubyscript2exe/>.
