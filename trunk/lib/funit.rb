@@ -2,26 +2,24 @@ require 'funit/functions'
 require 'funit/assertions'
 require 'funit/test_suite'
 
-def runAllFtks
+module Funit
 
- Compiler.new # a test for compiler env set (remove this later)
+  def runAllFtks
 
- writeTestRunner(testSuites = parseCommandLine)
+    Compiler.new # a test for compiler env set (remove this later)
 
- # convert each *MT.ftk file into a pure Fortran9x file:
+    writeTestRunner(testSuites = parseCommandLine)
 
- threads = Array.new
+    # convert each *MT.ftk file into a pure Fortran9x file:
 
- testSuites.each do |testSuite|
-  threads << Thread.new(testSuite) do |testSuite|
-   testSuiteF90 = TestSuite.new(testSuite)
+    testSuites.each do |testSuite|
+      testSuiteF90 = TestSuite.new(testSuite)
+    end
+ 
+    compileTests testSuites
+
+    raise "Failed to execute TestRunner" unless system("./TestRunner")
+ 
   end
- end
- 
- threads.each{ |thread| thread.join }
- 
- compileTests testSuites
 
- raise "Failed to execute TestRunner" unless system("./TestRunner")
- 
 end
