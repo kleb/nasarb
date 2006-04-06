@@ -1,34 +1,49 @@
 require 'rubygems'
 Gem::manage_gems
 require 'rake/gempackagetask'
+require 'rake/testtask'
 
-spec = Gem::Specification.new do |s|
+PKG_VERSION = '0.0.1'
+PKG_FILES   = FileList["{bin,tests,lib,docs}/**/*"].exclude('rdoc').to_a
 
-  s.name     = 'fUnit'
-  s.version  = '2.0.0'
-  s.author   = 'fUnit Team'
-  s.email    = 'funit-support@rubyforge.org'
-  s.homepage = 'http://funit.rubyforge.org/'
+task :default => [:test]
 
-  s.rubyforge_project = 'funit'
-
-  s.platform = Gem::Platform::RUBY
-
-  s.summary  = 'A Fortran Unit Testing Framework'
-
-  s.files = FileList["{bin,tests,lib,docs}/**/*"].exclude('rdoc').to_a
-
-  s.require_path       = 'lib'
-  s.autorequire        = 'funit'
-  s.bindir             = 'bin'
-  s.executables        = ['funit']
-  s.test_file          = 'tests/ts_funit.rb'
-  s.has_rdoc           = true
-  s.extra_rdoc_files   = ["README", "LICENSE", "INSTALL"]
-
+Rake::TestTask.new do |test|
+  test.libs << 'tests'
+  test.test_files = [ 'tests/ts_funit.rb' ]
+  test.verbose = true
 end
 
-Rake::GemPackageTask.new(spec) do |pkg|
-  pkg.need_tar = true
-  pkg.need_zip = true
+if ! defined?(Gem)
+  $stderr.puts "Package Target requires RubyGEMs"
+else
+  spec = Gem::Specification.new do |s|
+    s.name     = 'fUnit'
+    s.version  = PKG_VERSION
+    s.files    = PKG_FILES
+    s.author   = 'fUnit Team'
+    s.email    = 'funit-support@rubyforge.org'
+    s.homepage = 'http://funit.rubyforge.org/'
+    s.platform = Gem::Platform::RUBY
+    s.summary  = 'A Fortran Unit Testing Framework'
+    s.rubyforge_project  = 'funit'
+    s.require_path       = 'lib'
+    s.autorequire        = 'funit'
+    s.bindir             = 'bin'
+    s.executable         = 'funit'
+    s.test_suite_file    = 'tests/ts_funit.rb'
+    s.has_rdoc           = true
+    s.extra_rdoc_files   = ["README", "LICENSE", "INSTALL"]
+  end
+  Rake::GemPackageTask.new(spec) do |pkg|
+    pkg.need_tar = true
+    pkg.need_zip = true
+  end
+end
+
+desc "Show code statistics"
+task :stats do
+  require 'code_statistics'
+  CodeStatistics.new( ['Source', 'lib'],
+                      ['Units',  'tests'] ).to_s
 end
