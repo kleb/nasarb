@@ -1,14 +1,19 @@
-# Rakefile for funit  -*- ruby -*-
+# Rakefile for fUnit  -*- ruby -*-
 
-# Copyright 2006 United States Government as represented by NASA.
-# This file is governed by the NASA OSI license; see NASA-LICENSE for details.
+# Copyright 2006 United States Government as represented by NASA Langley
+# Research Center, Hampton, Virginia.
+
+# This file is governed by the OSI-approved, NASA Open Source Agreement.
+# See COPYING for details.
 
 begin
   require 'rubygems'
   require 'rake/gempackagetask'
+  require 'code_statistics'
 rescue Exception
   nil
 end
+
 require 'rake/testtask'
 require 'rake/rdoctask'
 
@@ -23,21 +28,21 @@ PKG_FILES = FileList[
   'tests/**/*.rb'
 ]
 
-desc "Default task"
+desc 'Default task'
 task :default => [:test]
 
 rd = Rake::RDocTask.new do |rdoc|
-  rdoc.main = "README"
-  rdoc.rdoc_dir = 'doc/html'
+  rdoc.main = 'README'
+  rdoc.rdoc_dir = 'docs/html'
   rdoc.title = 'fUnit: Fortran Unit Testing'
   rdoc.options << '--inline-source' << '--main' << 'README'
-  rdoc.rdoc_files.include( 'README', 'INSTALL', 'NASA-LICENSE', 'TODO' )
+  rdoc.rdoc_files.include( 'README', 'INSTALL', 'COPYING', 'TODO' )
   rdoc.rdoc_files.include( 'lib/**/*.rb', 'rdoc/**/*.rdoc' )
 end
 
-desc "Upload current documentation to Rubyforge"
+desc 'Upload current documentation to Rubyforge'
 task :upload_docs => [:rdoc] do
-  sh 'scp -r doc/html/* rubyforge.org:/var/www/gforge-projects/funit/'
+  sh 'scp -r docs/html/* rubyforge.org:/var/www/gforge-projects/funit/'
 end
 
 Rake::TestTask.new do |t|
@@ -48,7 +53,7 @@ Rake::TestTask.new do |t|
 end
 
 if ! defined?(Gem)
-  $stderr.puts "Package Target requires RubyGEMs"
+  $stderr.puts 'Package Target requires RubyGEMs'
 else
   spec = Gem::Specification.new do |s|
     s.name     = 'fUnit'
@@ -82,9 +87,11 @@ else
   end
 end
 
-desc "Show code statistics"
+desc 'Show code statistics'
 task :stats do
-  require 'code_statistics'
-  CodeStatistics.new( ['Source', 'lib'],
-                      ['Units',  'tests'] ).to_s
+  if ! defined?(CodeStatistics)
+    $stderr.puts 'Stats target requires Rails'
+  else
+    CodeStatistics.new( %w[Source lib], %w[Units tests] ).to_s
+  end
 end
