@@ -5,3 +5,5 @@ Work our RubyGEM packaging kinks.
 Change from CamelCase to snake_case.
 
 Use 'test' keyword instead of 'beginTest' business.
+
+Clean up documentation.
