@@ -1,19 +1,9 @@
-Prerequisites
--------------
+== Prerequisites
 
- 1) A Fortran 90/95/2003 compiler.
+ 1. A Fortran 90/95/2003 compiler (set via F9X environment variable)
+ 2. The Ruby language <http://www.ruby-lang.org/>
+ 3. RubyGems package manager <http://rubyforge.org/projects/rubygems/>
 
- 2) The Ruby language -- see http://www.ruby-lang.org/
-
- 3) RubyGems package manager -- see http://rubyforge.org/projects/rubygems/
-
-
-Installation
-------------
+== Installation
 
  gem install funit
-
-
-At some point, we plan to reduce the prerequisites by creating
-a single executable with Erik Veenstra's RubyScript2Exe
-<http://www.erikveen.dds.nl/rubyscript2exe/>.
