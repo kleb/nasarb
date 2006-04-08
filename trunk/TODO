@@ -1,1 +1,7 @@
-Lots
+Work tests so that they fail gracefully if Fortran compiler not found.
+
+Work our RubyGEM packaging kinks.
+
+Change from CamelCase to snake_case.
+
+Use 'test' keyword instead of 'beginTest' business.
