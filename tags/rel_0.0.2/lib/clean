@@ -1,0 +1,1 @@
+rm -rf *TS.f90 *.o *.mod TestRunner*
