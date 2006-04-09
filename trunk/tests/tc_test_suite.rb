@@ -69,6 +69,37 @@ class TestTestSuite < Test::Unit::TestCase
   assert system(@@compileCommand)
  end
 
+ def test_simple_real_equals_assert_works
+  create_FTK_file <<-REQFTK
+ beginTest assert_equals
+  real :: real_var
+  real_var = 1.0
+  IsRealEqual(real_var,1.0)
+ endTest
+  REQFTK
+  Funit::TestSuite.new 'dummyf90test'
+  puts `cat dummyf90testMT.ftk`
+  puts `cat dummyf90testMT.f90`
+  assert system(@@compileCommand)
+ end
+
+ def test_real_equals_assert_works_with_function
+  create_FTK_file <<-REQFTK
+  function balance( left, right)
+   real :: balance
+   real, intent(in) :: left, right
+   balance = 0.5*(left+right)
+  end function balance
+ beginTest assert_equals_for_function
+  IsRealEqual(balance(0.0,0.0),0.0)
+ endTest
+  REQFTK
+  Funit::TestSuite.new 'dummyf90test'
+  puts `cat dummyf90testMT.ftk`
+  puts `cat dummyf90testMT.f90`
+  assert system(@@compileCommand)
+ end
+
  def test_ignore_commented_test
   create_FTK_file "XbeginTest bob\nendTest"
   Funit::TestSuite.new 'dummyf90test'
