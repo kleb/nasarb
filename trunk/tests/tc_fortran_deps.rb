@@ -1,6 +1,6 @@
 $:.unshift File.join( File.dirname(__FILE__), '..', 'lib' )
 require 'test/unit'
-require 'fortran_deps'
+require 'funit/fortran_deps'
 require 'fileutils'
 
 class TestFortranDeps < Test::Unit::TestCase
@@ -30,7 +30,7 @@ class TestFortranDeps < Test::Unit::TestCase
   File.open('externalUse.f90','w') do |f|
    f.puts "program user\nuse cantFindModule\nend program"
   end
-  @dep = Depend.new
+  @dep = Funit::Depend.new
  end
 
  def test_finds_which_modules_a_source_file_uses

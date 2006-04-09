@@ -17,7 +17,7 @@ Fortran compiler environment variable 'F9X' not set:
       raise(errorMessage) unless @name = name
     end
 
-  end
+  end # class
 
   def requestedModules(moduleNames)
     if (moduleNames.empty?)
@@ -104,8 +104,6 @@ program TestRunner
   end
 
   def compileTests testSuites
-    require 'fortran_deps'
-
     puts "computing dependencies"
     dependencies = Depend.new(['.', '../LibF90', '../PHYSICS_DEPS'])
     puts "locating associated source files and sorting for compilation"
@@ -114,11 +112,10 @@ program TestRunner
     puts compile = "#{ENV['F9X']} #{ENV['F9X_LDFLAGS']} -o TestRunner \\\n  #{requiredSources.join(" \\\n  ")}"
 
     raise "Compile failed." unless system(compile)
-
   end
 
   # set some regular expressions:
   $keyword = /(begin|end)(Setup|Teardown|Test)|Is(RealEqual|Equal|False|True|EqualWithin)\(.*\)/i
   $commentLine = /^\s*!/
 
-end # module Funit
+end # module
