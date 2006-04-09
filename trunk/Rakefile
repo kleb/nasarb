@@ -1,8 +1,8 @@
 # Rakefile for fUnit  -*- ruby -*-
-
+#
 # Copyright 2006 United States Government as represented by NASA Langley
 # Research Center, Hampton, Virginia.
-
+#
 # This file is governed by the OSI-approved, NASA Open Source Agreement.
 # See COPYING for details.
 
@@ -17,7 +17,7 @@ end
 require 'rake/testtask'
 require 'rake/rdoctask'
 
-PKG_VERSION = '0.0.1'
+PKG_VERSION = '0.0.2'
 
 PKG_FILES = FileList[
   '[A-Z]*',
@@ -36,8 +36,8 @@ rd = Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_dir = 'docs/html'
   rdoc.title = 'fUnit: Fortran Unit Testing'
   rdoc.options << '--inline-source' << '--main' << 'README'
-  rdoc.rdoc_files.include( 'README', 'INSTALL', 'COPYING', 'TODO' )
-  rdoc.rdoc_files.include( 'lib/**/*.rb', 'rdoc/**/*.rdoc' )
+  rdoc.rdoc_files.include( 'README', 'COPYING' )
+  rdoc.rdoc_files.include( 'lib/**/*.rb' )
 end
 
 desc 'Upload current documentation to Rubyforge'
@@ -68,8 +68,8 @@ else
       FUnit is a unit testing framework for Fortran modules.
       Unit tests are written in Fortran fragments that use a small
       set of testing-specific extensions.  FUnit transforms these
-      Fortran fragments into valid Fortran code and compiles,
-      links, and runs them against the module under test.
+      fragments into valid Fortran code and compiles, links, and
+      runs them against the module under test.
     EOF
     s.rubyforge_project  = 'funit'
     s.require_path       = 'lib'

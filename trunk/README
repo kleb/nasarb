@@ -1,3 +1,27 @@
-fUnit - a Fortran Unit Testing Framework
+= FUnit: a Fortran Unit Testing Framework
 
-See docs/ for more information.
+FUnit is a unit testing framework for Fortran modules.
+Unit tests are written in Fortran fragments that use a small
+set of testing-specific extensions.  FUnit transforms these
+fragments into valid Fortran code and compiles,
+links, and runs them against the module under test.
+ 
+== Prerequisites
+
+1. A Fortran 90/95/2003 compiler (set via F9X environment variable)
+2. {The Ruby language}[http://www.ruby-lang.org/]
+3. {RubyGems package manager}[http://rubyforge.org/projects/rubygems/]
+
+== Installation
+
+ gem install funit
+
+== To Do
+
+* Make tests so that they fail gracefully if Fortran compiler not found.
+* Work out RubyGEM packaging kinks.
+* Change from CamelCase to snake_case.
+* Use 'test' keyword instead of 'beginTest' business.
+* Clean up documentation.
+* To increase portability, create a single, stand-alone executable with
+  Erik Veenstra's RubyScript2Exe[http://www.erikveen.dds.nl/rubyscript2exe/].
