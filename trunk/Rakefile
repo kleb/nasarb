@@ -17,7 +17,7 @@ end
 require 'rake/testtask'
 require 'rake/rdoctask'
 
-PKG_VERSION = '0.0.2'
+PKG_VERSION = '0.0.3'
 
 PKG_FILES = FileList[
   '[A-Z]*',
@@ -71,6 +71,8 @@ else
       fragments into valid Fortran code and compiles, links, and
       runs them against the module under test.
     EOF
+    s.requirements << 'Registration appreciated -- see fun3d.larc.nasa.gov'
+    s.required_ruby_version = '>= 1.8.1'
     s.rubyforge_project  = 'funit'
     s.require_path       = 'lib'
     s.autorequire        = 'funit'
