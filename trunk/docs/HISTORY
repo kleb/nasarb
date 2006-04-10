@@ -1,20 +1,19 @@
-$Id$
+= A Brief History
 
-A BRIEF HISTORY
-
-On October 4, 2001, Mike Hill of Object Mentor, Inc. visited NASA
-Langley Research Center in Hampton, Virginia and gave a test-first
-design talk at Institute for Computer and Applied Sciences and
-Engineering (ICASE).
+On October 4, 2001, Mike Hill (then of Object Mentor, Inc.)
+visited NASA Langley Research Center in Hampton, Virginia
+and gave a test-first design talk at Institute for Computer
+and Applied Sciences and Engineering (ICASE).  Copies of his
+slides are availabe at http://www.icase.edu/series/MPP/.
 
 Mike spent the afternoon with Bil Kleb, Bill Wood, Karen Bibb,
 and Mike Park reasoning out how we might create a testing framework
 for Fortran 90.  By the end of the afternoon we had a working
 protoype based on the macro expansion techniques employeed in
-Mike's own cpptestkit.
+Mike's cpptestkit.
 
 The basic idea is that test routines should easily be written in 
 a psuedo-Fortran style (i.e., very lightweight), processed (via
-the c preproccesor or a script) into valid Fortran90, collected, and
-invoked by a dynamically-created/compiled/ linked/run Fortran90 code
-named testrunner.
+the C preproccesor or a script) into valid Fortran90, and invoked
+by a master, test-runner Fortran 90 code, which is dynamically-
+created, compiled, linked, and run.
