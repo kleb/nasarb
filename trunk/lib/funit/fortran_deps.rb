@@ -1,4 +1,14 @@
+# Find Fortran dependencies
+#--
 # This scripts finds dependencies for f90 code
+# Copyright 2006 United States Government as represented by
+# NASA Langley Research Center. No copyright is claimed in
+# the United States under Title 17, U.S. Code. All Other Rights
+# Reserved.
+#
+# This file is governed by the NASA Open Source Agreement.
+# See COPYING for details.
+#++
 
 raise "Need Ruby version >= 1.8, current using #{VERSION}" unless String.instance_methods.include? "match"
 
@@ -97,7 +107,7 @@ module Funit
       @parsed.clear
       source_file_dependencies( head_f90 )
       sources = Array.new
-      while !@file_dependencies.empty? do
+      while ! @file_dependencies.empty? do
         no_dependents_pair = @file_dependencies.detect{ |h,d| d == [] }
         no_dependents = no_dependents_pair.first
         sources.push no_dependents
