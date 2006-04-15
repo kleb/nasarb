@@ -14,10 +14,10 @@ module Funit
 
     attr_reader :name
 
-    def initialize( name=ENV['F9C'] )
+    def initialize( name=ENV['FC'] )
       errorMessage = <<-ENVIRON
 
-Fortran compiler environment variable 'F9C' not set:
+Fortran compiler environment variable 'FC' not set:
 
  for bourne-based shells: export FC=lf95 (in .profile)
       for c-based shells: setenv FC lf95 (in .login)
