@@ -47,7 +47,7 @@ temperature,
    ..
  end module
 
-The tests of this module would be contained in <tt>gas_physicsMT.ftk</tt>,
+The tests of this module would be contained in <tt>gas_physics.fun</tt>,
 and might contain a test like,
 
  ..
@@ -65,16 +65,16 @@ with the command,
 
  funit gas_physics
 
-which would transform your fragments contained in <tt>gas_physicsMT.ftk</tt>
+which would transform your fragments contained in <tt>gas_physics.fun</tt>
 into valid Fortran code, create a test runner program, compile everything,
 and run the tests.  A sample output would look like,
 
- parsing gas_physicsMT.ftk
+ parsing gas_physics.fun
  computing dependencies
  locating associated source files and sorting for compilation
  g95 -o TestRunner 
    gas_physics.f90 \
-   gas_physicsMT.f90 \
+   gas_physics_fun.f90 \
    TestRunner.f90
  
  gas_physics test suite:
@@ -116,9 +116,11 @@ rewrote the framework in Ruby[http:www.ruby-lang.org].
 == To Do
 
 * Make tests fail gracefully if Fortran compiler is not found.
-* Complete migration rom CamelCase to snake_case for methods and variables.
+* Complete migration from CamelCase to snake_case for methods and variables.
+* Use 2-space indentation everywhere.
 * Use 'test' keyword instead of 'beginTest' business.
-* Don't add to test name during translation to avoid 32 character limit trouble.
+* Don't add to test name during translation to avoid
+  Fortran's 32-character limit on names.
 * Rename assertions to more consistent with other xUnits.
 * Add assertions to capture stops and warning messages.
 * Clean up documentation.
@@ -126,5 +128,3 @@ rewrote the framework in Ruby[http:www.ruby-lang.org].
   Erik Veenstra's RubyScript2Exe[http://www.erikveen.dds.nl/rubyscript2exe/].
 * Use a makefile instead of a single, ordered command line for compilation.
 * Add a clean option to remove all generated artifacts.
-* Migrate to a new naming convention?
-  E.g., gas_physics.fun -> gas_physics_fun.f90

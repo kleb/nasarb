@@ -1,6 +1,6 @@
-;; Make a generic-mode for Fortran TK files:
+;; Make a generic-mode for fUnit files:
 (require 'generic)
-(define-generic-mode 'ftk-generic-mode
+(define-generic-mode 'funit-generic-mode
    (list ?!)
    (list
     "beginTest"
@@ -15,6 +15,6 @@
      ("\\(IsEqualWithin\\)"	1	'font-lock-function-name-face)
      ("\\(IsEqual\\)"		1	'font-lock-function-name-face)
      ("\\(IsRealEqual\\)"	1	'font-lock-function-name-face))
-   (list "\\.ftk\\'")
+   (list "\\.fun\\'")
    nil
-   "Generic mode for Fortran Test Kit files.")
+   "Generic mode for fUnit files.")

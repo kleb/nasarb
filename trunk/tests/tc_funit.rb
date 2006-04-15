@@ -1,4 +1,7 @@
+#! /usr/bin/env ruby
+
 $:.unshift File.join( File.dirname(__FILE__), '..', 'lib' )
+
 require 'test/unit'
 require 'funit'
 require 'ftools'
@@ -8,14 +11,14 @@ class TestFunit < Test::Unit::TestCase
  include Funit
  include Funit::Assertions
 
- def test_main_driver_compiles
+ def Xtest_main_driver_compiles
   writeTestRunner []
   assert File.exists?("TestRunner.f90")
   assert system("#{Compiler.new.name} TestRunner.f90")
   assert File.exists?("a.out")
  end
 
- def test_is_equal
+ def Xtest_is_equal
   @suiteName = "dummy"
   @testName = "dummy"
   @lineNumber = "dummy"
@@ -23,7 +26,7 @@ class TestFunit < Test::Unit::TestCase
   assert_equal '.not.(1.0==m(1,1))', @condition
  end 
 
- def test_is_real_equal
+ def Xtest_is_real_equal
   @suiteName = "dummy"
   @testName = "dummy"
   @lineNumber = "dummy"
@@ -50,10 +53,10 @@ EOF
   File.open('unita.f90','w') do |f|
    f.printf "module unita\n  integer :: a = 5\nend module unita\n"
   end
-  File.open('unitMT.ftk','w') do |f|
-   f.printf "beginTest A\n  IsEqual(5, a)\nendTest\n"
+  File.open('unit.fun','w') do |f|
+   f.printf "beginTest a_gets_set\n  IsEqual(5, a)\nendTest\n"
   end  
-  assert_nothing_raised{runAllFtks}
+  assert_nothing_raised{run_tests}
  end
 
  def test_embedded_dependencies
@@ -66,10 +69,10 @@ EOF
   File.open('unitb.f90','w') do |f|
    f.printf "module unitb\n  integer,parameter :: b = 5\nend module unitb\n"
   end
-  File.open('unitMT.ftk','w') do |f|
-   f.printf "beginTest A\n  IsEqual(5, a)\nendTest\n"
+  File.open('unit.fun','w') do |f|
+   f.printf "beginTest a_gets_set\n  IsEqual(5, a)\nendTest\n"
   end  
-  assert_nothing_raised{runAllFtks}
+  assert_nothing_raised{run_tests}
  end
 
  def test_requested_modules
@@ -77,17 +80,28 @@ EOF
   assert_equal ["asd","fga"], requestedModules(["asd","fga"])
    assert requestedModules([]).empty?
   modules = %w[ldfdl lmzd]
-  ftks = modules.map{|f| f+'MT.ftk'}.join(' ')
-  system "touch "+ftks
+  funits = modules.map{|f| f+'.fun'}.join(' ')
+  system "touch "+funits
   assert_equal modules, requestedModules([])
  end
 
- def test_FTK_exists
+ def test_funit_exists_method
   moduleName = "ydsbe"
-  File.rm_f(moduleName+"MT.ftk")
-  assert_equal false, ftkExists?(moduleName)
-  system "touch "+moduleName+"MT.ftk"
-  assert ftkExists?(moduleName)
+  File.rm_f(moduleName+".fun")
+  assert_equal false, funit_exists?(moduleName)
+  system "touch "+moduleName+".fun"
+  assert funit_exists?(moduleName)
+ end
+
+ def setup
+  File.rm_f(*Dir["dummyunit*"])
+  File.rm_f(*Dir["unit*"])
+  File.rm_f(*Dir["ydsbe*"])
+  File.rm_f(*Dir["lmzd*"])
+  File.rm_f(*Dir["ldfdl*"])
+  File.rm_f(*Dir["ydsbe*"])
+  File.rm_f(*Dir["TestRunner*"])
+  File.rm_f(*Dir["a.out"])
  end
 
  def teardown

@@ -15,14 +15,12 @@ require 'funit/assertions'
 require 'funit/test_suite'
 
 module Funit
-  def runAllFtks
-    Compiler.new # a test for compiler env set (remove this later)
+  def run_tests
+    Compiler.new# a test for compiler env set (remove this later)
     writeTestRunner(testSuites = parseCommandLine)
 
-    # convert each *MT.ftk file into a pure Fortran9x file:
-    testSuites.each do |testSuite|
-      testSuiteF90 = TestSuite.new(testSuite)
-    end
+    # convert each *.fun file into a Fortran file:
+    testSuites.each{ |ts| TestSuite.new(ts) }
  
     compileTests testSuites
 

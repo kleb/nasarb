@@ -13,4 +13,4 @@ rescue LoadError
   require 'funit'
 end
 include Funit
-Funit::runAllFtks 
+Funit::run_tests

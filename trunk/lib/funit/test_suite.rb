@@ -8,6 +8,11 @@
 # This file is governed by the NASA Open Source Agreement.
 # See COPYING for details.
 #++
+
+require 'funit/assertions'
+require 'funit/functions'
+require 'ftools'
+
 module Funit
 
   include Funit::Assertions
@@ -19,9 +24,9 @@ module Funit
     def initialize suiteName
       @lineNumber = 'blank'
       @suiteName = suiteName
-      return nil unless ftkExists?(suiteName)
-      File.delete(suiteName+"MT.f90") if File.exists?(suiteName+"MT.f90")
-      super(suiteName+"MT.f90","w")
+      return nil unless funit_exists?(suiteName)
+      File.delete(suiteName+".fun") if File.exists?(suiteName+"_fun.f90")
+      super(suiteName+"_fun.f90","w")
       @tests, @setup, @teardown = Array.new, Array.new, Array.new
       topWrapper
       expand
@@ -30,22 +35,22 @@ module Funit
 
     def topWrapper
       puts <<-TOP
-! #{@suiteName}MT.f90 - a Fortran mobility test suite for #{@suiteName}.f90
+! #{@suiteName}_fun.f90 - a unit test suite for #{@suiteName}.f90
 !
-! [dynamically generated from #{@suiteName}MT.ftk
-!  by #{File.basename $0} Ruby script #{Time.now}]
+! #{File.basename $0} generated this file from #{@suiteName}.fun
+! at #{Time.now}
 
-module #{@suiteName}MT
+module #{@suiteName}_fun
 
  use #{@suiteName}
 
  implicit none
 
- private
-
- public :: MT#{@suiteName}
-
  logical :: noAssertFailed
+
+ public :: test_#@suiteName
+
+ private
 
  integer :: numTests          = 0
  integer :: numAsserts        = 0
@@ -57,32 +62,32 @@ module #{@suiteName}MT
 
     def expand
  
-      ftkFile = @suiteName+"MT.ftk"
-      $stderr.puts "parsing #{ftkFile}"
+      funit_file = @suiteName+".fun"
+      $stderr.print "expanding #{funit_file}..."
    
-      ftk = IO.readlines(ftkFile)
-      @ftkTotalLines = ftk.length
+      funit_contents = IO.readlines(funit_file)
+      @funit_TotalLines = funit_contents.length
 
-      while (line = ftk.shift) && line !~ $keyword
+      while (line = funit_contents.shift) && line !~ $keyword
         puts line
       end
 
-      ftk.unshift line
+      funit_contents.unshift line
 
       puts " contains\n\n"
 
-      while (line = ftk.shift)
+      while (line = funit_contents.shift)
         case line
         when $commentLine
           puts line
         when /beginSetup/i
-          addtoSetup ftk
+          addtoSetup funit_contents
         when /beginTeardown/i
-          addtoTeardown ftk
+          addtoTeardown funit_contents
         when /XbeginTest\s+(\w+)/i
-          ignoreTest($1,ftk)
+          ignoreTest($1,funit_contents)
         when /beginTest\s+(\w+)/i
-          aTest($1,ftk)
+          aTest($1,funit_contents)
         when /beginTest/i
           syntaxError "no name given for beginTest", @suiteName
         when /end(Setup|Teardown|Test)/i
@@ -94,42 +99,42 @@ module #{@suiteName}MT
         end
       end # while
 
-      $stderr.puts "completed #{ftkFile}"
+      $stderr.puts "done."
 
     end
 
-    def addtoSetup ftk
-      while (line = ftk.shift) && line !~ /endSetup/i
+    def addtoSetup funit_contents
+      while (line = funit_contents.shift) && line !~ /endSetup/i
         @setup.push line
       end
     end
 
-    def addtoTeardown ftk
-      while (line = ftk.shift) && line !~ /endTeardown/i
+    def addtoTeardown funit_contents
+      while (line = funit_contents.shift) && line !~ /endTeardown/i
         @teardown.push line
       end
     end
 
-    def ignoreTest testName, ftk
+    def ignoreTest testName, funit_contents
       warning("Ignoring test: #{testName}", @suiteName)
-      line = ftk.shift while line !~ /endTest/i
+      line = funit_contents.shift while line !~ /endTest/i
     end
 
-    def aTest testName, ftk
+    def aTest testName, funit_contents
       @testName = testName
       @tests.push testName
       syntaxError("test name #@testName not unique",@suiteName) if (@tests.uniq!)
 
-      puts " subroutine Test#{testName}\n\n"
+      puts " subroutine #{testName}\n\n"
 
       numOfAsserts = 0
   
-      while (line = ftk.shift) && line !~ /endTest/i
+      while (line = funit_contents.shift) && line !~ /endTest/i
         case line
         when $commentLine
           puts line
         when /Is(RealEqual|False|True|EqualWithin|Equal)/i
-          @lineNumber = @ftkTotalLines - ftk.length
+          @lineNumber = @funit_TotalLines - funit_contents.length
           numOfAsserts += 1
           puts send( $&.downcase!, line )
         else
@@ -139,7 +144,7 @@ module #{@suiteName}MT
       warning("no asserts in test", @suiteName) if numOfAsserts == 0
 
       puts "\n  numTests = numTests + 1\n\n"
-      puts " end subroutine Test#{testName}\n\n"
+      puts " end subroutine #{testName}\n\n"
     end
 
     def close
@@ -154,7 +159,7 @@ module #{@suiteName}MT
 
       puts <<-NEXTONE
 
- subroutine MT#{@suiteName}( nTests, nAsserts, nAssertsTested, nFailures )
+ subroutine test_#{@suiteName}( nTests, nAsserts, nAssertsTested, nFailures )
 
   integer :: nTests
   integer :: nAsserts
@@ -166,7 +171,7 @@ module #{@suiteName}MT
 
       @tests.each do |testName|
         puts "\n  call Setup"
-        puts "  call Test#{testName}"
+        puts "  call #{testName}"
         puts "  call Teardown"
       end
 
@@ -177,12 +182,12 @@ module #{@suiteName}MT
   nAssertsTested  = numAssertsTested
   nFailures       = numFailures
 
- end subroutine MT#{@suiteName}
+ end subroutine test_#{@suiteName}
 
-end module #{@suiteName}MT
+end module #{@suiteName}_fun
       LASTONE
       super
-      File.chmod(0444,@suiteName+"MT.f90")
+      File.chmod(0444,@suiteName+"_fun.f90")
     end
 
   end # class TestSuite

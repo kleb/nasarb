@@ -66,7 +66,7 @@ module Funit
   if (noAssertFailed) then
     if (#@condition) then
       print *, " *#@type failed* in test #@testName &
-                         &[#{@suiteName}MT.ftk:#{@lineNumber.to_s}]"
+                         &[#{@suiteName}.fun:#{@lineNumber.to_s}]"
       print *, "  ", #@message
       print *, ""
       noAssertFailed = .false.
