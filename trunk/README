@@ -22,7 +22,7 @@ for test files.
 
 == Requirements
 
-1. A Fortran 90/95/2003 compiler (set via F9X environment variable)
+1. A Fortran 90/95/2003 compiler (set via FC environment variable)
 2. {The Ruby language}[http://www.ruby-lang.org/] with the
    {RubyGems package manager}[http://rubyforge.org/projects/rubygems/]
 
@@ -128,5 +128,3 @@ rewrote the framework in Ruby[http:www.ruby-lang.org].
 * Add a clean option to remove all generated artifacts.
 * Migrate to a new naming convention?
   E.g., gas_physics.fun -> gas_physics_fun.f90
-* Change Fortran envinoment variable from <tt>F9X</tt> to GNU-standard
-  <tt>FC</tt>.

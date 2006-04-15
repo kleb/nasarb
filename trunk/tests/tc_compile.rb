@@ -6,7 +6,7 @@ class TestCompiler < Test::Unit::TestCase
 
  def setup
   @compilerStub = 'dummyCompiler'
-  @oldCompilerName = ENV['F9X']
+  @oldCompilerName = ENV['FC']
  end
 
  def test_explicit_compiler_name
@@ -14,17 +14,17 @@ class TestCompiler < Test::Unit::TestCase
  end
 
  def test_compiler_name_from_environment
-  ENV['F9X'] = @compilerStub
+  ENV['FC'] = @compilerStub
   assert_equal @compilerStub, Funit::Compiler.new.name
  end  
 
  def test_no_environment_compiler_name
-  ENV['F9X'] = nil
+  ENV['FC'] = nil
   assert_raises(RuntimeError) {Funit::Compiler.new}
  end  
 
  def teardown
-   ENV['F9X'] = @oldCompilerName
+   ENV['FC'] = @oldCompilerName
  end
 
 end

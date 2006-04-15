@@ -14,14 +14,14 @@ module Funit
 
     attr_reader :name
 
-    def initialize( name=ENV['F9X'] )
+    def initialize( name=ENV['F9C'] )
       errorMessage = <<-ENVIRON
 
-Fortran compiler environment variable 'F9X' not set:
+Fortran compiler environment variable 'F9C' not set:
 
- for bourne-based shells: export F9X=lf95 (in .profile)
-      for c-based shells: setenv F9X lf95 (in .login)
-             for windows: set F9X=C:\\Program Files\\lf95 (in autoexec.bat)
+ for bourne-based shells: export FC=lf95 (in .profile)
+      for c-based shells: setenv FC lf95 (in .login)
+             for windows: set FC=C:\\Program Files\\lf95 (in autoexec.bat)
 
       ENVIRON
       raise(errorMessage) unless @name = name
@@ -119,7 +119,7 @@ program TestRunner
     puts "locating associated source files and sorting for compilation"
     requiredSources = dependencies.required_source_files('TestRunner.f90')
 
-    puts compile = "#{ENV['F9X']} #{ENV['F9X_LDFLAGS']} -o TestRunner \\\n  #{requiredSources.join(" \\\n  ")}"
+    puts compile = "#{ENV['FC']} #{ENV['FCFLAGS']} -o TestRunner \\\n  #{requiredSources.join(" \\\n  ")}"
 
     raise "Compile failed." unless system(compile)
   end
