@@ -1,11 +1,21 @@
 = FUnit: a Fortran Unit Testing Framework
 
-FUnit is a unit testing framework for Fortran modules.
+FUnit is a {unit testing}[http://en.wikipedia.org/wiki/Unit_testing]
+framework for Fortran modules.
 
 Unit tests are written in Fortran fragments that use a small
-set of testing-specific extensions.  FUnit transforms these
-fragments into valid Fortran code and compiles,
-links, and runs them against the module under test.
+set of testing-specific keywords and functions.  FUnit transforms
+these fragments into valid Fortran code and compiles, links, and
+runs them against the module under test.
+
+FUnit is
+{opinionated software}[http://www.oreillynet.com/pub/a/network/2005/08/30/ruby-rails-david-heinemeier-hansson.html]
+which values convention over configuration.
+Specifically, fUnit requires a Fortran 95 compiler,
+it only supports testing routines contained in modules,
+it requires tests to be stored along side the code under test,
+and it requires that you follow a specific naming rule
+for test files.
 
 * Documentation: http://funit.rubyforge.org
 * Project Page: http://rubyforge.org/projects/funit
@@ -13,8 +23,8 @@ links, and runs them against the module under test.
 == Requirements
 
 1. A Fortran 90/95/2003 compiler (set via F9X environment variable)
-2. {The Ruby language}[http://www.ruby-lang.org/]
-3. {RubyGems package manager}[http://rubyforge.org/projects/rubygems/]
+2. {The Ruby language}[http://www.ruby-lang.org/] with the
+   {RubyGems package manager}[http://rubyforge.org/projects/rubygems/]
 
 == Installation
 
@@ -22,7 +32,9 @@ links, and runs them against the module under test.
 
 == Example
 
-Suppose you have a module in <tt>gas_physics.f90</tt> like so,
+Suppose you have a module in <tt>gas_physics.f90</tt> that
+contains a routine that returns viscosity as a function of
+temperature,
 
  module gas_physics
  ..
@@ -45,14 +57,15 @@ and might contain a test like,
  endTest
  ..
 
-Note: these sorts of fragments are all you need, the framework provides
+This brief fragment is all you need, the framework provides
 the rest of the trappings to turn this into valid Fortran code.
 
-You would run the tests for this module with the command,
+You would run the tests for the <tt>gas_physics</tt> module
+with the command,
 
  funit gas_physics
 
-and it would transform your fragments contained in <tt>gas_physicsMT.ftk</tt>
+which would transform your fragments contained in <tt>gas_physicsMT.ftk</tt>
 into valid Fortran code, create a test runner program, compile everything,
 and run the tests.  A sample output would look like,
 
@@ -69,39 +82,51 @@ and run the tests.  A sample output would look like,
 
 == Support
 
-http://rubyforge.org/tracker/?group_id=1416
+Send email to funit-support@rubyforge.org or submit a request
+through http://rubyforge.org/tracker/?group_id=1416.
 
 == License
 
-FUnit is released under the NASA Open Source Agreement -- see
-COPYING[http://funit.rubyforge.org/files/COPYING.html] for details.
+FUnit is released under the NASA Open Source Agreement, which
+requests registration.  If you would like to register, send
+an email to funit-support@rubyforge.org with your name, institution
+(if applicable), city, postal code, and country.
+See COPYING[http://funit.rubyforge.org/files/COPYING.html] for details.
 
 == A Brief History
 
-On October 4, 2001, Mike Hill (then of Object Mentor, Inc.)
+On October 4, 2001, Mike Hill (then of
+{Object Mentor}[http://www.objectmentor.com/], now of
+{Industrial Logic}[http://www.industriallogic.com])
 visited NASA Langley Research Center in Hampton, Virginia
 and gave a test-first design talk at Institute for Computer
 and Applied Sciences and Engineering (ICASE).  Copies of his
-slides are available at http://www.icase.edu/series/MPP/.
+slides are available at
+{icase.edu/series/MPP}[http://www.icase.edu/series/MPP/].
+
 Mike spent the afternoon with Bil Kleb, Bill Wood, Karen Bibb,
 and Mike Park reasoning out how we might create a testing framework
-for Fortran 90.  By the end of the afternoon we had a working
-protoype based on the macro expansion techniques employeed in
-Mike Hill's cpptestkit.
-
-The basic idea is that test routines should easily be written in 
-a psuedo-Fortran style (i.e., very lightweight), processed (via
-the C preproccesor or a script) into valid Fortran 90, and invoked
-by a master, test-runner Fortran 90 code, which is dynamically-
-created, compiled, linked, and run.
+for Fortran 90 to use during FUN3D[http://fun3d.larc.nasa.gov]
+code development.  By the end of the afternoon we had a working
+protoype based on the macro expansion techniques employed in
+Mike Hill's cpptestkit[http://sourceforge.net/projects/cpptestkit].
+We quickly found C-preprocessor macros to be to restrictive and
+rewrote the framework in Ruby[http:www.ruby-lang.org].
 
 == To Do
 
-* Make tests so that they fail gracefully if Fortran compiler
-  not found.
-* Work out RubyGEM packaging kinks.
-* Change from CamelCase to snake_case.
+* Make tests fail gracefully if Fortran compiler is not found.
+* Complete migration rom CamelCase to snake_case for methods and variables.
 * Use 'test' keyword instead of 'beginTest' business.
+* Don't add to test name during translation to avoid 32 character limit trouble.
+* Rename assertions to more consistent with other xUnits.
+* Add assertions to capture stops and warning messages.
 * Clean up documentation.
 * To increase portability, create a single, stand-alone executable with
   Erik Veenstra's RubyScript2Exe[http://www.erikveen.dds.nl/rubyscript2exe/].
+* Use a makefile instead of a single, ordered command line for compilation.
+* Add a clean option to remove all generated artifacts.
+* Migrate to a new naming convention?
+  E.g., gas_physics.fun -> gas_physics_fun.f90
+* Change Fortran envinoment variable from <tt>F9X</tt> to GNU-standard
+  <tt>FC</tt>.
