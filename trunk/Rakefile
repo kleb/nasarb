@@ -18,6 +18,7 @@ end
 
 require 'rake/testtask'
 require 'rake/rdoctask'
+require 'rake/clean'
 
 PKG_VERSION = '0.1.0'
 
@@ -30,6 +31,9 @@ PKG_FILES = FileList[
   'tests/**/*.rb',
   'utils/**/*'
 ]
+
+CLEAN.include( "**/*_fun.f90", "examples/**/TestRunner.f90",
+               "**/*.o", "**/*.mod", "**/*.MOD")
 
 desc 'Default task'
 task :default => [:test]
