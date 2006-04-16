@@ -120,14 +120,11 @@ rewrote the framework in Ruby[http:www.ruby-lang.org].
 
 * Make tests fail gracefully if Fortran compiler is not found.
 * Complete migration from CamelCase to snake_case for methods and variables.
-* Use 2-space indentation everywhere.
 * Use 'test' keyword instead of 'beginTest' business.
 * Don't add to test name during translation to avoid
   Fortran's 32-character limit on names.
 * Rename assertions to more consistent with other xUnits.
 * Add assertions to capture stops and warning messages.
-* Clean up documentation.
 * To increase portability, create a single, stand-alone executable with
   Erik Veenstra's RubyScript2Exe[http://www.erikveen.dds.nl/rubyscript2exe/].
 * Use a makefile instead of a single, ordered command line for compilation.
-* Add a clean option to remove all generated artifacts.

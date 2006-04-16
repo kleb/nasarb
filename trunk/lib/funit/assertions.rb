@@ -14,25 +14,25 @@ module Funit
     $assertRegEx = /Is(RealEqual|False|True|EqualWithin|Equal)\(.*\)/i
 
     def istrue(line)
-      line=~/\((.+)\)/
+      line.match(/\((.+)\)/)
       @type = 'IsTrue'
       @condition = ".not.(#$1)"
       @message = "\"#$1 is not true\""
       syntaxError("invalid body for #@type",@suiteName) unless $1=~/\S+/
-        writeAssert
+      writeAssert
     end
 
     def isfalse(line)
-      line=~/\((.+)\)/
+      line.match(/\((.+)\)/)
       @type = 'IsFalse'
       @condition = "#$1"
       @message = "\"#$1 is not false\""
       syntaxError("invalid body for #@type",@suiteName) unless $1=~/\S+/
-        writeAssert
+      writeAssert
     end
 
     def isrealequal(line)
-      line=~/\(([^,]+),(.+)\)/
+      line.match(/\(([^,]+),(.+)\)/)
       @type = 'IsRealEqual'
       @condition = ".not.(#$1+2*spacing(real(#$1)).ge.#$2 &\n             .and.#$1-2*spacing(real(#$1)).le.#$2)"
       @message = "\"#$2 (\",#$2,\") is not\",#$1,\"within\",2*spacing(real(#$1))"
@@ -41,7 +41,7 @@ module Funit
     end
 
     def isequalwithin(line)
-      line=~/\(([^,]+),(.+),(.+)\)/
+      line.match(/\(([^,]+),(.+),(.+)\)/)
       @type = 'IsEqualWithin'
       @condition = ".not.(#$2+#$3.ge.#$1 &\n             .and.#$2-#$3.le.#$1)"
       @message = "\"#$1 (\",#$1,\") is not\",#$2,\"within\",#$3"
@@ -50,7 +50,7 @@ module Funit
     end
 
     def isequal(line)
-      line=~/\((\w+\(.*\)|[^,]+),(.+)\)/
+      line.match(/\((\w+\(.*\)|[^,]+),(.+)\)/)
       @type = 'IsEqual'
       @condition = ".not.(#$1==#$2)"
       @message = "\"#$1 (\",#$1,\") is not\", #$2"
@@ -60,13 +60,12 @@ module Funit
 
     def writeAssert
       <<-OUTPUT
-
   ! #@type assertion
   numAsserts = numAsserts + 1
   if (noAssertFailed) then
     if (#@condition) then
       print *, " *#@type failed* in test #@testName &
-                         &[#{@suiteName}.fun:#{@lineNumber.to_s}]"
+              &[#{@suiteName}.fun:#{@lineNumber.to_s}]"
       print *, "  ", #@message
       print *, ""
       noAssertFailed = .false.
