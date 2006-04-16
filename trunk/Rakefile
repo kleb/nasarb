@@ -27,7 +27,8 @@ PKG_FILES = FileList[
   'docs/**/*',
   'examples/**/*',
   'lib/**/*',
-  'tests/**/*.rb'
+  'tests/**/*.rb',
+  'utils/**/*'
 ]
 
 desc 'Default task'
