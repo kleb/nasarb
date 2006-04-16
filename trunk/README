@@ -82,15 +82,18 @@ and run the tests.  A sample output would look like,
 
 == Support
 
-Send email to funit-support@rubyforge.org or submit a request
-through http://rubyforge.org/tracker/?group_id=1416.
+Send email to
+{funit-support@rubyforge.org}[mailto:funit-support@rubyforge.org]
+or submit a request through
+{the tracking system}[http://rubyforge.org/tracker/?group_id=1416].
 
 == License
 
 FUnit is released under the NASA Open Source Agreement, which
 requests registration.  If you would like to register, send
-an email to funit-support@rubyforge.org with your name, institution
-(if applicable), city, postal code, and country.
+an email to
+{funit-registration@rubyforge.org}[mailto:funit-registration@rubyforge.org?subject=fUnit%20Registration&body=%20%20%20%20%20%20%20Name:%20%0AInstitution:%20%0A%20%20%20%20%20%20%20City:%20%0APostal%20Code:%20%0A%20%20%20%20Country:%20]
+with your name, institution (if applicable), city, postal code, and country.
 See COPYING[http://funit.rubyforge.org/files/COPYING.html] for details.
 
 == A Brief History
