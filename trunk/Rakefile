@@ -32,7 +32,7 @@ PKG_FILES = FileList[
   'utils/**/*'
 ]
 
-CLEAN.include( "**/*_fun.f90", "examples/**/TestRunner.f90",
+CLEAN.include( "**/*_fun.f90", "examples/**/TestRunner*",
                "**/*.o", "**/*.mod", "**/*.MOD")
 
 desc 'Default task'
