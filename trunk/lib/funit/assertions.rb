@@ -70,10 +70,11 @@ module Funit
     end
 
     def isequalwithin(line)
-      line.match(/\(([^,]+),(.+),(.+)\)/)
+      line.match(/\((.*)\)/)
+      expected, actual, tolerance = *($1.get_args)
       @type = 'IsEqualWithin'
-      @condition = ".not.(#$2+#$3.ge.#$1 &\n             .and.#$2-#$3.le.#$1)"
-      @message = "\"#$1 (\",#$1,\") is not\",#$2,\"within\",#$3"
+      @condition = ".not.(#{actual}+#{tolerance}.ge.#{expected} &\n             .and.#{actual}-#{tolerance}.le.#{expected})"
+      @message = "\"#{expected} (\",#{expected},\") is not\",#{actual},\"within\",#{tolerance}"
       syntaxError("invalid body for #@type",@suiteName) unless $&
       writeAssert
     end
