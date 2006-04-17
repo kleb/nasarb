@@ -8,6 +8,34 @@
 # This file is governed by the NASA Open Source Agreement.
 # See COPYING for details.
 #++
+require 'strscan'
+
+# Thanks to James Edward Gray II by way of ruby-talk mailing list
+
+class String
+  def get_args
+    scanner     = StringScanner.new(self)
+    result      = scanner.eos? ? Array.new : [""]
+    paren_depth = 0
+    until scanner.eos?
+      if scanner.scan(/[^(),]+/)
+        # do nothing--we found the part of the argument we need to add
+      elsif scanner.scan(/\(/)
+        paren_depth += 1
+      elsif scanner.scan(/\)/)
+        paren_depth -= 1
+      elsif scanner.scan(/,\s*/) and paren_depth.zero?
+        result << ""
+        next
+      end
+
+      result.last << scanner.matched
+    end
+
+    result
+  end
+end
+
 module Funit
   module Assertions
 
@@ -32,10 +60,11 @@ module Funit
     end
 
     def isrealequal(line)
-      line.match(/\(([^,]+),(.+)\)/)
+      line.match(/\((.*)\)/)
+      expected, actual = *($1.get_args)
       @type = 'IsRealEqual'
-      @condition = ".not.(#$1+2*spacing(real(#$1)).ge.#$2 &\n             .and.#$1-2*spacing(real(#$1)).le.#$2)"
-      @message = "\"#$2 (\",#$2,\") is not\",#$1,\"within\",2*spacing(real(#$1))"
+      @condition = ".not.(#{expected}+2*spacing(real(#{expected})).ge.#{actual} &\n             .and.#{expected}-2*spacing(real(#{expected})).le.#{actual})"
+      @message = "\"#{actual} (\",#{actual},\") is not\",#{expected},\"within\",2*spacing(real(#{expected}))"
       syntaxError("invalid body for #@type",@suiteName) unless $&
       writeAssert
     end
