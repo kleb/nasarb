@@ -128,3 +128,4 @@ rewrote the framework in Ruby[http:www.ruby-lang.org].
 * To increase portability, create a single, stand-alone executable with
   Erik Veenstra's RubyScript2Exe[http://www.erikveen.dds.nl/rubyscript2exe/].
 * Use a makefile instead of a single, ordered command line for compilation.
+* Add some command line options and usage.
