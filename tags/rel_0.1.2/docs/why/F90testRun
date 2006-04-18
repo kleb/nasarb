@@ -1,0 +1,43 @@
+% F90test
+
+parsing GasModelTS.ftk
+parsing FluxFunctionsTS.ftk
+
+ *Warning: no asserts in test [GasModelTS.ftk:13]
+completed GasModelTS.ftk
+completed FluxFunctionsTS.ftk
+
+
+Compiling file Gammas.f90.
+Encountered 0 errors, 0 warnings in file Gammas.f90.
+Compiling file GasModel.f90.
+Encountered 0 errors, 0 warnings in file GasModel.f90.
+Compiling file FluxFunctions.f90.
+Encountered 0 errors, 0 warnings in file FluxFunctions.f90.
+Compiling file GasModelTS.f90.
+Encountered 0 errors, 0 warnings in file GasModelTS.f90.
+Compiling file FluxFunctionsTS.f90.
+Encountered 0 errors, 0 warnings in file FluxFunctionsTS.f90.
+Compiling file TestRunner.f90.
+Encountered 0 errors, 0 warnings in file TestRunner.f90.
+Linking:
+ 
+ GasModel test suite:
+ Passed 5 of 5 possible asserts comprising 3 of 3 tests.
+ 
+ FluxFunctions test suite:
+  *IsFalse failed* in test RoeAvgZero [FluxFunctionsTS.ftk:23]
+    RoeAvg(0.0,0.0).ne.1  is not false
+ 
+  *IsTrue failed* in test RoeAvgKnown [FluxFunctionsTS.ftk:28]
+    RoeAvg(leftState,rightState).lt.0  is not true
+ 
+  *IsEqualWithin failed* in test CentralFluxKnown [FluxFunctionsTS.ftk:33]
+    interfaceFlux ( 0.250000000 ) is not 0.500000000 within 1.00000005E-03
+ 
+  *IsEqual failed* in test RoeFluxExpansionShock [FluxFunctionsTS.ftk:41]
+    interfaceFlux ( 0.500000000 ) is not 0
+ 
+ Passed 6 of 12 possible asserts comprising 3 of 7 tests.
+ 
+%
