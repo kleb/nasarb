@@ -68,7 +68,7 @@ class TestTestSuite < Test::Unit::TestCase
  beginTest assertTrue
   integer :: a(2,2)
   a = 1
-  IsEqual(a(1,1),1)
+  IsEqual(1,a(1,1))
  endTest
     MATRIX
     Funit::TestSuite.new 'dummyf90test'
@@ -80,7 +80,7 @@ class TestTestSuite < Test::Unit::TestCase
  beginTest assert_equals
   real :: real_var
   real_var = 1.0
-  IsRealEqual(real_var,1.0)
+  IsRealEqual(1.0,real_var)
  endTest
     REALEQUALS
     Funit::TestSuite.new 'dummyf90test'
@@ -90,7 +90,7 @@ class TestTestSuite < Test::Unit::TestCase
   def test_real_equals_assert_works_with_function
     create_funit_file <<-REQUALSFUNC
  beginTest assert_equals_for_function
-  IsRealEqual(balance(0.0,0.0),0.0)
+  IsRealEqual(0.0,balance(0.0,0.0))
  endTest
  function balance( left, right)
   real :: balance
