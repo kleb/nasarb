@@ -18,14 +18,14 @@ beginTest OneMSecDifference
   dateAndTime1 = (/ 2000, 1, 1, 0, 0, 0, 0, 0 /)
   dateAndTime2 = (/ 2000, 1, 1, 0, 0, 0, 0, 1 /)
   seconds = SecBetween(dateAndTime1, dateAndTime2)
-  IsRealEqual(seconds, 0.001)
+  IsRealEqual( 0.001, seconds)
 endTest
 
 beginTest MinuteRollover
   dateAndTime1 = (/ 2000, 1, 1, 0, 0, 0,59, 0 /)
   dateAndTime2 = (/ 2000, 1, 1, 0, 0, 1, 0, 0 /)
   seconds = SecBetween(dateAndTime1, dateAndTime2)
-  IsRealEqual(seconds, 1.0)
+  IsRealEqual( 1.0, seconds )
 endTest
 
 ! test secSinceLast
@@ -39,7 +39,7 @@ endTest
 
 beginTest InitiallyReturnsZero
   seconds = secSinceLast()
-  IsRealEqual(seconds, 0.0)
+  IsRealEqual( 0.0, seconds )
   call timeDelay(seconds)
   seconds = secSinceLast()
   IsTrue( seconds /= 0.0 )
@@ -69,5 +69,5 @@ beginTest ComputesSecondsSpecial
   seconds = secSinceLast()
   dateAndTime2 = last
   expectedSeconds = secBetween(dateAndTime1,dateAndTime2)
-  IsRealEqual(seconds, expectedSeconds)
+  IsRealEqual( expectedSeconds, seconds )
 endTest
