@@ -102,7 +102,6 @@ program TestRunner
     testRunner.puts "\n print *, \"\""
     testRunner.puts "\nend program TestRunner"
     testRunner.close
-    File.chmod(0444,"TestRunner.f90")
   end
 
   def syntaxError( message, testSuite )

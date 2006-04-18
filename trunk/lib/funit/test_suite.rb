@@ -187,7 +187,6 @@ module #{@suiteName}_fun
 end module #{@suiteName}_fun
       LASTONE
       super
-      File.chmod(0444,@suiteName+"_fun.f90")
     end
 
   end # class TestSuite
