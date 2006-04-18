@@ -10,40 +10,40 @@ endsetup
 beginTest FluxZero
   real :: state
   state = 0
-  IsEqualWithin( Flux(state), 0, 0.00001 )
+  IsEqualWithin( 0, Flux(state), 0.00001 )
 endTest
  
 beginTest FluxOne
   real :: state = 1
-  IsEqualWithin( Flux(state), 0.5, 0.00001 )
+  IsEqualWithin( 0.5, Flux(state), 0.00001 )
 endTest
 
 beginTest RoeAvgZero
-  IsRealEqual( RoeAvg(0.0,0.0), 0 )
-  IsFalse( RoeAvg(0.0,0.0).ne.1 )
+  IsRealEqual( 0, RoeAvg(0.0,0.0) )
+  IsFalse( RoeAvg(0.0,0.0)==1 )
 endTest
 
 beginTest RoeAvgKnown
-  IsRealEqual( RoeAvg(leftState,rightState), 0.5 )
-  IsTrue( RoeAvg(leftState,rightState).lt.0 )
+  IsRealEqual( 0.5, RoeAvg(leftState,rightState) )
+  IsTrue( RoeAvg(leftState,rightState) > 0 )
 endTest
 
 beginTest CentralFluxKnown
   call CentralFlux( leftState, rightState, interfaceFlux )
-  IsEqualWithin( interfaceFlux, 0.5, 0.001 )
-  IsEqualWithin( interfaceFlux, 0.5, 0.00000001 )
-  IsEqual( interfaceFlux, 0.5 )
+  IsEqualWithin( 0.25, interfaceFlux, 0.001 )
+  IsEqualWithin( 0.25, interfaceFlux, 0.00000001 )
+  IsEqual( 0.25, interfaceFlux )
 endTest
 
 beginTest RoeFluxExpansionShock
   leftState = -1
   call RoeFlux( leftState, rightState, interfaceFlux )
-  IsEqual( interfaceFlux, 0 )
+  IsEqual( 0.5, interfaceFlux )
 endTest
 
 beginTest RoeFluxZero
   rightState = 0
   call RoeFlux( leftState, rightState, interfaceFlux )
-  IsRealEqual( interfaceFlux, 0 )
-  IsEqual( interfaceFlux, 0 )
+  IsRealEqual( 0, interfaceFlux )
+  IsEqual( 0, interfaceFlux )
 endTest
