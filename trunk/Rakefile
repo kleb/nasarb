@@ -20,7 +20,7 @@ require 'rake/testtask'
 require 'rake/rdoctask'
 require 'rake/clean'
 
-PKG_VERSION = '0.1.1'
+PKG_VERSION = '0.1.2'
 
 PKG_FILES = FileList[
   '[A-Z]*',
@@ -36,7 +36,12 @@ CLEAN.include( "**/*_fun.f90", "examples/**/TestRunner*",
                "**/*.o", "**/*.mod", "**/*.MOD")
 
 desc 'Default task'
-task :default => [:test]
+task :default => [:tasks]
+
+task :tasks do
+  Rake.application.options.show_task_pattern = //
+  Rake.application.display_tasks_and_comments
+end
 
 rd = Rake::RDocTask.new do |rdoc|
   rdoc.main = 'README'
