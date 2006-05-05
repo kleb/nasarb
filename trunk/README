@@ -116,6 +116,7 @@ rewrote the framework in Ruby[http:www.ruby-lang.org].
 
 == To Do
 
+* Use Rails rdoc template
 * Don't add to test name during translation to avoid
   Fortran's 32-character limit on names.
 * Rename assertions to more consistent with other xUnits.
