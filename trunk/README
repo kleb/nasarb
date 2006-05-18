@@ -120,7 +120,8 @@ rewrote the framework in Ruby[http://www.ruby-lang.org].
 * Use 'test' keyword instead of 'beginTest' business.
 * Don't add to test name during translation to avoid 
   Fortran's 32-character limit on names.
-* Add some command line options (especially <tt>--clean</tt>) and usage.
+* Add some command line options (especially <tt>clean</tt>), possibly using
+  CmdParse[http://cmdparse.rubyforge.org].
 * Add assertions that capture stops, warning messages, and other exits.
 * Use Rails RDoc template for the documentation.
 * Complete migration from CamelCase to snake_case for methods and variables.
