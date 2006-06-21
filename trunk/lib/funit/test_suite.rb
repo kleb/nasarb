@@ -25,7 +25,7 @@ module Funit
       @lineNumber = 'blank'
       @suiteName = suiteName
       return nil unless funit_exists?(suiteName)
-      File.delete(suiteName+".fun") if File.exists?(suiteName+"_fun.f90")
+      File.delete(suiteName+"_fun.f90") if File.exists?(suiteName+"_fun.f90")
       super(suiteName+"_fun.f90","w")
       @tests, @setup, @teardown = Array.new, Array.new, Array.new
       topWrapper
