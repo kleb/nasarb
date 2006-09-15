@@ -118,14 +118,15 @@ rewrote the framework in Ruby[http://www.ruby-lang.org].
 
 * Rename assertions to more consistent with other xUnits.
 * Use 'test' keyword instead of 'beginTest' business.
-* Don't add to test name during translation to avoid 
-  Fortran's 32-character limit on names.
+* To avoid Fortran's 32-character limit, don't add test name
+  during translation.
 * Add some command line options (especially <tt>clean</tt>), possibly using
   CmdParse[http://cmdparse.rubyforge.org].
 * Add assertions that capture stops, warning messages, and other exits.
 * Use Rails RDoc template for the documentation.
 * Complete migration from CamelCase to snake_case for methods and variables.
 * For compilation, use a makefile instead of a single, ordered command line.
+* Allow users to specify dependency search paths (currently hardwired).
 * To increase portability, create a single, stand-alone executable with
   Erik Veenstra's RubyScript2Exe[http://www.erikveen.dds.nl/rubyscript2exe/].
 * Make funit self-tests fail gracefully if Fortran compiler is not found.
