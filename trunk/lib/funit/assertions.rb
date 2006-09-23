@@ -8,14 +8,16 @@
 # This file is governed by the NASA Open Source Agreement.
 # See COPYING for details.
 #++
-require 'strscan'
 
-# Thanks to James Edward Gray II by way of ruby-talk mailing list
+# An argument scanner thanks to James Edward Gray II
+# by way of ruby-talk mailing list
+
+require 'strscan'
 
 class String
   def get_args
-    scanner     = StringScanner.new(self)
-    result      = scanner.eos? ? Array.new : [""]
+    scanner = StringScanner.new(self)
+    result  = scanner.eos? ? Array.new : ['']
     paren_depth = 0
     until scanner.eos?
       if scanner.scan(/[^(),]+/)
@@ -31,7 +33,6 @@ class String
 
       result.last << scanner.matched
     end
-
     result
   end
 end
