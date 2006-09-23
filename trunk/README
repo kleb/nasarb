@@ -132,6 +132,6 @@ rewrote the framework in Ruby[http://www.ruby-lang.org].
 * Complete migration from CamelCase to snake_case for methods and variables.
 * For compilation, use a makefile instead of a single, ordered command line.
 * Allow users to specify dependency search paths (currently hardwired).
-* To increase portability, create a single, stand-alone executable with
+* To increase portability, create stand-alone executables with
   Erik Veenstra's RubyScript2Exe[http://www.erikveen.dds.nl/rubyscript2exe/].
 * Make funit self-tests fail gracefully if Fortran compiler is not found.
