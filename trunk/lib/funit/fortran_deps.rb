@@ -10,7 +10,8 @@
 # See COPYING for details.
 #++
 
-raise "Need Ruby version >= 1.8, current using #{VERSION}" unless String.instance_methods.include? "match"
+raise "Need Ruby version >= 1.8, current using #{VERSION}" \
+ unless String.instance_methods.include? "match"
 
 module Funit
 
