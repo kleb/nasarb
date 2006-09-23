@@ -81,7 +81,8 @@ and run the tests.  A sample output would look like,
  Passed 2 of 2 possible asserts comprising 1 of 1 tests.
 
 This and other examples come with the fUnit distribution
-in the <tt>examples</tt> directory.  If you installed the
+in the <tt>examples</tt> directory.  There is also an
+emacs mode in the <tt>utils</tt> directory.  If you installed the
 fUnit gem, look in your Ruby gems library directory, e.g.,
 <tt>/system/path/local/lib/ruby/gems</tt>.
 
