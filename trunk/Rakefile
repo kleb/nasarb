@@ -9,6 +9,7 @@
 # See COPYING for details.
 
 begin
+  require 'lib/funit'
   require 'rubygems'
   require 'rake/gempackagetask'
   require 'code_statistics'
@@ -19,8 +20,6 @@ end
 require 'rake/testtask'
 require 'rake/rdoctask'
 require 'rake/clean'
-
-PKG_VERSION = '0.1.4'
 
 PKG_FILES = FileList[
   '[A-Z]*',
@@ -66,7 +65,7 @@ if ! defined?(Gem)
 else
   spec = Gem::Specification.new do |s|
     s.name     = 'fUnit'
-    s.version  = PKG_VERSION
+    s.version  = FUnit::VERSION
     s.files    = PKG_FILES.to_a
     s.author   = 'fUnit Team'
     s.email    = 'funit-support@rubyforge.org'
