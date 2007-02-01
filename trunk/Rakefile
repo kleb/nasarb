@@ -80,6 +80,7 @@ else
       runs them against the module under test.
     EOF
     s.requirements << 'Registration appreciated -- see fun3d.larc.nasa.gov'
+    s.add_dependency 'rake'
     s.required_ruby_version = '>= 1.8.1'
     s.rubyforge_project  = 'funit'
     s.require_path       = 'lib'
