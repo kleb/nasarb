@@ -9,14 +9,13 @@
 # See COPYING for details.
 #++
 
+require 'funit/version'
 require 'funit/functions'
 require 'funit/fortran_deps'
 require 'funit/assertions'
 require 'funit/test_suite'
 
 module Funit
-
-  VERSION = '0.1.4'
 
   def run_tests
 
