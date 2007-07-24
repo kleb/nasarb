@@ -6,7 +6,7 @@ fUnit
 
 == DESCRIPTION:
   
-fUnit is a {unit testing}[http://en.wikipedia.org/wiki/Unit_testing] framework for Fortran modules.
+fUnit is a unit testing framework for Fortran modules.
 
 Unit tests are written as Fortran fragments that use a small set of testing-specific keywords and functions.  fUnit transforms these fragments into valid Fortran code, compiles, links, and runs them against the module under test.
 
