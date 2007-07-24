@@ -7,10 +7,10 @@ module Funit
     attr_reader :file_dependencies, :source_files
 
     def initialize( searchPath = %w[ ../lib . ] )
-      @parsed = Array.new
+      @parsed = []
       @hash = build_hash_of_modules_in_files_within searchPath
-      @file_dependencies = Hash.new
-      @source_files = Array.new
+      @file_dependencies = {}
+      @source_files = []
     end
 
     def modules_used_in( file )
@@ -106,7 +106,6 @@ module Funit
     end
 
   end
-
 end
 
 #--

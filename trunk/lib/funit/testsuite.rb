@@ -82,7 +82,7 @@ module #{@suiteName}_fun
           syntaxError "no name given for beginTest", @suiteName
         when /end(Setup|Teardown|Test)/i
           syntaxError "no matching begin#$1 for an #$&", @suiteName
-        when $assertRegEx
+        when ASSERTION_PATTERN
           syntaxError "#$1 assert not in a test block", @suiteName
         else
           puts line

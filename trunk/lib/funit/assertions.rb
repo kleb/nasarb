@@ -1,15 +1,16 @@
 # Define Fortran assertion macros
 
+require 'strscan'
 
 # An argument scanner thanks to James Edward Gray II
-# by way of ruby-talk mailing list
-
-require 'strscan'
+# by way of ruby-talk mailing list -- need to implement
+# this in a safer manner, i.e., by not monkey patching the
+# entire String class.
 
 class String
   def get_args
     scanner = StringScanner.new(self)
-    result  = scanner.eos? ? Array.new : ['']
+    result  = scanner.eos? ? [] : ['']
     paren_depth = 0
     until scanner.eos?
       if scanner.scan(/[^(),]+/)
@@ -22,7 +23,6 @@ class String
         result << ""
         next
       end
-
       result.last << scanner.matched
     end
     result
@@ -32,7 +32,7 @@ end
 module Funit
   module Assertions
 
-    $assertRegEx = /Is(RealEqual|False|True|EqualWithin|Equal)\(.*\)/i
+    ASSERTION_PATTERN = /Is(RealEqual|False|True|EqualWithin|Equal)\(.*\)/i
 
     def istrue(line)
       line.match(/\((.+)\)/)
