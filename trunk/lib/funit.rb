@@ -16,4 +16,13 @@ require 'funit/test_suite'
 
 module Funit
   VERSION = '0.9.0'
+
+  def run_tests
+    Compiler.new# a test for compiler env set (remove this later)
+    writeTestRunner(testSuites = parseCommandLine)
+    # convert each *.fun file into a Fortran file:
+    testSuites.each{ |ts| TestSuite.new(ts) }
+    compileTests testSuites
+    raise "Failed to execute TestRunner" unless system("./TestRunner")
+  end
 end
