@@ -14,4 +14,5 @@ Hoe.new('funit', Funit::VERSION) do |p|
   p.changes = p.paragraphs_of('History.txt', 0..1).join("\n\n")
   p.remote_rdoc_dir = '' # release webpages to root (otherwise dropped in rubyforge_name subdir)
   p.clean_globs.concat %w( **/*_fun.f90 examples/**/TestRunner* **/*.o **/*.mod **/*.MOD )
+  p.rsync_args << ' --exclude=statsvn/'
 end
