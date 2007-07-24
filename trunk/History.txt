@@ -1,6 +1,6 @@
 == 0.1.3 / 2006-06-21
 
-* 1 bug fix:
+* 1 bug fix
   * Do not remove unit tests! (Thanks to Sebastian Hanigk and James Quirk.)
 
 == 0.1.2 / 2006-05-16
