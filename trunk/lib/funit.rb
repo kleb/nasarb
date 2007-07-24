@@ -15,7 +15,7 @@ require 'funit/assertions'
 require 'funit/test_suite'
 
 module Funit
-  VERSION = '0.9.0'
+  VERSION = '0.1.3'
 
   def run_tests
     Compiler.new# a test for compiler env set (remove this later)
