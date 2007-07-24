@@ -1,5 +1,9 @@
-= FUnit: a Fortran Unit Testing Framework
+fUnit
+    by Karen Bibb, Bil Kleb, Beth Lee-Rausch, Mike Park, and Bill Wood
+    http://rubyforge.org/projects/funit
 
+== DESCRIPTION:
+  
 FUnit is a {unit testing}[http://en.wikipedia.org/wiki/Unit_testing]
 framework for Fortran modules.
 
@@ -17,20 +21,12 @@ it requires tests to be stored along side the code under test,
 and it requires that you follow a specific naming rule
 for test files.
 
-* Documentation: http://funit.rubyforge.org
-* Project Page: http://rubyforge.org/projects/funit
+== FEATURES/PROBLEMS:
+  
+* Provides 'funit' for quick Fortran unit testing.
+* Makes unit testing Fortran fun and easy.
 
-== Requirements
-
-1. A Fortran 90/95/2003 compiler (set via FC environment variable)
-2. {The Ruby language}[http://www.ruby-lang.org/] with the
-   {RubyGems package manager}[http://rubyforge.org/projects/rubygems/]
-
-== Installation
-
- gem install funit
-
-== Example
+== SYNOPSIS:
 
 Suppose you have a module in <tt>gas_physics.f90</tt> that
 contains a routine that returns viscosity as a function of
@@ -72,11 +68,11 @@ and run the tests.  A sample output would look like,
  parsing gas_physics.fun
  computing dependencies
  locating associated source files and sorting for compilation
- g95 -o TestRunner 
+ g95 -o TestRunner
    gas_physics.f90 \
    gas_physics_fun.f90 \
    TestRunner.f90
- 
+
  gas_physics test suite:
  Passed 2 of 2 possible asserts comprising 1 of 1 tests.
 
@@ -86,27 +82,34 @@ emacs mode in the <tt>utils</tt> directory.  If you installed the
 fUnit gem, look in your Ruby gems library directory, e.g.,
 <tt>/system/path/local/lib/ruby/gems</tt>.
 
-== Support
+== REQUIREMENTS:
 
-Please send an email to
-{funit-support@rubyforge.org}[mailto:funit-support@rubyforge.org]
+* Fortran 90/95/2003 compiler
+* Ruby with Rubygems
 
-== License
+== INSTALL:
 
-FUnit is released under the NASA Open Source Agreement, which
+* sudo gem install funit
+* Set FC environment variable to point to Fortran compiler:
+  * export FC=/path/of/Fortran/compiler (sh)
+  * setenv FC /path/of/Fortran/compiler (csh)
+
+== LICENSE:
+
+t is released under the NASA Open Source Agreement, which
 requests registration.  If you would like to register, send
 an email to
 {funit-registration@rubyforge.org}[mailto:funit-registration@rubyforge.org?subject=fUnit%20Registration&body=%20%20%20%20%20%20%20Name:%20%0AInstitution:%20%0A%20%20%20%20%20%20%20City:%20%0APostal%20Code:%20%0A%20%20%20%20Country:%20]
 with your name, institution (if applicable), city, postal code, and country.
-See COPYING[http://funit.rubyforge.org/files/COPYING.html] for details.
+See License.txt[http://funit.rubyforge.org/files/License.html] for details.
 
-== A Brief History
+== ORIGIN:
 
 On October 4, 2001, Mike Hill (then of
 {Object Mentor}[http://www.objectmentor.com/], now of
 {Industrial Logic}[http://www.industriallogic.com])
 visited {NASA Langley Research Center}[http://www.larc.nasa.gov]
-in Hampton, Virginia and gave a test-first design talk at the 
+in Hampton, Virginia and gave a test-first design talk at the
 {Institute for Computer and Applied Sciences and Engineering (ICASE)}[http://www.icase.edu].
 Copies of his slides are available at
 {icase.edu/series/MPP}[http://www.icase.edu/series/MPP/].
@@ -120,7 +123,7 @@ Mike Hill's cpptestkit[http://sourceforge.net/projects/cpptestkit].
 We quickly found C-preprocessor macros to be too restrictive and
 rewrote the framework in Ruby[http://www.ruby-lang.org].
 
-== To Do
+== TODO:
 
 * Rename assertions to more consistent with other xUnits.
 * Use 'test' keyword instead of 'beginTest' business.
