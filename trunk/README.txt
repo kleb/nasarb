@@ -101,7 +101,7 @@ requests registration.  If you would like to register, send
 an email to
 {funit-registration@rubyforge.org}[mailto:funit-registration@rubyforge.org?subject=fUnit%20Registration&body=%20%20%20%20%20%20%20Name:%20%0AInstitution:%20%0A%20%20%20%20%20%20%20City:%20%0APostal%20Code:%20%0A%20%20%20%20Country:%20]
 with your name, institution (if applicable), city, postal code, and country.
-See License.txt[http://funit.rubyforge.org/files/License.html] for details.
+See License.txt[http://funit.rubyforge.org/files/License.txt.html] for details.
 
 == ORIGIN:
 
