@@ -1,4 +1,4 @@
-# Create test suite wrapper code
+# Create testsuite wrapper code
 #--
 # Copyright 2006 United States Government as represented by
 # NASA Langley Research Center. No copyright is claimed in

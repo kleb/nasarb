@@ -12,7 +12,7 @@
 require 'funit/functions'
 require 'funit/fortran_deps'
 require 'funit/assertions'
-require 'funit/test_suite'
+require 'funit/testsuite'
 
 module Funit
   VERSION = '0.1.3'

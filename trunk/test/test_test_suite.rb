@@ -3,7 +3,7 @@
 $:.unshift File.join( File.dirname(__FILE__), '..', 'lib' )
 
 require 'test/unit'
-require 'funit/test_suite'
+require 'funit/testsuite'
 require 'funit/assertions'
 
 class TestTestSuite < Test::Unit::TestCase
