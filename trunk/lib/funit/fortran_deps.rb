@@ -95,7 +95,7 @@ module Funit
       @parsed.clear
       source_file_dependencies( head_f90 )
       sources = Array.new
-      while ! @file_dependencies.empty? do
+      until @file_dependencies.empty? do
         no_dependents_pair = @file_dependencies.detect{ |h,d| d == [] }
         no_dependents = no_dependents_pair.first
         sources.push no_dependents
