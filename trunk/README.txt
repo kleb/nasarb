@@ -1,6 +1,8 @@
-fUnit
-    by Karen Bibb, Bil Kleb, Beth Lee-Rausch, Mike Park, and Bill Wood
-    http://rubyforge.org/projects/funit
+Funit
+
+* {rubyforge.org/projects/funit/}[http://rubyforge.org/projects/funit]
+* {funit.rubyforge.org}[http://funit.rubyforge.org]
+* {funit-support@rubyforge.org}[mailto:funit-support@rubyforge.org]
 
 == DESCRIPTION:
   
