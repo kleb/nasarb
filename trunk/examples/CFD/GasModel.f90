@@ -1,4 +1,3 @@
-! $Id$
 module GasModel
 
  use Gammas

@@ -1,5 +1,3 @@
-! $Id$
-
 real            :: Pressure, Density, Energy
 
 beginTest PerfectPZeroed

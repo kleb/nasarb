@@ -1,6 +1,4 @@
-! $Id$
-
- real :: leftState, rightState, interfaceFlux
+real :: leftState, rightState, interfaceFlux
 
 beginsetup
   leftState  = 0

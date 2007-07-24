@@ -1,13 +1,5 @@
 # Compile and run the requested tests
-#--
-# Copyright 2006 United States Government as represented by
-# NASA Langley Research Center. No copyright is claimed in
-# the United States under Title 17, U.S. Code. All Other Rights
-# Reserved.
-#
-# This file is governed by the NASA Open Source Agreement.
-# See COPYING for details.
-#++
+
 module Funit
 
   class Compiler
@@ -128,3 +120,13 @@ program TestRunner
   $commentLine = /^\s*!/
 
 end # module
+
+#--
+# Copyright 2006 United States Government as represented by
+# NASA Langley Research Center. No copyright is claimed in
+# the United States under Title 17, U.S. Code. All Other Rights
+# Reserved.
+#
+# This file is governed by the NASA Open Source Agreement.
+# See License.txt for details.
+#++

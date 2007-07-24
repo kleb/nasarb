@@ -1,10 +1,8 @@
 ;; 'funit-mode.el' - a derived major mode for editing fUnit files
 ;;
-;; $Id$
-;;
 ;; INSTALLATION:
 ;;
-;; Copy 'funit-mode.el' to the system site-lisp directory, e.g.,
+;; 1) Copy 'funit-mode.el' to the system site-lisp directory, e.g.,
 ;;
 ;;   /usr/share/emacs/site-lisp
 ;;
@@ -14,7 +12,7 @@
 ;;
 ;;  (setq load-path (append load-path '("~/lisp")))
 ;;
-;; Then, to automatically activate funit-mode when visiting files,
+;; 2) To automatically activate funit-mode when visiting files,
 ;; add the following lines to your ~/.emacs file:
 ;;
 ;;  (autoload 'funit-mode "funit-mode"
@@ -70,7 +68,6 @@
 ;      (cons '("\\[\\(.+\\):\\([0-9]+\\)\\]" 1 2) compilation-error-regexp-alist)
 ;)
 
-
 (defvar funit-error-buffer
   "*fUnit output-buffer*"
   "Buffer name for error messages used by `funit-next-error'")
@@ -80,7 +77,6 @@
   "Regular expression used by `funit-next-error' to find error messages.
 The sub-expression between the first capturing parens must be the line
 number where the error occured")
-
 
 (defun funit-next-error ()
   "Goto line in current buffer indicated by next error message in `funit-error-buffer'

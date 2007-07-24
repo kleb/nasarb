@@ -1,13 +1,4 @@
 # Create testsuite wrapper code
-#--
-# Copyright 2006 United States Government as represented by
-# NASA Langley Research Center. No copyright is claimed in
-# the United States under Title 17, U.S. Code. All Other Rights
-# Reserved.
-#
-# This file is governed by the NASA Open Source Agreement.
-# See COPYING for details.
-#++
 
 require 'funit/assertions'
 require 'funit/functions'
@@ -189,6 +180,16 @@ end module #{@suiteName}_fun
       super
     end
 
-  end # class TestSuite
+  end
 
-end # module Funit
+end
+
+#--
+# Copyright 2006 United States Government as represented by
+# NASA Langley Research Center. No copyright is claimed in
+# the United States under Title 17, U.S. Code. All Other Rights
+# Reserved.
+#
+# This file is governed by the NASA Open Source Agreement.
+# See License.txt for details.
+#++

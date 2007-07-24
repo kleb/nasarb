@@ -1,4 +1,3 @@
-! $Id$
 module Gammas
 
   implicit none
