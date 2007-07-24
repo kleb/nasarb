@@ -22,5 +22,5 @@ test/tc_compile.rb
 test/tc_fortran_deps.rb
 test/tc_funit.rb
 test/tc_test_suite.rb
-test/ts_funit.rb
+test/test_funit.rb
 utils/funit-mode.el
