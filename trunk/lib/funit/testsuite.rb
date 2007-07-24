@@ -6,11 +6,11 @@ require 'ftools'
 
 module Funit
 
-  include Funit::Assertions
+  include Assertions
 
   class TestSuite < File
 
-    include Funit
+    include Funit# ?!
 
     def initialize suiteName
       @lineNumber = 'blank'
@@ -18,7 +18,7 @@ module Funit
       return nil unless funit_exists?(suiteName)
       File.delete(suiteName+"_fun.f90") if File.exists?(suiteName+"_fun.f90")
       super(suiteName+"_fun.f90","w")
-      @tests, @setup, @teardown = Array.new, Array.new, Array.new
+      @tests, @setup, @teardown = [], [], []
       topWrapper
       expand
       close
@@ -52,7 +52,6 @@ module #{@suiteName}_fun
     end
 
     def expand
- 
       funit_file = @suiteName+".fun"
       $stderr.print "expanding #{funit_file}..."
    
