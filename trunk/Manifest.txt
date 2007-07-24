@@ -17,9 +17,9 @@ lib/funit.rb
 lib/funit/assertions.rb
 lib/funit/fortran_deps.rb
 lib/funit/functions.rb
-lib/funit/test_suite.rb
+lib/funit/testsuite.rb
 test/test_compile.rb
 test/test_fortran_deps.rb
 test/test_funit.rb
-test/test_test_suite.rb
+test/test_testsuite.rb
 utils/funit-mode.el
