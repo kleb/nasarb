@@ -1,8 +1,8 @@
-# -*- ruby -*-
-
 require 'rubygems'
 require 'hoe'
-require './lib/funit.rb'
+
+$:.unshift(File.dirname(__FILE__) + "/lib")
+require 'funit'
 
 Hoe.new('funit', Funit::VERSION) do |p|
   p.rubyforge_name = 'funit'
@@ -12,7 +12,6 @@ Hoe.new('funit', Funit::VERSION) do |p|
   p.description = p.paragraphs_of('README.txt', 2..5).join("\n\n")
   p.url = p.paragraphs_of('README.txt', 0).first.split(/\n/)[1..-1]
   p.changes = p.paragraphs_of('History.txt', 0..1).join("\n\n")
-  p.remote_rdoc_dir = '' # To release to Rubyforge root
+  p.remote_rdoc_dir = '' # release webpages to Rubyforge root
+  p.clean_globs = [ "**/*_fun.f90", "examples/**/TestRunner*", "**/*.o", "**/*.mod", "**/*.MOD" ]
 end
-
-# vim: syntax=Ruby
