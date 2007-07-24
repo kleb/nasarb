@@ -2,12 +2,14 @@
 
 require 'strscan'
 
-# An argument scanner thanks to James Edward Gray II
-# by way of ruby-talk mailing list -- need to implement
-# this in a safer manner, i.e., by not monkey patching the
-# entire String class.
-
 class String
+  
+  ##
+  # An argument scanner thanks to James Edward Gray II
+  # by way of ruby-talk mailing list.  Note: need to implement
+  # this in a safer manner, i.e., by not monkey patching the
+  # entire String class.
+
   def get_args
     scanner = StringScanner.new(self)
     result  = scanner.eos? ? [] : ['']
@@ -20,13 +22,14 @@ class String
       elsif scanner.scan(/\)/)
         paren_depth -= 1
       elsif scanner.scan(/,\s*/) and paren_depth.zero?
-        result << ""
+        result << ''
         next
       end
       result.last << scanner.matched
     end
     result
   end
+
 end
 
 module Funit
