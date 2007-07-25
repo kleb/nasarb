@@ -1,5 +1,3 @@
-$:.unshift File.join( File.dirname(__FILE__), '..', 'lib' )
-
 require 'test/unit'
 require 'funit/fortran_deps'
 require 'fileutils'
@@ -8,7 +6,7 @@ class TestFortranDeps < Test::Unit::TestCase
 
   def setup
     Dir.mkdir 'DependenciesFixture'
-    Dir.chdir 'DependenciesFixture'
+    Dir.chdir 'DependenciesFixture' # FIXME: use block form for readability
     Dir.mkdir 'lib'
     Dir.chdir 'lib'
     File.open('solution.f90','w') do |f|

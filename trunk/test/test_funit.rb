@@ -1,13 +1,11 @@
-$:.unshift File.join( File.dirname(__FILE__), '..', 'lib' )
-
 require 'test/unit'
 require 'funit'
-require 'ftools'
+require 'ftools' # FIXME: migrate to fileutils
 
 class TestFunit < Test::Unit::TestCase
 
-  include Funit
-  include Funit::Assertions
+  include Funit # FIXME
+  include Funit::Assertions # FIXME
 
   def setup
     File.rm_f(*Dir["dummyunit*"])
@@ -34,7 +32,7 @@ class TestFunit < Test::Unit::TestCase
   def test_main_driver_compiles
     writeTestRunner []
     assert File.exists?("TestRunner.f90")
-    assert system("#{Compiler.new.name} TestRunner.f90")
+    assert system("#{ENV['FC']} TestRunner.f90")
     assert File.exists?("a.out")
   end
 

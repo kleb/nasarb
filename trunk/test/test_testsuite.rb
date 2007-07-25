@@ -1,8 +1,5 @@
-$:.unshift File.join( File.dirname(__FILE__), '..', 'lib' )
-
 require 'test/unit'
 require 'funit/testsuite'
-require 'funit/assertions'
 
 class TestTestSuite < Test::Unit::TestCase
 
@@ -29,7 +26,7 @@ class TestTestSuite < Test::Unit::TestCase
     end
   end
 
-  @@compileCommand = "#{Funit::Compiler.new.name} -c dummyf90test.f90 dummyf90test_fun.f90"
+  @@compileCommand = "#{ENV['FC']} -c dummyf90test.f90 dummyf90test_fun.f90"
 
   def test_bare_minimum_funit_file_compiles
     create_funit_file ""
