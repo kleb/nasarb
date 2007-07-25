@@ -1,7 +1,7 @@
 module Funit
 
   ##
-  # Fortra compiler
+  # Fortran compiler
 
   class Compiler
 
