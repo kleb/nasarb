@@ -94,10 +94,6 @@ program TestRunner
     raise "Compile failed." unless system(compile)
   end
 
-  # set some regular expressions # FIXME
-  $keyword = /(begin|end)(Setup|Teardown|Test)|Is(RealEqual|Equal|False|True|EqualWithin)\(.*\)/i
-  $commentLine = /^\s*!/
-
 end
 
 #--

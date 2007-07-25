@@ -4,7 +4,7 @@ require 'funit/functions'
 require 'ftools' # FIXME: use fileutils
 
 module Funit
-
+  
   include Assertions # FIXME
 
   ##
@@ -12,6 +12,10 @@ module Funit
 
   class TestSuite < File
 
+    ASSERTION_PATTERN = /Is(RealEqual|False|True|EqualWithin|Equal)\(.*\)/i
+    KEYWORDS = /(begin|end)(Setup|Teardown|Test)|Is(RealEqual|Equal|False|True|EqualWithin)\(.*\)/i
+    COMMENT_LINE = /^\s*!/
+    
     include Funit #FIXME
 
     def initialize suiteName
@@ -60,7 +64,7 @@ module #{@suiteName}_fun
       funit_contents = IO.readlines(funit_file)
       @funit_TotalLines = funit_contents.length
 
-      while (line = funit_contents.shift) && line !~ $keyword
+      while (line = funit_contents.shift) && line !~ KEYWORDS
         puts line
       end
 
@@ -70,7 +74,7 @@ module #{@suiteName}_fun
 
       while (line = funit_contents.shift)
         case line
-        when $commentLine
+        when COMMENT_LINE
           puts line
         when /beginSetup/i
           addtoSetup funit_contents
@@ -89,10 +93,8 @@ module #{@suiteName}_fun
         else
           puts line
         end
-      end # while
-
+      end
       $stderr.puts "done."
-
     end
 
     def addtoSetup funit_contents
@@ -123,7 +125,7 @@ module #{@suiteName}_fun
   
       while (line = funit_contents.shift) && line !~ /endTest/i
         case line
-        when $commentLine
+        when COMMENT_LINE
           puts line
         when /Is(RealEqual|False|True|EqualWithin|Equal)/i
           @lineNumber = @funit_TotalLines - funit_contents.length

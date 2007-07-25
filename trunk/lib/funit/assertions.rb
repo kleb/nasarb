@@ -7,8 +7,6 @@ module Funit
 
   module Assertions
 
-    ASSERTION_PATTERN = /Is(RealEqual|False|True|EqualWithin|Equal)\(.*\)/i
-
     def istrue(line)
       line.match(/\((.+)\)/)
       @type = 'IsTrue'
