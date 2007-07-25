@@ -1,4 +1,3 @@
-
 require 'funit/assertions'
 require 'funit/functions'
 require 'ftools' # FIXME: use fileutils
