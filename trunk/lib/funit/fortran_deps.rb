@@ -1,6 +1,7 @@
-# Find Fortran dependencies
-
 module Funit
+  
+  ##
+  # Find Fortran dependencies
 
   class Depend
 
