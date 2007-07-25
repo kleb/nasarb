@@ -1,38 +1,10 @@
-# Define Fortran assertion macros
-
 require 'strscan'
 
-class String
+module Funit
   
   ##
-  # An argument scanner thanks to James Edward Gray II
-  # by way of ruby-talk mailing list.  Note: need to implement
-  # this in a safer manner, i.e., by not monkey patching the
-  # entire String class.
+  # Fortran assertion macro definitions
 
-  def get_args
-    scanner = StringScanner.new(self)
-    result  = scanner.eos? ? [] : ['']
-    paren_depth = 0
-    until scanner.eos?
-      if scanner.scan(/[^(),]+/)
-        # do nothing--we found the part of the argument we need to add
-      elsif scanner.scan(/\(/)
-        paren_depth += 1
-      elsif scanner.scan(/\)/)
-        paren_depth -= 1
-      elsif scanner.scan(/,\s*/) and paren_depth.zero?
-        result << ''
-        next
-      end
-      result.last << scanner.matched
-    end
-    result
-  end
-
-end
-
-module Funit
   module Assertions
 
     ASSERTION_PATTERN = /Is(RealEqual|False|True|EqualWithin|Equal)\(.*\)/i
@@ -57,7 +29,7 @@ module Funit
 
     def isrealequal(line)
       line.match(/\((.*)\)/)
-      expected, actual = *($1.get_args)
+      expected, actual = *(get_args($1))
       @type = 'IsRealEqual'
       @condition = ".not.(#{expected}+2*spacing(real(#{expected})).ge.#{actual} &\n             .and.#{expected}-2*spacing(real(#{expected})).le.#{actual})"
       @message = "\"#{actual} (\",#{actual},\") is not\",#{expected},\"within\",2*spacing(real(#{expected}))"
@@ -67,7 +39,7 @@ module Funit
 
     def isequalwithin(line)
       line.match(/\((.*)\)/)
-      expected, actual, tolerance = *($1.get_args)
+      expected, actual, tolerance = *(get_args($1))
       @type = 'IsEqualWithin'
       @condition = ".not.(#{actual}+#{tolerance}.ge.#{expected} &\n             .and.#{actual}-#{tolerance}.le.#{expected})"
       @message = "\"#{expected} (\",#{expected},\") is not\",#{actual},\"within\",#{tolerance}"
@@ -83,7 +55,34 @@ module Funit
       syntaxError("invalid body for #@type",@suiteName) unless $&
       writeAssert
     end
+    
+    ##
+    # An argument scanner thanks to James Edward Gray II
+    # by way of ruby-talk mailing list.
 
+    def get_args(string)
+      scanner = ::StringScanner.new(string)
+      result  = scanner.eos? ? [] : ['']
+      paren_depth = 0
+      until scanner.eos?
+        if scanner.scan(/[^(),]+/)
+          # do nothing--we found the part of the argument we need to add
+        elsif scanner.scan(/\(/)
+          paren_depth += 1
+        elsif scanner.scan(/\)/)
+          paren_depth -= 1
+        elsif scanner.scan(/,\s*/) and paren_depth.zero?
+          result << ''
+          next
+        end
+        result.last << scanner.matched
+      end
+      result
+    end
+    
+    ##
+    # Translate the assertion to Fortran.
+    
     def writeAssert
       <<-OUTPUT
   ! #@type assertion

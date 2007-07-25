@@ -15,11 +15,13 @@ examples/StopWatch/StopWatch.f90
 examples/StopWatch/StopWatch.fun
 lib/funit.rb
 lib/funit/assertions.rb
+lib/funit/compiler.rb
 lib/funit/fortran_deps.rb
 lib/funit/functions.rb
 lib/funit/testsuite.rb
-test/test_compile.rb
+test/test_compiler.rb
 test/test_fortran_deps.rb
+test/test_functions.rb
 test/test_funit.rb
 test/test_testsuite.rb
 utils/funit-mode.el

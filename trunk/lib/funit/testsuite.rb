@@ -1,16 +1,18 @@
-# Create testsuite wrapper code
 
 require 'funit/assertions'
 require 'funit/functions'
-require 'ftools'
+require 'ftools' # FIXME: use fileutils
 
 module Funit
 
-  include Assertions
+  include Assertions # FIXME
+
+  ##
+  # Create testsuite wrapper code
 
   class TestSuite < File
 
-    include Funit# ?!
+    include Funit #FIXME
 
     def initialize suiteName
       @lineNumber = 'blank'

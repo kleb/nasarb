@@ -1,25 +1,4 @@
-# Compile and run the requested tests
-
 module Funit
-
-  class Compiler
-
-    attr_reader :name
-
-    def initialize( name=ENV['FC'] )
-      errorMessage = <<-ENVIRON
-
-Fortran compiler environment variable 'FC' not set:
-
- for bourne-based shells: export FC=lf95 (in .profile)
-      for c-based shells: setenv FC lf95 (in .login)
-             for windows: set FC=C:\\Program Files\\lf95 (in autoexec.bat)
-
-      ENVIRON
-      raise(errorMessage) unless @name = name
-    end
-
-  end # class
 
   def requestedModules(moduleNames)
     if (moduleNames.empty?)
@@ -115,11 +94,11 @@ program TestRunner
     raise "Compile failed." unless system(compile)
   end
 
-  # set some regular expressions:
+  # set some regular expressions # FIXME
   $keyword = /(begin|end)(Setup|Teardown|Test)|Is(RealEqual|Equal|False|True|EqualWithin)\(.*\)/i
   $commentLine = /^\s*!/
 
-end # module
+end
 
 #--
 # Copyright 2006 United States Government as represented by

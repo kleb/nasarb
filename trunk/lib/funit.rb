@@ -1,5 +1,6 @@
 # Define a method to find and run all tests
 
+require 'funit/compiler'
 require 'funit/functions'
 require 'funit/fortran_deps'
 require 'funit/assertions'
