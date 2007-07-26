@@ -1,7 +1,8 @@
 History.txt
+License.txt
 Manifest.txt
 README.txt
 Rakefile
-bin/fortran-dep
-lib/fortran-dep.rb
-test/test_fortran-dep.rb
+bin/fortran_deps
+lib/fortran-deps.rb
+test/test_fortran_deps.rb
