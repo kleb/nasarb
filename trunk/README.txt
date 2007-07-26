@@ -1,4 +1,4 @@
-fUnit
+FUnit
 
 * http://rubyforge.org/projects/funit
 * http://funit.rubyforge.org
@@ -6,15 +6,15 @@ fUnit
 
 == DESCRIPTION:
   
-fUnit is a unit testing framework for Fortran modules.
+FUnit is a unit testing framework for Fortran modules.
 
 Unit tests are written as Fortran fragments that use a small
-set of testing-specific keywords and functions.  fUnit transforms
+set of testing-specific keywords and functions.  FUnit transforms
 these fragments into valid Fortran code, compiles, links, and
 runs them against the module under test.
 
-fUnit is {opinionated software}[http://www.oreillynet.com/pub/a/network/2005/08/30/ruby-rails-david-heinemeier-hansson.html], which values convention over
-configuration. Specifically, fUnit,
+FUnit is {opinionated software}[http://www.oreillynet.com/pub/a/network/2005/08/30/ruby-rails-david-heinemeier-hansson.html], which values convention over
+configuration. Specifically, FUnit,
 
 * requires a Fortran 95 compiler,
 * only supports testing routines contained in modules,
@@ -71,9 +71,9 @@ and run the tests, viz,
  gas_physics test suite:
  Passed 2 of 2 possible asserts comprising 1 of 1 tests.
 
-This and other examples come with the fUnit distribution in the
+This and other examples come with the FUnit distribution in the
 <tt>examples</tt> directory.  There is also an emacs mode in
-the <tt>utils</tt> directory.  If you installed the fUnit via Rubygems,
+the <tt>utils</tt> directory.  If you installed the FUnit via Rubygems,
 these directories can be found in your Rubygems library directory, e.g., <tt>/usr/local/lib/ruby/gems</tt>.
 
 == REQUIREMENTS:
@@ -90,10 +90,7 @@ these directories can be found in your Rubygems library directory, e.g., <tt>/us
 
 == LICENSE:
 
-Funit is released under the NASA Open Source Agreement, which requests
-registration.  If you would like to register, send an email to
-{funit-registration@rubyforge.org}[mailto:funit-registration@rubyforge.org?subject=fUnit%20Registration&body=%20%20%20%20%20%20%20Name:%20%0AInstitution:%20%0A%20%20%20%20%20%20%20City:%20%0APostal%20Code:%20%0A%20%20%20%20Country:%20] with your name,
-institution (if applicable), city, postal code, and country -- see License.txt[link:files/License_txt.html] for details.
+FUnit is released under the NASA Open Source Agreement -- see License.txt[link:files/License_txt.html] for details.
 
 == ORIGIN:
 
@@ -114,7 +111,7 @@ rewrote the framework in Ruby[http://www.ruby-lang.org].
 == TODO:
 
 * Rename assertions to more consistent with other xUnits.
-* Use 'test' keyword instead of 'beginTest' business.
+* Use <tt>test</tt> keyword instead of <tt>beginTest</tt> business.
 * To avoid Fortran's 32-character limit, don't add test name during translation.
 * Add some command line options (especially <tt>clean</tt>), possibly
   using CmdParse[http://cmdparse.rubyforge.org].
@@ -125,4 +122,4 @@ rewrote the framework in Ruby[http://www.ruby-lang.org].
 * Allow users to specify dependency search paths (currently hardwired).
 * To increase portability, create stand-alone executables with Erik Veenstra's
   RubyScript2Exe[http://www.erikveen.dds.nl/rubyscript2exe/].
-* Make funit self-tests fail gracefully if Fortran compiler is not found.
+* Make FUnit self-tests fail gracefully if Fortran compiler is not found.
