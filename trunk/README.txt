@@ -83,10 +83,10 @@ these directories can be found in your Rubygems library directory, e.g., <tt>/us
 
 == INSTALL:
 
-* sudo gem install funit
+* <tt>sudo gem install funit</tt>
 * Set FC environment variable to point to a Fortran compiler:
-  * export FC=/path/of/Fortran/compiler (sh)
-  * setenv FC /path/of/Fortran/compiler (csh)
+  * <tt>export FC=/path/of/Fortran/compiler</tt> (sh)
+  * <tt>setenv FC /path/of/Fortran/compiler</tt> (csh)
 
 == LICENSE:
 
