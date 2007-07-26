@@ -1,0 +1,7 @@
+History.txt
+Manifest.txt
+README.txt
+Rakefile
+bin/fortran-dep
+lib/fortran-dep.rb
+test/test_fortran-dep.rb
