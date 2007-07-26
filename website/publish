@@ -1,0 +1,2 @@
+#!/bin/sh
+scp index.html rubyforge.org:/var/www/gforge-projects/nasarb
