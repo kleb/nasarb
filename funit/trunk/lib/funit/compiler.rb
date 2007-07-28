@@ -6,7 +6,7 @@ module Funit
   class Compiler
 
     def initialize
-      errorMessage = <<-COMPILER
+      error_message = <<-COMPILER
 Fortran compiler environment variable 'FC' not set.
 
 For example, if you had the g95 compiler:
@@ -15,7 +15,7 @@ For example, if you had the g95 compiler:
      csh: setenv FC g95
  windows: set FC=C:\\Program Files\\g95
       COMPILER
-      raise errorMessage unless ENV['FC']
+      raise error_message unless ENV['FC']
     end
 
   end
@@ -23,7 +23,7 @@ For example, if you had the g95 compiler:
 end
 
 #--
-# Copyright 2006 United States Government as represented by
+# Copyright 2006-2007 United States Government as represented by
 # NASA Langley Research Center. No copyright is claimed in
 # the United States under Title 17, U.S. Code. All Other Rights
 # Reserved.

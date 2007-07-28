@@ -12,8 +12,8 @@ module Funit
       @type = 'IsTrue'
       @condition = ".not.(#$1)"
       @message = "\"#$1 is not true\""
-      syntaxError("invalid body for #@type",@suiteName) unless $1=~/\S+/
-      writeAssert
+      syntax_error("invalid body for #@type",@suite_name) unless $1=~/\S+/
+      write_assert
     end
 
     def isfalse(line)
@@ -21,8 +21,8 @@ module Funit
       @type = 'IsFalse'
       @condition = "#$1"
       @message = "\"#$1 is not false\""
-      syntaxError("invalid body for #@type",@suiteName) unless $1=~/\S+/
-      writeAssert
+      syntax_error("invalid body for #@type",@suite_name) unless $1=~/\S+/
+      write_assert
     end
 
     def isrealequal(line)
@@ -31,8 +31,8 @@ module Funit
       @type = 'IsRealEqual'
       @condition = ".not.(#{expected}+2*spacing(real(#{expected})).ge.#{actual} &\n             .and.#{expected}-2*spacing(real(#{expected})).le.#{actual})"
       @message = "\"#{actual} (\",#{actual},\") is not\",#{expected},\"within\",2*spacing(real(#{expected}))"
-      syntaxError("invalid body for #@type",@suiteName) unless $&
-      writeAssert
+      syntax_error("invalid body for #@type",@suite_name) unless $&
+      write_assert
     end
 
     def isequalwithin(line)
@@ -41,8 +41,8 @@ module Funit
       @type = 'IsEqualWithin'
       @condition = ".not.(#{actual}+#{tolerance}.ge.#{expected} &\n             .and.#{actual}-#{tolerance}.le.#{expected})"
       @message = "\"#{expected} (\",#{expected},\") is not\",#{actual},\"within\",#{tolerance}"
-      syntaxError("invalid body for #@type",@suiteName) unless $&
-      writeAssert
+      syntax_error("invalid body for #@type",@suite_name) unless $&
+      write_assert
     end
 
     def isequal(line)
@@ -50,8 +50,8 @@ module Funit
       @type = 'IsEqual'
       @condition = ".not.(#$1==#$2)"
       @message = "\"#$1 (\",#$1,\") is not\", #$2"
-      syntaxError("invalid body for #@type",@suiteName) unless $&
-      writeAssert
+      syntax_error("invalid body for #@type",@suite_name) unless $&
+      write_assert
     end
     
     ##
@@ -81,14 +81,14 @@ module Funit
     ##
     # Translate the assertion to Fortran.
     
-    def writeAssert
+    def write_assert
       <<-OUTPUT
   ! #@type assertion
   numAsserts = numAsserts + 1
   if (noAssertFailed) then
     if (#@condition) then
-      print *, " *#@type failed* in test #@testName &
-              &[#{@suiteName}.fun:#{@lineNumber.to_s}]"
+      print *, " *#@type failed* in test #@test_name &
+              &[#{@suite_name}.fun:#{@line_number.to_s}]"
       print *, "  ", #@message
       print *, ""
       noAssertFailed = .false.
@@ -104,7 +104,7 @@ module Funit
 end
 
 #--
-# Copyright 2006 United States Government as represented by
+# Copyright 2006-2007 United States Government as represented by
 # NASA Langley Research Center. No copyright is claimed in
 # the United States under Title 17, U.S. Code. All Other Rights
 # Reserved.

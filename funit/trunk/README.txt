@@ -116,8 +116,6 @@ rewrote the framework in Ruby[http://www.ruby-lang.org].
 * Add some command line options (especially <tt>clean</tt>), possibly
   using CmdParse[http://cmdparse.rubyforge.org].
 * Add assertions that capture stops, warning messages, and other exits.
-* Use Rails RDoc template for the documentation.
-* Complete migration from CamelCase to snake_case for methods and variables.
 * For compilation, use internal rake task instead of a single, ordered command line.
 * Allow users to specify dependency search paths (currently hardwired).
 * To increase portability, create stand-alone executables with Erik Veenstra's

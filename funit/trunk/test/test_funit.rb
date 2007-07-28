@@ -30,24 +30,24 @@ class TestFunit < Test::Unit::TestCase
   end
 
   def test_main_driver_compiles
-    writeTestRunner []
+    write_test_runner []
     assert File.exists?("TestRunner.f90")
     assert system("#{ENV['FC']} TestRunner.f90")
     assert File.exists?("a.out")
   end
 
   def test_is_equal
-    @suiteName = "dummy"
-    @testName = "dummy"
-    @lineNumber = "dummy"
+    @suite_name = "dummy"
+    @test_name = "dummy"
+    @line_number = "dummy"
     isequal("IsEqual(1.0,m(1,1))")
     assert_equal '.not.(1.0==m(1,1))', @condition
   end 
 
   def test_is_real_equal
-    @suiteName = "dummy"
-    @testName = "dummy"
-    @lineNumber = "dummy"
+    @suite_name = "dummy"
+    @test_name = "dummy"
+    @line_number = "dummy"
     isrealequal("IsRealEqual(a,b)")
     ans = <<-EOF
 .not.(a+2*spacing(real(a)).ge.b &
@@ -93,21 +93,21 @@ class TestFunit < Test::Unit::TestCase
  end
 
   def test_requested_modules
-    assert_equal ["asdfga"], requestedModules(["asdfga"])
-    assert_equal ["asd","fga"], requestedModules(["asd","fga"])
-    assert requestedModules([]).empty?
+    assert_equal ["asdfga"], requested_modules(["asdfga"])
+    assert_equal ["asd","fga"], requested_modules(["asd","fga"])
+    assert requested_modules([]).empty?
     modules = %w[ldfdl lmzd]
     funits = modules.map{|f| f+'.fun'}.join(' ')
     system "touch "+funits
-    assert_equal modules, requestedModules([])
+    assert_equal modules, requested_modules([])
   end
 
   def test_funit_exists_method
-    moduleName = "ydsbe"
-    File.rm_f(moduleName+".fun")
-    assert_equal false, funit_exists?(moduleName)
-    system "touch "+moduleName+".fun"
-    assert funit_exists?(moduleName)
+    module_name = "ydsbe"
+    File.rm_f(module_name+".fun")
+    assert_equal false, funit_exists?(module_name)
+    system "touch "+module_name+".fun"
+    assert funit_exists?(module_name)
   end
 
 end

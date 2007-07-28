@@ -1,45 +1,45 @@
 module Funit
 
-  def requestedModules(moduleNames)
-    if (moduleNames.empty?)
-      moduleNames = Dir["*.fun"].each{ |mod| mod.chomp! ".fun" }
+  def requested_modules(module_names)
+    if (module_names.empty?)
+      module_names = Dir["*.fun"].each{ |mod| mod.chomp! ".fun" }
     end
-    moduleNames
+    module_names
   end
 
-  def funit_exists?(moduleName)
-    File.exists? moduleName+".fun"
+  def funit_exists?(module_name)
+    File.exists? module_name+".fun"
   end
 
-  def parseCommandLine
+  def parse_command_line
 
-    moduleNames = requestedModules(ARGV)
+    module_names = requested_modules(ARGV)
 
-    if moduleNames.empty?
+    if module_names.empty?
       raise "   *Error: no test suites found in this directory"
     end
 
-    moduleNames.each do |mod|
+    module_names.each do |mod|
       unless funit_exists?(mod) 
-        errorMessage = <<-FUNITDOESNOTEXIST
+        error_message = <<-FUNITDOESNOTEXIST
  Error: could not find test suite #{mod}.fun
  Test suites available in this directory:
- #{requestedModules([]).join(' ')}
+ #{requested_modules([]).join(' ')}
 
  Usage: #{File.basename $0} [test names (w/o .fun suffix)]
         FUNITDOESNOTEXIST
-        raise errorMessage
+        raise error_message
       end
     end
 
   end
 
-  def writeTestRunner testSuites
+  def write_test_runner test_suites
 
     File.delete("TestRunner.f90") if File.exists?("TestRunner.f90")
-    testRunner = File.new "TestRunner.f90", "w"
+    test_runner = File.new "TestRunner.f90", "w"
 
-    testRunner.puts <<-HEADER
+    test_runner.puts <<-HEADER
 ! TestRunner.f90 - runs test suites
 !
 ! #{File.basename $0} generated this file on #{Time.now}.
@@ -48,21 +48,21 @@ program TestRunner
 
     HEADER
 
-    testSuites.each { |testSuite| testRunner.puts " use #{testSuite}_fun" }
+    test_suites.each { |test_suite| test_runner.puts " use #{test_suite}_fun" }
 
-    testRunner.puts <<-DECLARE
+    test_runner.puts <<-DECLARE
 
  implicit none
 
  integer :: numTests, numAsserts, numAssertsTested, numFailures
     DECLARE
 
-    testSuites.each do |testSuite|
-      testRunner.puts <<-TRYIT
+    test_suites.each do |test_suite|
+      test_runner.puts <<-TRYIT
 
  print *, ""
- print *, "#{testSuite} test suite:"
- call test_#{testSuite}( numTests, &
+ print *, "#{test_suite} test suite:"
+ call test_#{test_suite}( numTests, &
         numAsserts, numAssertsTested, numFailures )
  print *, "Passed", numAssertsTested, "of", numAsserts, &
           "possible asserts comprising", &
@@ -70,26 +70,26 @@ program TestRunner
       TRYIT
     end
 
-    testRunner.puts "\n print *, \"\""
-    testRunner.puts "\nend program TestRunner"
-    testRunner.close
+    test_runner.puts "\n print *, \"\""
+    test_runner.puts "\nend program TestRunner"
+    test_runner.close
   end
 
-  def syntaxError( message, testSuite )
-    raise "\n   *Error: #{message} [#{testSuite}.fun:#$.]\n\n"
+  def syntax_error( message, test_suite )
+    raise "\n   *Error: #{message} [#{test_suite}.fun:#$.]\n\n"
   end
 
-  def warning( message, testSuite )
-    $stderr.puts "\n *Warning: #{message} [#{testSuite}.fun:#$.]"
+  def warning( message, test_suite )
+    $stderr.puts "\n *Warning: #{message} [#{test_suite}.fun:#$.]"
   end
 
-  def compileTests testSuites
+  def compile_tests test_suites
     puts "computing dependencies"
     dependencies = Depend.new(['.', '../LibF90', '../PHYSICS_DEPS'])
     puts "locating associated source files and sorting for compilation"
-    requiredSources = dependencies.required_source_files('TestRunner.f90')
+    required_sources = dependencies.required_source_files('TestRunner.f90')
 
-    puts compile = "#{ENV['FC']} #{ENV['FCFLAGS']} -o TestRunner \\\n  #{requiredSources.join(" \\\n  ")}"
+    puts compile = "#{ENV['FC']} #{ENV['FCFLAGS']} -o TestRunner \\\n  #{required_sources.join(" \\\n  ")}"
 
     raise "Compile failed." unless system(compile)
   end
@@ -97,7 +97,7 @@ program TestRunner
 end
 
 #--
-# Copyright 2006 United States Government as represented by
+# Copyright 2006-2007 United States Government as represented by
 # NASA Langley Research Center. No copyright is claimed in
 # the United States under Title 17, U.S. Code. All Other Rights
 # Reserved.

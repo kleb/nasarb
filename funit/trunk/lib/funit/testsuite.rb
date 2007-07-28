@@ -17,34 +17,34 @@ module Funit
     
     include Funit #FIXME
 
-    def initialize suiteName
-      @lineNumber = 'blank'
-      @suiteName = suiteName
-      return nil unless funit_exists?(suiteName)
-      File.delete(suiteName+"_fun.f90") if File.exists?(suiteName+"_fun.f90")
-      super(suiteName+"_fun.f90","w")
+    def initialize suite_name
+      @line_number = 'blank'
+      @suite_name = suite_name
+      return nil unless funit_exists?(suite_name)
+      File.delete(suite_name+"_fun.f90") if File.exists?(suite_name+"_fun.f90")
+      super(suite_name+"_fun.f90","w")
       @tests, @setup, @teardown = [], [], []
-      topWrapper
+      top_wrapper
       expand
       close
     end
 
-    def topWrapper
+    def top_wrapper
       puts <<-TOP
-! #{@suiteName}_fun.f90 - a unit test suite for #{@suiteName}.f90
+! #{@suite_name}_fun.f90 - a unit test suite for #{@suite_name}.f90
 !
-! #{File.basename $0} generated this file from #{@suiteName}.fun
+! #{File.basename $0} generated this file from #{@suite_name}.fun
 ! at #{Time.now}
 
-module #{@suiteName}_fun
+module #{@suite_name}_fun
 
- use #{@suiteName}
+ use #{@suite_name}
 
  implicit none
 
  logical :: noAssertFailed
 
- public :: test_#@suiteName
+ public :: test_#@suite_name
 
  private
 
@@ -57,11 +57,11 @@ module #{@suiteName}_fun
     end
 
     def expand
-      funit_file = @suiteName+".fun"
+      funit_file = @suite_name+".fun"
       $stderr.print "expanding #{funit_file}..."
    
       funit_contents = IO.readlines(funit_file)
-      @funit_TotalLines = funit_contents.length
+      @funit_total_lines = funit_contents.length
 
       while (line = funit_contents.shift) && line !~ KEYWORDS
         puts line
@@ -76,19 +76,19 @@ module #{@suiteName}_fun
         when COMMENT_LINE
           puts line
         when /beginSetup/i
-          addtoSetup funit_contents
+          add_to_setup funit_contents
         when /beginTeardown/i
-          addtoTeardown funit_contents
+          add_to_teardown funit_contents
         when /XbeginTest\s+(\w+)/i
-          ignoreTest($1,funit_contents)
+          ignore_test($1,funit_contents)
         when /beginTest\s+(\w+)/i
-          aTest($1,funit_contents)
+          a_test($1,funit_contents)
         when /beginTest/i
-          syntaxError "no name given for beginTest", @suiteName
+          syntax_error "no name given for beginTest", @suite_name
         when /end(Setup|Teardown|Test)/i
-          syntaxError "no matching begin#$1 for an #$&", @suiteName
+          syntax_error "no matching begin#$1 for an #$&", @suite_name
         when ASSERTION_PATTERN
-          syntaxError "#$1 assert not in a test block", @suiteName
+          syntax_error "#$1 assert not in a test block", @suite_name
         else
           puts line
         end
@@ -96,48 +96,48 @@ module #{@suiteName}_fun
       $stderr.puts "done."
     end
 
-    def addtoSetup funit_contents
+    def add_to_setup funit_contents
       while (line = funit_contents.shift) && line !~ /endSetup/i
         @setup.push line
       end
     end
 
-    def addtoTeardown funit_contents
+    def add_to_teardown funit_contents
       while (line = funit_contents.shift) && line !~ /endTeardown/i
         @teardown.push line
       end
     end
 
-    def ignoreTest testName, funit_contents
-      warning("Ignoring test: #{testName}", @suiteName)
+    def ignore_test test_name, funit_contents
+      warning("Ignoring test: #{test_name}", @suite_name)
       line = funit_contents.shift while line !~ /endTest/i
     end
 
-    def aTest testName, funit_contents
-      @testName = testName
-      @tests.push testName
-      syntaxError("test name #@testName not unique",@suiteName) if (@tests.uniq!)
+    def a_test test_name, funit_contents
+      @test_name = test_name
+      @tests.push test_name
+      syntax_error("test name #@test_name not unique",@suite_name) if (@tests.uniq!)
 
-      puts " subroutine #{testName}\n\n"
+      puts " subroutine #{test_name}\n\n"
 
-      numOfAsserts = 0
+      num_of_asserts = 0
   
       while (line = funit_contents.shift) && line !~ /endTest/i
         case line
         when COMMENT_LINE
           puts line
         when /Is(RealEqual|False|True|EqualWithin|Equal)/i
-          @lineNumber = @funit_TotalLines - funit_contents.length
-          numOfAsserts += 1
+          @line_number = @funit_total_lines - funit_contents.length
+          num_of_asserts += 1
           puts send( $&.downcase!, line )
         else
           puts line
         end
       end
-      warning("no asserts in test", @suiteName) if numOfAsserts == 0
+      warning("no asserts in test", @suite_name) if num_of_asserts == 0
 
       puts "\n  numTests = numTests + 1\n\n"
-      puts " end subroutine #{testName}\n\n"
+      puts " end subroutine #{test_name}\n\n"
     end
 
     def close
@@ -152,7 +152,7 @@ module #{@suiteName}_fun
 
       puts <<-NEXTONE
 
- subroutine test_#{@suiteName}( nTests, nAsserts, nAssertsTested, nFailures )
+ subroutine test_#{@suite_name}( nTests, nAsserts, nAssertsTested, nFailures )
 
   integer :: nTests
   integer :: nAsserts
@@ -162,9 +162,9 @@ module #{@suiteName}_fun
   continue
       NEXTONE
 
-      @tests.each do |testName|
+      @tests.each do |test_name|
         puts "\n  call Setup"
-        puts "  call #{testName}"
+        puts "  call #{test_name}"
         puts "  call Teardown"
       end
 
@@ -175,9 +175,9 @@ module #{@suiteName}_fun
   nAssertsTested  = numAssertsTested
   nFailures       = numFailures
 
- end subroutine test_#{@suiteName}
+ end subroutine test_#{@suite_name}
 
-end module #{@suiteName}_fun
+end module #{@suite_name}_fun
       LASTONE
       super
     end
@@ -187,7 +187,7 @@ end module #{@suiteName}_fun
 end
 
 #--
-# Copyright 2006 United States Government as represented by
+# Copyright 2006-2007 United States Government as represented by
 # NASA Langley Research Center. No copyright is claimed in
 # the United States under Title 17, U.S. Code. All Other Rights
 # Reserved.
