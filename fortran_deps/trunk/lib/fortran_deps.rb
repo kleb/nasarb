@@ -15,6 +15,8 @@ module Fortran
     USE_MODULE_REGEX = /^\s*use\s+(\w+)/i
     MODULE_DEF_REGEX = /^\s*module\s+(\w+)/i
  
+    FILE_EXTENSION = /\.f90$/i
+  
     attr_reader :file_dependencies, :source_files
 
     def initialize( config=OPTIONS )
@@ -26,13 +28,13 @@ module Fortran
 
     def modules_used_in( file )
       modules = IO.readlines( file ).map do |line|
-        $1.downcase if line.match( /^\s*use\s+(\w+)/i )
+        $1.downcase if line.match USE_MODULE_REGEX
       end.uniq.compact
     end
 
     def modules_defined_in( file )
       modules = IO.readlines( file ).map do |line| 
-        $1.downcase if line.match( /^\s*module\s+(\w+)/i )
+        $1.downcase if line.match MODULE_DEF_REGEX
       end.uniq.compact
     end
 
@@ -64,7 +66,7 @@ module Fortran
         output += source_no_path+ ": " + real_source + "\n"
         output += "\tln -sf "+real_source+" .\n"
       end
-      output += source.gsub(/\.(f|F)90$/, ".o").gsub(%r|^.*/|,"" ) +
+      output += source.gsub(FILE_EXTENSION, ".o").gsub(%r|^.*/|,'' ) +
                 ": " + source.gsub(%r|^.*/|,"" ) 
       modules_used_in( source ).each do |use|
         unless @hash[use]
@@ -75,7 +77,7 @@ module Fortran
           next
         end
         output = output + " \\\n " +
-                 @hash[use].gsub(/\.(f|F)90$/, ".o").gsub(%r|^.*/|,"" )
+                 @hash[use].gsub(FILE_EXTENSION, ".o").gsub(%r|^.*/|,'' )
       end
       output+"\n"
     end
