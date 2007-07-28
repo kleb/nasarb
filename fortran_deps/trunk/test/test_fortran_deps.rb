@@ -50,59 +50,59 @@ class TestFortranDeps < Test::Unit::TestCase
 
   def test_create_module_definition_hash
     assert_equal %w[circle rectangle_fun3d],
-    @dep.build_dictionary_of_modules_in( 'shapes.f90' ).keys.sort
+    @dep.build_dictionary_of_modules( 'shapes.f90' ).keys.sort
   end
 
   def test_locating_all_fortran_files_in_search_path
     files = %w[ ../lib/solution.f90 ./area.f90 ./externalUse.f90
                 ./grid.f90 ./main.F90 ./shapes.f90 ]
-    @dep.fortran_files_within.each do |file|
+    @dep.find_fortran_files.each do |file|
       assert files.include?(file)
     end
   end
 
   def test_build_hash_with_source_files
     f90 = %w[./grid.f90 ../lib/solution.f90 ./shapes.f90 ./area.f90]
-    hash = @dep.build_dictionary_of_modules_in( f90 )
+    hash = @dep.build_dictionary_of_modules( f90 )
     assert_equal %w[ ./shapes.f90 ./shapes.f90 ./area.f90
                      ../lib/solution.f90 ./grid.f90 ].sort,
                  hash.values.sort
     assert_equal %w[ rectangle_fun3d circle area solution grid ].sort,
                  hash.keys.sort
-    assert_equal hash , @dep.build_hash_of_modules_in_files_within
+    assert_equal hash , @dep.build_hash_of_modules_in_files
   end
 
   def test_dependency_generation_elements
-    directoryHash = @dep.build_hash_of_modules_in_files_within
+    directoryHash = @dep.build_hash_of_modules_in_files
 
-    sourceFile = "main.F90"
-    modules = @dep.modules_used_in( sourceFile )
+    source_file = "main.F90"
+    modules = @dep.modules_used_in( source_file )
     assert_equal %w[grid solution circle], modules
     
-    newSourceFiles = modules.collect{ |mod| directoryHash[mod] }
+    new_source_files = modules.collect{ |mod| directoryHash[mod] }
     assert_equal %w[ ./grid.f90 ../lib/solution.f90 ./shapes.f90],
-                 newSourceFiles
+                 new_source_files
     
-    newModules = newSourceFiles.collect do |file|
+    new_modules = new_source_files.collect do |file|
       @dep.modules_used_in( file )
     end.flatten.uniq
 
-    assert_equal ["area"], newModules
+    assert_equal ["area"], new_modules
   end
 
   def test_makefile_dependency_line_generation
-    sourceFile = "main.F90"
-    makeGolden=String.new <<-GOLDEN
+    source_file = "main.F90"
+    make_golden=String.new <<-GOLDEN
 main.o: main.F90 \\
  grid.o \\
  solution.o \\
  shapes.o
     GOLDEN
-    assert_equal makeGolden, @dep.makefile_dependency_line(sourceFile)
+    assert_equal make_golden, @dep.makefile_dependency_line(source_file)
   end
 
   def test_makefile_dependency_recurses_properly
-    makeGolden=String.new <<-GOLDEN
+    make_golden=String.new <<-GOLDEN
 main.o: main.F90 \\
  grid.o \\
  solution.o \\
@@ -118,10 +118,10 @@ shapes.o: shapes.f90 \\
  area.o
     GOLDEN
 
-    goldSplit = makeGolden.split("\n")
-    testSplit = @dep.dependencies('main.F90').split("\n")
+    gold_split = make_golden.split("\n")
+    test_split = @dep.dependencies('main.F90').split("\n")
 
-    while (gold = goldSplit.shift) && (test = testSplit.shift)
+    while (gold = gold_split.shift) && (test = test_split.shift)
       assert_equal gold, test
     end
   end
