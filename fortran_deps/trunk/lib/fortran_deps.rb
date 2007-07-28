@@ -9,9 +9,9 @@ module Fortran
 
     attr_reader :file_dependencies, :source_files
 
-    def initialize( searchPath = %w[ ../lib . ] )
+    def initialize( search_path = %w[ ../lib . ] )
       @parsed = []
-      @hash = build_hash_of_modules_in_files_within searchPath
+      @hash = build_hash_of_modules_in_files_within search_path
       @file_dependencies = {}
       @source_files = []
     end
@@ -43,8 +43,8 @@ module Fortran
       source.delete_if{ |file| file.match(/lmpi_module_template.F90/) }
     end
 
-    def build_hash_of_modules_in_files_within( searchPath = %w[../lib .] )
-      build_dictionary_of_modules_in( fortran_files_within( searchPath ) )
+    def build_hash_of_modules_in_files_within( search_path = %w[../lib .] )
+      build_dictionary_of_modules_in( fortran_files_within( search_path ) )
     end
 
     def makefile_dependency_line( source )
