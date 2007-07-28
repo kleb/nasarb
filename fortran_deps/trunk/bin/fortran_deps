@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby -ws
+#!/usr/bin/env ruby
 
 begin
   require 'fortran_deps'
