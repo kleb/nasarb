@@ -1,5 +1,5 @@
 require 'test/unit'
-require 'funit/fortran_deps'
+require 'fortran_deps'
 require 'fileutils'
 
 class TestFortranDeps < Test::Unit::TestCase
@@ -31,7 +31,7 @@ class TestFortranDeps < Test::Unit::TestCase
     File.open('externalUse.f90','w') do |f|
       f.puts "program user\nuse cantFindModule\nend program"
     end
-    @dep = Funit::Depend.new
+    @dep = Fortran::Dependencies.new
   end
 
   def teardown

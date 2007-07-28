@@ -1,9 +1,11 @@
-module Funit
+module Fortran
   
   ##
-  # Find Fortran dependencies
+  # Find Fortran file dependencies
 
-  class Depend
+  class Dependencies
+
+    VERSION = '1.0.0'
 
     attr_reader :file_dependencies, :source_files
 

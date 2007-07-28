@@ -4,7 +4,7 @@ require 'hoe'
 $:.unshift File.join( File.dirname(__FILE__), 'lib' )
 require 'fortran_deps'
 
-Hoe.new('fortran_deps', FortranDeps::VERSION) do |p|p|
+Hoe.new('fortran_deps', Fortran::Dependencies::VERSION) do |p|
   p.rubyforge_name = 'nasarb'
   p.author = ['Bil Kleb','Mike Park','Bill Wood']
   p.email = 'Bil.Kleb@NASA.gov'

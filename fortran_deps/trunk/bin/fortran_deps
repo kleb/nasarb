@@ -7,9 +7,7 @@ rescue LoadError
   require 'fortran_deps'
 end
 
-include FortranDep
-
-FortranDeps::runit
+Fortran::Dependencies.runit
 
 #--
 # Copyright 2007 United States Government as represented by
