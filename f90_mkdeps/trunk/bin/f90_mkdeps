@@ -9,7 +9,7 @@ end
 
 # FIXME: add CLI to set options
 
-F90::MakeDeps.new.dependencies ARGV
+puts F90::MakeDeps.new.dependencies( ARGV.first )
 
 #--
 # Copyright 2007 United States Government as represented by
