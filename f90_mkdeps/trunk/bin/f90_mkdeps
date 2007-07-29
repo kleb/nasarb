@@ -1,13 +1,13 @@
 #!/usr/bin/env ruby
 
 begin
-  require 'fortran_deps'
+  require 'f90_mkdeps'
 rescue LoadError
   require 'rubygems'
-  require 'fortran_deps'
+  require 'f90_mkdeps'
 end
 
-Fortran::Dependencies.runit
+F90::MakeDeps.run
 
 #--
 # Copyright 2007 United States Government as represented by

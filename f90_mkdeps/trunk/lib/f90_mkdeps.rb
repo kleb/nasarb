@@ -1,9 +1,9 @@
-module Fortran
+module F90
   
   ##
   # Find Fortran file dependencies
 
-  class Dependencies
+  class MakeDeps
 
     VERSION = '1.0.0'
  
