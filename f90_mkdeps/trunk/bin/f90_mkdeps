@@ -7,7 +7,9 @@ rescue LoadError
   require 'f90_mkdeps'
 end
 
-F90::MakeDeps.run
+# FIXME: add CLI to set options
+
+F90::MakeDeps.new.dependencies ARGV
 
 #--
 # Copyright 2007 United States Government as represented by

@@ -24,6 +24,7 @@ module F90
       OPTIONS.each{ |opt,default| @config[opt] = default unless @config.has_key? opt }
       @parsed, @file_dependencies, @source_files = [], {}, []
       @hash = build_hash_of_modules_in_files
+      self
     end
 
     def modules_used_in( file )
