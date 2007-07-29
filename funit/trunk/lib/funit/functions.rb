@@ -8,7 +8,7 @@ module Funit
   end
 
   def funit_exists?(module_name)
-    File.exists? module_name+".fun"
+    File.exists? "#{module_name}.fun"
   end
 
   def parse_command_line
@@ -85,13 +85,13 @@ program TestRunner
 
   def compile_tests test_suites
     puts "computing dependencies"
-    dependencies = Depend.new(['.', '../LibF90', '../PHYSICS_DEPS'])
+    dependencies = F90::MakeDeps.new
     puts "locating associated source files and sorting for compilation"
     required_sources = dependencies.required_source_files('TestRunner.f90')
 
     puts compile = "#{ENV['FC']} #{ENV['FCFLAGS']} -o TestRunner \\\n  #{required_sources.join(" \\\n  ")}"
 
-    raise "Compile failed." unless system(compile)
+    raise "Compile failed." unless system compile
   end
 
 end

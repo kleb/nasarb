@@ -2,9 +2,11 @@
 
 require 'funit/compiler'
 require 'funit/functions'
-require 'funit/fortran_deps'
 require 'funit/assertions'
 require 'funit/testsuite'
+
+require 'rubygems'
+require 'f90_mkdeps'
 
 module Funit
 
