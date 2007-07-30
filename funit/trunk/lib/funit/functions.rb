@@ -1,4 +1,32 @@
+require 'erb'
+
 module Funit
+
+  TEST_RUNNER = ERB.new %q{
+    ! TestRunner.f90 - runs fUnit test suites
+    !
+    ! <%= File.basename $0 %> generated this file on <%= Time.now %>.
+
+    program TestRunner
+      <%= test_suites.inject('') { |result,test_suite| result << "\n  use #{test_suite}_fun" } %>
+
+      implicit none
+
+      integer :: numTests, numAsserts, numAssertsTested, numFailures
+
+      <% test_suites.each do |ts| %>
+      print *, ""
+      print *, "<%= ts %> test suite:"
+      call test_<%= ts %> &
+        ( numTests, numAsserts, numAssertsTested, numFailures )
+      print *, "Passed", numAssertsTested, "of", numAsserts, &
+               "possible asserts comprising",                &
+               numTests-numFailures, "of", numTests, "tests."
+      <% end %>
+      print *, ""
+
+    end program TestRunner
+    }.gsub(/^/,'    '), nil, '<>'
 
   def requested_modules(module_names)
     if (module_names.empty?)
@@ -35,44 +63,9 @@ module Funit
   end
 
   def write_test_runner test_suites
-
-    File.delete("TestRunner.f90") if File.exists?("TestRunner.f90")
-    test_runner = File.new "TestRunner.f90", "w"
-
-    test_runner.puts <<-HEADER
-! TestRunner.f90 - runs test suites
-!
-! #{File.basename $0} generated this file on #{Time.now}.
-
-program TestRunner
-
-    HEADER
-
-    test_suites.each { |test_suite| test_runner.puts " use #{test_suite}_fun" }
-
-    test_runner.puts <<-DECLARE
-
- implicit none
-
- integer :: numTests, numAsserts, numAssertsTested, numFailures
-    DECLARE
-
-    test_suites.each do |test_suite|
-      test_runner.puts <<-TRYIT
-
- print *, ""
- print *, "#{test_suite} test suite:"
- call test_#{test_suite}( numTests, &
-        numAsserts, numAssertsTested, numFailures )
- print *, "Passed", numAssertsTested, "of", numAsserts, &
-          "possible asserts comprising", &
-           numTests-numFailures, "of", numTests, "tests." 
-      TRYIT
+    File.open("TestRunner.f90", "w") do |file|
+      file.puts TEST_RUNNER.result(binding)
     end
-
-    test_runner.puts "\n print *, \"\""
-    test_runner.puts "\nend program TestRunner"
-    test_runner.close
   end
 
   def syntax_error( message, test_suite )
