@@ -26,7 +26,7 @@ module Funit
       print *, ""
 
     end program TestRunner
-    }.gsub(/^/,'    '), nil, '<>'
+    }.gsub(/^/,'    '), nil, '<>' # turn off newlines due to <%%>
 
   def requested_modules(module_names)
     if (module_names.empty?)
