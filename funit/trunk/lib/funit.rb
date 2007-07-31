@@ -1,4 +1,3 @@
-# Define a method to find and run all tests
 
 require 'funit/compiler'
 require 'funit/functions'
@@ -12,13 +11,15 @@ module Funit
 
   VERSION = '0.1.3'
 
+  ##
+  # run all tests
+
   def run_tests
     Compiler.new# a test for compiler env set (FIXME: remove this later)
-    write_test_runner(test_suites = parse_command_line)
-    # convert each *.fun file into a Fortran file:
-    test_suites.each{ |ts| TestSuite.new(ts) }
+    write_test_runner( test_suites = parse_command_line )
+    test_suites.each{ |test_suite| TestSuite.new test_suite }
     compile_tests test_suites
-    raise "Failed to execute TestRunner" unless system './TestRunner'
+    raise "TestRunner failed to execute." unless system './TestRunner'
   end
 
 end
