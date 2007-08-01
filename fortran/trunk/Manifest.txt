@@ -3,6 +3,5 @@ License.txt
 Manifest.txt
 README.txt
 Rakefile
-bin/f90_mkdeps
-lib/f90_mkdeps.rb
-test/test_f90_mkdeps.rb
+lib/fortran.rb
+test/test_fortran.rb
