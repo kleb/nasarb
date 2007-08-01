@@ -9,7 +9,7 @@ require 'f90_mkdeps'
 
 module Funit
 
-  VERSION = '0.1.3'
+  VERSION = '0.9.0'
 
   ##
   # run all tests
