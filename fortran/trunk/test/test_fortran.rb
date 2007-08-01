@@ -1,8 +1,8 @@
 require 'test/unit'
-require 'f90_mkdeps'
+require 'fortran'
 require 'fileutils'
 
-class TestF90MakeDeps < Test::Unit::TestCase
+class TestFortran < Test::Unit::TestCase
 
   def setup
     Dir.mkdir 'DependenciesFixture'
@@ -31,7 +31,7 @@ class TestF90MakeDeps < Test::Unit::TestCase
     File.open('externalUse.f90','w') do |f|
       f.puts "program user\nuse cantFindModule\nend program"
     end
-    @dep = F90::MakeDeps.new
+    @dep = Fortran::Dependencies.new
   end
 
   def teardown

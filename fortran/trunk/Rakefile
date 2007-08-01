@@ -6,7 +6,7 @@ require 'hoe'
 $:.unshift File.join( File.dirname(__FILE__), 'lib' )
 require 'fortran'
 
-Hoe.new('fortran', F90::MakeDeps::VERSION) do |p|
+Hoe.new('fortran', Fortran::VERSION) do |p|
   p.rubyforge_name = 'nasarb'
   p.author = ['Bil Kleb','Mike Park','Bill Wood']
   p.email = 'Bil.Kleb@NASA.gov'

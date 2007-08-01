@@ -1,11 +1,11 @@
-module F90
+module Fortran
   
+  VERSION = '1.0.0'
+
   ##
   # Find Fortran file dependencies
 
-  class MakeDeps
-
-    VERSION = '1.0.0'
+  class Dependencies
  
     OPTIONS = { :search_paths => [ '.', '../lib' ],
                 :ignore_files => %r{ },
