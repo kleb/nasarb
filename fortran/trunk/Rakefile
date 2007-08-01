@@ -4,13 +4,13 @@ require 'rubygems'
 require 'hoe'
 
 $:.unshift File.join( File.dirname(__FILE__), 'lib' )
-require 'f90_mkdeps'
+require 'fortran'
 
-Hoe.new('f90_mkdeps', F90::MakeDeps::VERSION) do |p|
+Hoe.new('fortran', F90::MakeDeps::VERSION) do |p|
   p.rubyforge_name = 'nasarb'
   p.author = ['Bil Kleb','Mike Park','Bill Wood']
   p.email = 'Bil.Kleb@NASA.gov'
-  p.summary = 'Fortran 90/95/2003 source makefile dependencies.'
+  p.summary = 'Fortran 90/95/2003 utilities.'
   p.description = p.paragraphs_of('README.txt', 3..4).join("\n\n")
   p.url = p.paragraphs_of('README.txt', 1).first.gsub(/^\* /, '').split(/\n/)
   p.changes = p.paragraphs_of('History.txt', 0..1).join("\n\n")

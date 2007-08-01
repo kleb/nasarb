@@ -1,4 +1,4 @@
-f90_mkdeps
+fortran
 
 * http://rubyforge.org/projects/nasarb
 * http://nasarb.rubyforge.org
@@ -10,7 +10,7 @@ f90_mkdeps
 
 == SYNOPSIS:
 
-* <tt>f90_mkdeps</tt>
+* <tt>fortran</tt>
 
 == REQUIREMENTS:
 
@@ -18,6 +18,9 @@ f90_mkdeps
 
 == INSTALL:
 
-* <tt>sudo gem install f90_mkdeps</tt>
+* <tt>sudo gem install fortran</tt>
 
-== LICENSEf90_mkdeps is released under the NASA Open Source Agreement -- see License.txt[link:files/License_txt.html] for details.
+== LICENSE 
+
+Released under the NASA Open Source Agreement -- see License.txt[link:files/License_txt.html] for details.
+
