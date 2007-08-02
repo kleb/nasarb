@@ -3,7 +3,7 @@ REPOS="$1"
 REV="$2"
 PATH=/usr/bin:/bin:/usr/local/bin
 PROJECT=/var/svn/nasarb
-svnnotify --repos-path "$REPOS" --revision "$REV"
---svnlook /usr/local/bin/svnlook
---to nasarb-commits@rubyforge.org --from nobody@rubyforge.org
---with-diff --subject-cx --handler HTML::ColorDiff
+svnnotify --repos-path "$REPOS" --revision "$REV" \
+  --svnlook /usr/local/bin/svnlook \
+  --to nasarb-commits@rubyforge.org --from nobody@rubyforge.org \
+  --with-diff --subject-cx --handler HTML::ColorDiff
