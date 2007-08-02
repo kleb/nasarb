@@ -1,16 +1,21 @@
 fortran
 
 * http://rubyforge.org/projects/nasarb
-* http://nasarb.rubyforge.org
+* http://nasarb.rubyforge.org/fortran
 * mailto:Bil.Kleb@NASA.gov
 
 == DESCRIPTION:
 
-* Provides Fortran 90/95/2003 makefile dependencies.
+Fortran 90/95/2003 utilities.
+
+Currently, only provides Fortran 90/95/2003 dependencies.
 
 == SYNOPSIS:
 
-* <tt>fortran</tt>
+  require 'rubygems'
+  require 'fortran'
+
+  Fortran::Dependencies.new( 'main.f90' ).dependencies
 
 == REQUIREMENTS:
 
