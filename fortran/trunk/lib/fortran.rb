@@ -120,8 +120,9 @@ module Fortran
       sources
     end
 
-  end
-end
+  end # class
+
+end # module
 
 #--
 # Copyright 2007 United States Government as represented by
