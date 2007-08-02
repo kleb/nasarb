@@ -5,7 +5,7 @@ require 'funit/assertions'
 require 'funit/testsuite'
 
 require 'rubygems'
-require 'f90_mkdeps'
+require 'fortran'
 
 module Funit
 

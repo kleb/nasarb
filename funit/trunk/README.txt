@@ -80,6 +80,7 @@ these directories can be found in your Rubygems library directory, e.g., <tt>/us
 
 * Fortran 90/95/2003 compiler
 * Ruby with Rubygems
+* fortran Ruby Gem
 
 == INSTALL:
 

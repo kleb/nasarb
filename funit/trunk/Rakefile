@@ -8,7 +8,7 @@ require 'funit'
 
 Hoe.new('funit', Funit::VERSION) do |p|
   p.rubyforge_name = 'funit'
-  p.extra_deps << [ 'f90_mkdeps', '>= 1.0.0' ]
+  p.extra_deps << [ 'fortran', '>= 1.0.0' ]
   p.author = ['Karen Bibb','Bil Kleb','Beth Lee-Rausch','Mike Park','Bill Wood']
   p.email = 'funit-support@rubyforge.org'
   p.summary = 'A Fortran unit testing framework.'

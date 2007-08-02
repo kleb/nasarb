@@ -78,7 +78,7 @@ module Funit
 
   def compile_tests test_suites
     puts "computing dependencies"
-    dependencies = F90::MakeDeps.new
+    dependencies = Fortran::Dependencies.new
     puts "locating associated source files and sorting for compilation"
     required_sources = dependencies.required_source_files('TestRunner.f90')
 
