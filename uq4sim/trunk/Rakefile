@@ -13,3 +13,5 @@ Hoe.new('uq4sim', Uq4sim::VERSION) do |p|
   p.url = p.paragraphs_of('README.txt', 1).first.gsub(/^\* /, '').split(/\n/)
   p.changes = p.paragraphs_of('History.txt', 0..1).join("\n\n")
 end
+
+# vim: syntax=Ruby

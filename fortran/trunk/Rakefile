@@ -16,3 +16,5 @@ Hoe.new( 'fortran', Fortran::VERSION ) do |p|
   p.remote_rdoc_dir = 'fortran' # release webpages to http://nasarb.rubyforge.org/fortran
   p.rsync_args << ' --exclude=statsvn/'
 end
+
+# vim: syntax=Ruby

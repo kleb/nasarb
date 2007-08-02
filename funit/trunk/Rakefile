@@ -19,3 +19,5 @@ Hoe.new('funit', Funit::VERSION) do |p|
   p.clean_globs.concat %w( **/*_fun.f90 examples/**/TestRunner* **/*.o **/*.mod **/*.MOD )
   p.rsync_args << ' --exclude=statsvn/'
 end
+
+# vim: syntax=Ruby
