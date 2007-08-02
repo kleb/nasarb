@@ -1,5 +1,11 @@
 #!/bin/sh
 
+# A SVN post-commit script to send commit emails
+#
+# To install, make sure it is executable and then
+#
+#   scp post-commit rubyforge.org:/var/svn/nasarb/hooks
+
 REPOS="$1"
 REV="$2"
 
@@ -10,8 +16,8 @@ svnnotify \
   --repos-path "$REPOS" \
   --revision "$REV" \
   --svnlook /usr/local/bin/svnlook \
+  --from `whoami`@rubyforge.org \
   --to nasarb-commits@rubyforge.org \
-  --reply-to `whoami`@rubyforge.org \
   --subject-cx \
   --with-diff --handler HTML::ColorDiff \
   --revision_url 'http://viewvc.rubyforge.mmmultiworks.com/cgi/viewvc.cgi?view=rev&root=nasarb&revision=%s'
