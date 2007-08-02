@@ -1,13 +1,11 @@
-#!/usr/bin/env ruby
-#
-# Mobility Tests
-
 require 'test/unit'
-require 'analyze_dependencies'
-require 'FileUtils'
+require 'lakos/analyze_dependencies'
+require 'fileutils'
 
 class TestAnalyzeDependencies < Test::Unit::TestCase
+
  def setup
+  FileUtils.rm_rf 'AD_fixtures'
   Dir.mkdir 'AD_fixtures'
   Dir.chdir 'AD_fixtures'
   File.open('m.f90','w'){|f| f.puts "program m\nuse a\nuse b\nuse d\nuse f" }
@@ -21,6 +19,7 @@ class TestAnalyzeDependencies < Test::Unit::TestCase
   Dir.chdir '..'
   File.open('main.dot','w'){ |f| f.puts @da.graph(@da.dd_deps) }
  end
+
  def test_statistics
   assert_equal(  3, @da.levels.size )
   assert_equal(  7, @da.components )
@@ -28,7 +27,9 @@ class TestAnalyzeDependencies < Test::Unit::TestCase
   assert_in_delta( 18/7.to_f,  @da.acd,  Float::EPSILON )
   assert_in_delta( 18/17.to_f, @da.nccd, Float::EPSILON )
  end
+
  def teardown
   FileUtils.rm_rf 'AD_fixtures'
  end
+
 end
