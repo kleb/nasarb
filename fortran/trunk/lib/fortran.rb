@@ -3,7 +3,7 @@ module Fortran
   VERSION = '1.0.0'
 
   ##
-  # Find Fortran file dependencies
+  # Find Fortran dependencies
 
   class Dependencies
  
