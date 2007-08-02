@@ -7,7 +7,7 @@ $:.unshift File.join( File.dirname(__FILE__), 'lib' )
 require 'funit'
 
 Hoe.new('funit', Funit::VERSION) do |p|
-  p.rubyforge_name = 'funit'
+  p.rubyforge_name = 'nasarb'
   p.extra_deps << [ 'fortran', '>= 1.0.0' ]
   p.author = ['Karen Bibb','Bil Kleb','Beth Lee-Rausch','Mike Park','Bill Wood']
   p.email = 'funit-support@rubyforge.org'
