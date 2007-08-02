@@ -7,8 +7,8 @@ require './lib/fortran'
 
 Hoe.new( 'fortran', Fortran::VERSION ) do |p|
   p.rubyforge_name = 'nasarb'
-  p.author = ['Bil Kleb','Mike Park','Bill Wood']
-  p.email  = 'Bil.Kleb@NASA.gov'
+  p.author      = %w( 'Bil Kleb', 'Mike Park', 'Bill Wood' )
+  p.email       = 'Bil.Kleb@NASA.gov'
   p.url         = p.paragraphs_of( 'README.txt', 1 ).to_s.gsub(/^\* /, '').split(/\n/)
   p.summary     = p.paragraphs_of( 'README.txt', 3 ).to_s
   p.description = p.paragraphs_of( 'README.txt',  3..4 ).join("\n\n")
