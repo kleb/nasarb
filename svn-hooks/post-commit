@@ -1,9 +1,20 @@
 #!/bin/sh
+
 REPOS="$1"
 REV="$2"
+
 PATH=/usr/bin:/bin:/usr/local/bin
 PROJECT=/var/svn/nasarb
-svnnotify --repos-path "$REPOS" --revision "$REV" \
+
+svnnotify \
+  --repos-path "$REPOS" \
+  --revision "$REV" \
   --svnlook /usr/local/bin/svnlook \
-  --to nasarb-commits@rubyforge.org --from nobody@rubyforge.org \
-  --with-diff --subject-cx --handler HTML::ColorDiff
+  --to nasarb-commits@rubyforge.org \
+  --reply-to `whoami`@rubyforge.org \
+  --subject-cx \
+  --with-diff --handler HTML::ColorDiff \
+  --revision_url 'http://viewvc.rubyforge.mmmultiworks.com/cgi/viewvc.cgi?view=rev&root=nasarb&revision=%s'
+ 
+# See http://search.cpan.org/~dwheeler/SVN-Notify/lib/SVN/Notify.pm
+# for documentation of the svnnotify Perl code
