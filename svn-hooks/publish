@@ -1,0 +1,2 @@
+#!/bin/sh
+scp post-commit rubyforge.org:/var/svn/nasarb/hooks
