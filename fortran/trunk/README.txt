@@ -1,8 +1,8 @@
 fortran
 
-* http://rubyforge.org/projects/nasarb
 * http://nasarb.rubyforge.org/fortran
-* mailto:Bil.Kleb@NASA.gov
+* http://rubyforge.org/projects/nasarb
+* mailto:Bil.Kleb@nasa.gov
 
 == DESCRIPTION:
 
