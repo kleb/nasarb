@@ -1,2 +1,4 @@
 #!/bin/sh
 scp index.html rubyforge.org:/var/www/gforge-projects/nasarb
+scp css/* rubyforge.org:/var/www/gforge-projects/nasarb/css
+scp img/* rubyforge.org:/var/www/gforge-projects/nasarb/img
