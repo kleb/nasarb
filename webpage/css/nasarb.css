@@ -20,7 +20,7 @@ body{
 #header{
 	margin: 0 auto;
 	width: 800px;
-
+	padding-top:14px;
 }
 
 #header h1{
@@ -33,6 +33,7 @@ body{
 }
 
 #content{
+	padding-top: 15px;
 	margin: 0 auto;
 	font-size:0.88em;
 	width: 800px;
