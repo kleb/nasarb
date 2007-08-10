@@ -12,7 +12,7 @@ module Uq4sim
 
   def correlation(x,y)
 
-    fail 'size arrays unequal' if x.first.size != y.first.size # FIXME: make stronger!!
+    fail 'size arrays unequal'  if x.first.size != y.first.size # FIXME: make stronger!!
 
     n = x.first.size
 
