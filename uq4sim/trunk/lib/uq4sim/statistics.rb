@@ -1,12 +1,12 @@
 module Uq4sim
 
   ##
-  # Mixins to be used with numeric Arrays
+  # Statistical methods to be used with numeric Arrays
 
   module Statistics
 
     def mean
-      self.inject(0) { |sum, x| sum + x.to_f / self.size}
+      self.inject(0) { |sum, x| sum + x.to_f / self.size }
     end
 
     def median
@@ -32,15 +32,15 @@ module Uq4sim
     def skewness
       mean, variance = self.mean, self.variance
       variance == 0 ? 0.0 :
-      self.inject(0){ |sum, x| sum + (x-mean)**3 } /
-      self.size / variance**(3/2.0)
+      self.inject(0) { |sum, x| sum + (x-mean)**3 } /
+        self.size / variance**(3/2.0)
     end
 
     def kurtosis
       mean, variance = self.mean, self.variance
       variance == 0 ? 0.0 :
-      self.inject(0){ |sum, x| sum + (x-mean)**4 } /
-      self.size / variance**2
+      self.inject(0) { |sum, x| sum + (x-mean)**4 } /
+        self.size / variance**2
     end
 
     def percentile(percentage)
@@ -82,12 +82,18 @@ module Uq4sim
 
 end
 
-#################
+# FIXME: monkey patch
+
+class Array
+  include Uq4sim::Statistics
+end
+
+##
 # sample
 
 if __FILE__ == $0 then
   require 'distributions'
-  class Array; include Statistics; end
+  class Array; include Uq4sim::Statistics; end
   N = 10000
   samples = []
   (1..N).each{ |i| samples << randn(0.5) }
@@ -98,7 +104,7 @@ if __FILE__ == $0 then
   puts "standard deviation: #{Math.sqrt(samples.variance)}"
   puts "          skewness: #{samples.skewness}"
   puts "          kurtosis: #{samples.kurtosis}"
-  bins = Hash.new{ |hash,key| hash[key]=0 }
+  bins = Hash.new{ |h,k| h[k]=0 }
   samples.each{ |s| bins[((s*10).round/10.0).to_s] += 1 }
   bins.to_a.sort{ |x,y| x[0].to_f <=> y[0].to_f }.each do |pair|
    puts pair.first.to_s.rjust(4) + " " + "*" * ( pair.last.to_f * 800 / N )

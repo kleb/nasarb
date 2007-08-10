@@ -14,11 +14,6 @@ module Uq4sim
   
   include FileUtils
 
-  # FIXME: monkey patch
-  class Array
-    include Statistics
-  end
-
   Struct.new( 'Statistics', :size, :min, :max, :mean, :median,
                             :standard_deviation, :skewness, :kurtosis )
 
@@ -134,9 +129,9 @@ module Uq4sim
       end
     end
     
-  end
+  end # def
 
-end
+end # module
 
 #--
 # Copyright 2007 United States Government as represented by
