@@ -7,8 +7,6 @@ rescue LoadError
   require 'uq4sim'
 end
 
-include Uq4sim
-
 Uq4sim::runit
 
 #--
