@@ -1,11 +1,6 @@
-#!/usr/bin/env ruby -ws
+#!/usr/bin/env ruby
 
-begin
-  require 'uq4sim'
-rescue LoadError
-  require 'rubygems'
-  require 'uq4sim'
-end
+require 'uq4sim'
 
 Uq4sim::runit
 
