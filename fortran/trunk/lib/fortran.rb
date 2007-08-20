@@ -1,6 +1,9 @@
 module Fortran
   
-  VERSION = '1.0.0'
+  ##
+  # This version of Fortran library
+
+  VERSION = '1.0.1'
 
   ##
   # Find Fortran dependencies
@@ -52,6 +55,7 @@ module Fortran
       source.flatten!.uniq!
       source.delete_if{ |file| File.lstat(file).symlink? } if @config[:ignore_symlinks]
       source.delete_if{ |file| file.match @config[:ignore_files] }
+      source.map!{ |file| file.sub(/^\.\//,'') }# strip leading ./
     end
 
     def build_hash_of_modules_in_files

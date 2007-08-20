@@ -54,18 +54,18 @@ class TestFortran < Test::Unit::TestCase
   end
 
   def test_locating_all_fortran_files_in_search_path
-    files = %w[ ../lib/solution.f90 ./area.f90 ./externalUse.f90
-                ./grid.f90 ./main.F90 ./shapes.f90 ]
+    files = %w[ ../lib/solution.f90 area.f90 externalUse.f90
+                grid.f90 main.F90 shapes.f90 ]
     @dep.find_fortran_files.each do |file|
       assert files.include?(file)
     end
   end
 
   def test_build_hash_with_source_files
-    f90 = %w[./grid.f90 ../lib/solution.f90 ./shapes.f90 ./area.f90]
+    f90 = %w[grid.f90 ../lib/solution.f90 shapes.f90 area.f90]
     hash = @dep.build_dictionary_of_modules( f90 )
-    assert_equal %w[ ./shapes.f90 ./shapes.f90 ./area.f90
-                     ../lib/solution.f90 ./grid.f90 ].sort,
+    assert_equal %w[ shapes.f90 shapes.f90 area.f90
+                     ../lib/solution.f90 grid.f90 ].sort,
                  hash.values.sort
     assert_equal %w[ rectangle_fun3d circle area solution grid ].sort,
                  hash.keys.sort
@@ -80,7 +80,7 @@ class TestFortran < Test::Unit::TestCase
     assert_equal %w[grid solution circle], modules
     
     new_source_files = modules.collect{ |mod| directoryHash[mod] }
-    assert_equal %w[ ./grid.f90 ../lib/solution.f90 ./shapes.f90],
+    assert_equal %w[ grid.f90 ../lib/solution.f90 shapes.f90],
                  new_source_files
     
     new_modules = new_source_files.collect do |file|
@@ -130,22 +130,22 @@ shapes.o: shapes.f90 \\
     @dep.source_file_dependencies('main.F90')
     assert_equal( 5, @dep.file_dependencies.size )
     expected = {
-      "./area.f90" => [],
-      "./grid.f90" => ["./area.f90"],
-      "../lib/solution.f90" => ["./area.f90"],
-      "./shapes.f90" => ["./area.f90"],
-      "main.F90" => ["./grid.f90", "../lib/solution.f90", "./shapes.f90"]
+      "area.f90" => [],
+      "grid.f90" => ["area.f90"],
+      "../lib/solution.f90" => ["area.f90"],
+      "shapes.f90" => ["area.f90"],
+      "main.F90" => ["grid.f90", "../lib/solution.f90", "shapes.f90"]
     }
     assert_equal expected, @dep.file_dependencies
   end
 
   def test_finds_required_source_files
-    expected = %w[ ./area.f90 ./shapes.f90 ../lib/solution.f90
-                   ./grid.f90 ./main.F90 ]
-    found = @dep.required_source_files('./main.F90')
+    expected = %w[ area.f90 shapes.f90 ../lib/solution.f90
+                   grid.f90 main.F90 ]
+    found = @dep.required_source_files('main.F90')
     assert_equal expected.size, found.size
-    assert_equal './main.F90', found.last
-    assert_equal './area.f90', found.first
+    assert_equal 'main.F90', found.last
+    assert_equal 'area.f90', found.first
   end
 
   def test_finds_required_source_files_unordered
@@ -159,14 +159,14 @@ shapes.o: shapes.f90 \\
   end
 
   def test_can_find_required_source_files_twice
-    files = %w[ ./main.F90 ./shapes.f90 ./area.f90
-                ../lib/solution.f90 ./grid.f90 ]
-    @dep.required_source_files('./main.F90')
-    assert_equal files.sort, @dep.required_source_files('./main.F90').sort
+    files = %w[ main.F90 shapes.f90 area.f90
+                ../lib/solution.f90 grid.f90 ]
+    @dep.required_source_files('main.F90')
+    assert_equal files.sort, @dep.required_source_files('main.F90').sort
   end
 
   def test_recognizes_external_modules
-    file = './externalUse.f90'
+    file = 'externalUse.f90'
     assert_equal [file], @dep.required_source_files(file).sort
   end
 
