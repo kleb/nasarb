@@ -1,11 +1,7 @@
 # Main fUnit routine
 
-begin
-  require 'funit'
-rescue LoadError
-  require 'rubygems'
-  require 'funit'
-end
+require 'rubygems' rescue nil
+require 'funit'
 
 include Funit
 
