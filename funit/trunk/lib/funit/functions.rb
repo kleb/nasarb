@@ -29,7 +29,7 @@ module Funit
     }.gsub(/^/,'    '), nil, '<>' # turn off newlines due to <%%>
 
   def requested_modules(module_names)
-    if (module_names.empty?)
+    if module_names.empty?
       module_names = Dir["*.fun"].each{ |mod| mod.chomp! ".fun" }
     end
     module_names
@@ -49,13 +49,13 @@ module Funit
 
     module_names.each do |mod|
       unless funit_exists?(mod) 
-        error_message = <<-FUNITDOESNOTEXIST
+        error_message = <<-FUNIT_DOES_NOT_EXIST
  Error: could not find test suite #{mod}.fun
  Test suites available in this directory:
  #{requested_modules([]).join(' ')}
 
  Usage: #{File.basename $0} [test names (w/o .fun suffix)]
-        FUNITDOESNOTEXIST
+        FUNIT_DOES_NOT_EXIST
         raise error_message
       end
     end
@@ -82,7 +82,7 @@ module Funit
     puts "locating associated source files and sorting for compilation"
     required_sources = dependencies.required_source_files('TestRunner.f90')
 
-    puts compile = "#{ENV['FC']} #{ENV['FCFLAGS']} -o TestRunner \\\n  #{required_sources.join(" \\\n  ")}"
+    puts compile = "#{ENV['FC']} #{ENV['FCFLAGS']} -o TestRunner #{required_sources.join(' ')}"
 
     raise "Compile failed." unless system compile
   end
