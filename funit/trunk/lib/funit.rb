@@ -9,7 +9,10 @@ require 'fortran'
 
 module Funit
 
-  VERSION = '0.9.0'
+  ##
+  # the version of this fUnit
+
+  VERSION = '0.9.1'
 
   ##
   # run all tests
@@ -19,7 +22,7 @@ module Funit
     write_test_runner( test_suites = parse_command_line )
     test_suites.each{ |test_suite| TestSuite.new test_suite }
     compile_tests test_suites
-    raise "TestRunner failed to execute." unless system './TestRunner'
+    raise "TestRunner failed to execute." unless system "env PATH='.' TestRunner"
   end
 
 end
