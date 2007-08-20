@@ -1,11 +1,9 @@
+require 'fortran'
 
 require 'funit/compiler'
 require 'funit/functions'
 require 'funit/assertions'
 require 'funit/testsuite'
-
-require 'rubygems'
-require 'fortran'
 
 module Funit
 
