@@ -5,7 +5,7 @@ FUnit
 * mailto:funit-support@rubyforge.org
 
 == DESCRIPTION:
-  
+
 FUnit is a unit testing framework for Fortran modules.
 
 Unit tests are written as Fortran fragments that use a small
