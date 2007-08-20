@@ -1,6 +1,5 @@
 # Main fUnit routine
 
-require 'rubygems' rescue nil
 require 'funit'
 
 include Funit
