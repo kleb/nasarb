@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+require 'watch-paths'
+
+changes = WatchPaths.new.watch ARGV
+
+if changes.empty?
+  exit 0
+else
+  changes.each do |path,files|
+    STDERR.puts "Warning: checksum failures in #{path}:", files
+  end
+  exit 1
+end
