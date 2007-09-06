@@ -5,11 +5,11 @@ watch-paths
 * mailto:Bil.Kleb@nasa.gov
 
 == DESCRIPTION:
-  
+
 Scan a set of pathnames for file changes according to check sums.
 
 == FEATURES/PROBLEMS:
-  
+
 * A poor man's configuration management
 * Does not report files added since last scan
 * Error handling is minimal

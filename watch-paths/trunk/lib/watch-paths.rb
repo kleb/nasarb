@@ -11,7 +11,7 @@ $r ||= false
 
 class WatchPaths
 
-  VERSION = '1.1.1'
+  VERSION = '1.1.2'
 
   ##
   # File used to record checksums in each path scanned

@@ -1,3 +1,8 @@
+== 1.1.2 / 2007-09-05
+
+* 1 bug fix
+  * to remove spaces in README.txt from TextMate
+
 == 1.1.1 / 2007-09-05
 
 * 1 bug fix
