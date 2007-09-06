@@ -4,12 +4,14 @@ require 'digest/md5'
 
 include FileUtils
 
+$r ||= false
+
 ##
 # A poor man's configuration management tool.
 
 class WatchPaths
 
-  VERSION = '1.0.0'
+  VERSION = '1.1.0'
 
   ##
   # File used to record checksums in each path scanned
@@ -17,18 +19,20 @@ class WatchPaths
   MANIFEST = '.chksum_manifest.yml'
 
   ##
-  # compares file checksums for a set of paths
+  # compares file checksums for a set of directory paths
 
   def watch( paths )
     chksum_errors = {}
-    paths.each do |path|
-      cd path do
+    paths.map!{ |path| Dir["#{path}/**/*"] } if $r
+    dirs = paths.select{ |path| File.directory? path }
+    dirs.each do |dir|
+      cd dir do
         begin
           chksum_manifest = load
           chksum_manifest = check chksum_manifest
           dump chksum_manifest
         rescue ChecksumError => error
-          chksum_errors[path] = error.message
+          chksum_errors[dir] = error.message
         end
       end
     end
@@ -47,7 +51,7 @@ class WatchPaths
   # Write YAML file containing checksum manifest
 
   def dump( chksum_manifest )
-    File.open(MANIFEST,'w'){ |f| YAML.dump chksum_manifest, f }
+    File.open(MANIFEST,'w') { |f| YAML.dump chksum_manifest, f }
   end
 
   ##
@@ -55,7 +59,8 @@ class WatchPaths
 
   def create_chksum_manifest
     chksum_manifest = {}
-    Dir['*'].each do |file|
+    files = Dir['*'].select{ |f| File.file? f }
+    files.each do |file|
       chksum_manifest[file] = Digest::MD5.hexdigest File.read(file)
     end
     chksum_manifest
