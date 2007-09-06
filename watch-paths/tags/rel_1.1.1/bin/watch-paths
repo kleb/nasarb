@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby -ws
+
+begin require 'rubygems' rescue LoadError end
+
+require 'watch-paths'
+
+if defined? $h then
+  puts "#{File.basename $0} [options] paths"
+  puts "  -h  display help"
+  puts "  -r  process paths recursively"
+  exit 0
+end
+
+changes = WatchPaths.new.watch ARGV
+
+unless changes.empty?
+  changes.each do |path,files|
+    STDERR.puts "Warning: checksum mismatch in #{path} for:", files
+  end
+  exit 1
+end
+
