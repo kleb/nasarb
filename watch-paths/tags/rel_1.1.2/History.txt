@@ -1,0 +1,20 @@
+== 1.1.2 / 2007-09-05
+
+* 1 bug fix
+  * to remove spaces in README.txt from TextMate
+
+== 1.1.1 / 2007-09-05
+
+* 1 bug fix
+  * flattened recursive paths array
+
+== 1.1.0 / 2007-09-05
+
+* 1 minor enhancement
+  * recursive option
+
+== 1.0.0 / 2007-08-03
+
+* 1 major enhancement
+  * Birthday!
+
