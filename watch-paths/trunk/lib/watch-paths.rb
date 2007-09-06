@@ -11,7 +11,7 @@ $r ||= false
 
 class WatchPaths
 
-  VERSION = '1.1.0'
+  VERSION = '1.1.1'
 
   ##
   # File used to record checksums in each path scanned
@@ -23,7 +23,7 @@ class WatchPaths
 
   def watch( paths )
     chksum_errors = {}
-    paths.map!{ |path| Dir["#{path}/**/*"] } if $r
+    paths.map!{ |path| Dir["#{path}/**/*"] }.flatten! if $r
     dirs = paths.select{ |path| File.directory? path }
     dirs.each do |dir|
       cd dir do
