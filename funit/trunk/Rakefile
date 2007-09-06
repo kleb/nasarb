@@ -7,7 +7,8 @@ $:.unshift File.join( File.dirname(__FILE__), 'lib' )
 require 'funit'
 
 Hoe.new('funit', Funit::VERSION) do |p|
-  p.rubyforge_name = 'nasarb'
+  p.rubyforge_name  = 'nasarb'
+  p.remote_rdoc_dir = 'funit' 
   p.extra_deps << [ 'fortran', '>= 1.0.1' ]
   p.author = ['Karen Bibb','Bil Kleb','Beth Lee-Rausch','Mike Park','Bill Wood']
   p.email = 'funit-support@rubyforge.org'
@@ -16,6 +17,7 @@ Hoe.new('funit', Funit::VERSION) do |p|
   p.url = p.paragraphs_of('README.txt', 1).first.gsub(/^\* /, '').split(/\n/)
   p.changes = p.paragraphs_of('History.txt', 0..1).join("\n\n")
   p.clean_globs.concat %w( **/*_fun.f90 examples/**/TestRunner* **/*.o **/*.mod **/*.MOD )
+  p.rsync_args = '-rpv --delete' # to preserve group permissions 
 end
 
 # vim: syntax=Ruby
