@@ -1,3 +1,8 @@
+== 1.1.1 / 2007-09-05
+
+* 1 bug fix
+  * flattened recursive paths array
+
 == 1.1.0 / 2007-09-05
 
 * 1 minor enhancement
