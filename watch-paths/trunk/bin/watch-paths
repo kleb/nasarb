@@ -11,7 +11,7 @@ if defined? $h then
   exit 0
 end
 
-changes = Watchpaths.new.watch ARGV
+changes = WatchPaths.new.watch ARGV
 
 unless changes.empty?
   changes.each do |path,files|
