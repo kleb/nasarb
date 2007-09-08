@@ -1,7 +1,8 @@
 #!/usr/bin/env ruby
 
-begin require 'rubygems' rescue LoadError end
+begin require 'rubygems'; rescue LoadError; end
 
+$:.push "#{File.dirname $0}/../lib"
 require 'uq4sim'
 
 Uq4sim::runit
