@@ -1,6 +1,5 @@
 require 'yaml'
 require 'fileutils'
-require 'digest/md5'
 
 include FileUtils
 
@@ -16,7 +15,7 @@ class WatchPaths
   ##
   # File used to record checksums in each path scanned
 
-  MANIFEST = '.chksum_manifest.yml'
+  MANIFEST = '.chksum_manifest.txt'
 
   ##
   # compares file checksums for a set of directory paths
@@ -61,7 +60,7 @@ class WatchPaths
     chksum_manifest = {}
     files = Dir['*'].select{ |f| File.file? f }
     files.each do |file|
-      chksum_manifest[file] = Digest::MD5.hexdigest File.read(file)
+      chksum_manifest[file] = `md5sum #{file}`.split.first
     end
     chksum_manifest
   end
