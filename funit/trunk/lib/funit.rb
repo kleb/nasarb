@@ -10,7 +10,7 @@ module Funit
   ##
   # the version of this fUnit
 
-  VERSION = '0.9.2'
+  VERSION = '0.9.3'
 
   ##
   # run all tests
