@@ -3,7 +3,7 @@ module Fortran
   ##
   # This version of Fortran library
 
-  VERSION = '1.0.1'
+  VERSION = '1.0.2'
 
   ##
   # Find Fortran dependencies
