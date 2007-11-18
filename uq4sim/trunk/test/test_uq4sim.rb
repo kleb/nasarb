@@ -7,6 +7,7 @@ end
 
 class TestUq4sim < Test::Unit::TestCase
 
+  # FIXME
   def test_runner
     assert(true)
   end
