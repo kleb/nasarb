@@ -27,6 +27,21 @@ module Uq4sim
   def randu( halfwidth=0.5 )
     (rand-0.5)*halfwidth*2
   end
+  
+  ##
+  # Return a random number drawn from a symmertrical
+  # triangular distribution centered on 0 of a given
+  # halfwidth, which defaults to 0.5.
+  
+  def randt( halfwidth=0.5 )
+    left, right, peak = -halfwidth, halfwidth, 0.0
+    x = rand
+    if x < (peak-left)/(right-left)
+      left  + Math.sqrt( (  x)*(right-left)*( peak-left)  )
+    else
+      right - Math.sqrt( (1-x)*(right-left)*(right-peak) )
+    end
+  end
 
   ##
   # An inverse normal cumulative distribution approximation

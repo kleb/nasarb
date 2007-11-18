@@ -82,6 +82,11 @@ class TestFuzzyStringRegexp < Test::Unit::TestCase
     assert_equal( '5+/-1U', fs.fuzzies.to_s )
   end
 
+  def test_tolerance_with_triangular_distribution
+    fs = FuzzyString.new "2+/-0.5T"
+    assert_equal( '2+/-0.5T', fs.fuzzies.to_s )
+  end
+
   def test_order_tolerance_with_normal_distribution
     fs = FuzzyString.new "5+/-1oN"
     assert_equal( '5+/-1oN', fs.fuzzies.to_s )
@@ -138,38 +143,22 @@ class TestFuzzyStringSampler < Test::Unit::TestCase
   def test_raw_uniform_distribution
     fs = FuzzyString.new("5+/-1U")
     assert_in_delta( 4.692, fs.sample.to_f, 0.0005 )
-    100.times do
-      sample = fs.sample.to_f
-      assert( (4..6).include?(sample),
-              "#{sample} not within [4,6]" )
-    end
+    100.times { assert_in_delta( 5, fs.sample.to_f, 1 ) }
   end
-
+  
   def test_raw_uniform_distribution_explicit
     fs = FuzzyString.new("5+/-1", :randu)
-    100.times do
-      sample = fs.sample.to_f
-      assert( (4..6).include?(sample),
-              "#{sample} not within [4,6]" )
-    end
+    100.times { assert_in_delta( 5, fs.sample.to_f, 1 ) }
   end
 
   def test_raw_uniform_distribution_with_decimal_tolerance
     fs = FuzzyString.new("0.7+/-0.25U 'tag'", :randu )
-    100.times do |i|
-      sample = fs.sample.to_f
-      assert( (0.45..0.95).include?(sample),
-              "#{sample} not within [0.45,0.95]" )
-    end
+    100.times { assert_in_delta( 0.7, fs.sample.to_f, 0.25 ) }
   end
 
   def test_percent_uniform_distribution
     fs = FuzzyString.new("5+/-50%U")
-    100.times do
-      sample = fs.sample.to_f
-      assert( (2.5..7.5).include?(sample),
-              "#{sample} not within [2.5,7.5]" )
-    end
+    100.times { assert_in_delta( 5, fs.sample.to_f, 2.5 ) }
   end
 
   def test_order_uniform_distribution
@@ -181,6 +170,17 @@ class TestFuzzyStringSampler < Test::Unit::TestCase
     end
   end
 
+  def test_raw_triangular_distribution
+    fs = FuzzyString.new("5+/-1T")
+    100.times { assert_in_delta( 5, fs.sample.to_f, 1 ) }
+    assert_in_delta( 5.159, fs.sample.to_f, 0.0005 )
+  end
+  
+  def test_explicit_triangular_distribution
+    fs = FuzzyString.new("3+/-1", :randt)
+    100.times { assert_in_delta( 3, fs.sample.to_f, 1) }
+  end
+  
   def test_order_distribution_around_zero
     fs = FuzzyString.new("0+/-1o")
     assert_equal( 0, fs.sample.to_f )

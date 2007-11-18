@@ -16,7 +16,7 @@ module Uq4sim
                      \s*\+\/-\s*
                      (#{FLOAT}+)         # $2 : tolerance
                      (%|o)?              # $3 : type of tolerance (optional)
-                     (N|U)?              # $4 : distribution to use (opt)
+                     (N|U|T)?            # $4 : distribution to use (opt)
                      (_(\d+[.]?\d*[#{Scanf::FormatString::SPECIFIERS}]))?
                                          # $6 : simplified format specifier (opt)
                      (\s*(["'])(.*?)\8)? # $9 : tag (funky stuff is "-matching)
@@ -49,17 +49,17 @@ module Uq4sim
       sigma = 0.5*tolerance
       case type
       when '%' then
-        mean + send(@distribution,mean*sigma/100)
+        mean + send( @distribution, mean*sigma/100 )
       when 'o' then
         if mean < 0 then
-          -10**(Math.log10(-mean)+send(@distribution,sigma))
+          -10**( Math.log10(-mean) + send( @distribution, sigma ) )
         elsif mean > 0
-          10**(Math.log10(mean)+send(@distribution,sigma))
+           10**( Math.log10( mean) + send( @distribution, sigma ) )
         else # necessary for Ruby < 1.8.6
           0
         end
       else
-        mean + send(@distribution,sigma)
+        mean + send( @distribution, sigma )
       end
     end
 
@@ -67,6 +67,7 @@ module Uq4sim
       case glyph
       when 'U' then @distribution = :randu
       when 'N' then @distribution = :randn
+      when 'T' then @distribution = :randt
       else
         raise "unknown distribution: >>#{glyph}<<"
       end
