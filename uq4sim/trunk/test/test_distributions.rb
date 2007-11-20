@@ -102,30 +102,3 @@ class TestTriangularDistribution < Test::Unit::TestCase
   end
 
 end
-
-class TestInverseNormalDistribution < Test::Unit::TestCase
-
-  include Uq4sim
-
-  def test_tails_and_midrange_with_known_values
-    assert_in_delta( -4,      inverse_normal_cdf(0.00003), 0.05 )
-    assert_in_delta( -3,      inverse_normal_cdf(0.0012),  0.05 )
-    assert_in_delta( -2,      inverse_normal_cdf(0.025),   0.05 )
-    assert_in_delta( -1,      inverse_normal_cdf(0.16),    0.05 )
-    assert_in_delta( -0.6745, inverse_normal_cdf(0.25), 0.00005 )
-    assert_equal(     0,      inverse_normal_cdf(0.5) )
-    assert_in_delta(  0.6745, inverse_normal_cdf(0.75), 0.00005 )
-    assert_in_delta(  1,      inverse_normal_cdf(0.84),    0.05 )
-    assert_in_delta(  2,      inverse_normal_cdf(0.975),   0.05 )
-    assert_in_delta(  3,      inverse_normal_cdf(0.9988),  0.05 )
-    assert_in_delta(  4,      inverse_normal_cdf(0.99997), 0.05 )
-  end
-
-  def test_raises_exception_when_p_is_out_of_range
-    assert_raise( RuntimeError ){ inverse_normal_cdf(-0.1) }
-    assert_raise( RuntimeError ){ inverse_normal_cdf(0) }
-    assert_raise( RuntimeError ){ inverse_normal_cdf(1) }
-    assert_raise( RuntimeError ){ inverse_normal_cdf(1.1) }
-  end
-
-end
