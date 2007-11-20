@@ -3,7 +3,8 @@
 require 'rubygems'
 require 'hoe'
 
-require './lib/uq4sim'
+$:.push 'lib'
+require 'uq4sim'
 
 Hoe.new('uq4sim', Uq4sim::VERSION) do |p|
   p.rubyforge_name = 'nasarb'
