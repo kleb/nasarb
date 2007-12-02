@@ -5,7 +5,6 @@ README.txt
 Rakefile
 bin/uq4sim
 lib/uq4sim.rb
-lib/uq4sim/config.rb
 lib/uq4sim/correlation.rb
 lib/uq4sim/distributions.rb
 lib/uq4sim/enumerable_sum.rb

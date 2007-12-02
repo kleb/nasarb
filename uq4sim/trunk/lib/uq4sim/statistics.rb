@@ -82,18 +82,13 @@ module Uq4sim
 
 end
 
-# FIXME: monkey patch
-
-class Array
-  include Uq4sim::Statistics
-end
-
 ##
-# sample
+# Sample usage, complete with ASCII histogram plot
 
 if __FILE__ == $0 then
   require 'distributions'
   class Array; include Uq4sim::Statistics; end
+  include Uq4sim
   N = 10000
   samples = []
   (1..N).each{ |i| samples << randn(0.5) }
@@ -101,7 +96,7 @@ if __FILE__ == $0 then
   puts "             range: #{samples.min}...#{samples.max}"
   puts "              mean: #{samples.mean}"
   puts "            median: #{samples.median}"
-  puts "standard deviation: #{Math.sqrt(samples.variance)}"
+  puts "standard deviation: #{samples.standard_deviation}"
   puts "          skewness: #{samples.skewness}"
   puts "          kurtosis: #{samples.kurtosis}"
   bins = Hash.new{ |h,k| h[k]=0 }

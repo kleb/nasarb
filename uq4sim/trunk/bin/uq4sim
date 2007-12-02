@@ -5,7 +5,7 @@ begin require 'rubygems'; rescue LoadError; end
 $:.push "#{File.dirname $0}/../lib"
 require 'uq4sim'
 
-Uq4sim::runit
+Uq4sim.run
 
 #--
 # Copyright 2007 United States Government as represented by

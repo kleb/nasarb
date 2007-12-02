@@ -46,7 +46,7 @@ module Uq4sim
     end
 
     def compute_sample( mean, tolerance, type )
-      sigma = 0.5*tolerance
+      sigma = 0.5*tolerance # FIXME
       case type
       when '%' then
         mean + send( @distribution, mean*sigma/100 )

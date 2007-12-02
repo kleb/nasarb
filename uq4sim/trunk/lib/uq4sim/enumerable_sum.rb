@@ -1,8 +1,7 @@
-module Enumerable # FIXME: refactor away this monkey patch
+module Enumerable
   
   ##
-  # shorthand function to sum elements
-  
+  # Shorthand function to sum elements
   def sum
     inject{ |sum,e| sum + e }
   end
