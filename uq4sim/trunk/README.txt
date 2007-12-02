@@ -19,7 +19,8 @@ namely with plus/minus tolerances like, 5.25+/-0.01.
 This approach is robust and readily adapted to various application
 domains because it does not rely on parsing the <em>particular</em>
 structure of input file formats.  Instead, tolerances of a standard
-format are added to existing fields within an input file.
+format are added to existing fields within an input file so they
+are simple to find.
 
 == FEATURES/PROBLEMS:
   
@@ -33,14 +34,17 @@ format are added to existing fields within an input file.
 == SYNOPSIS:
 
 * <tt>uq4sim</tt>
+* [edit uq4sim.yml configuration file]
+* <tt>uq4sim</tt>
 
 == REQUIREMENTS:
 
-* Ruby with Rubygems
+* The Ruby programming language
 
 == INSTALL:
 
-* <tt>sudo gem install uq4sim</tt>
+* With RubyGems: <tt>sudo gem install uq4sim</tt>
+* Via tarball: <tt>tar zxf uq4sim-#.#.#.tar.gz</tt>
 
 == LICENSE:
 
