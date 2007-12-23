@@ -1,8 +1,7 @@
 FUnit
 
-* http://rubyforge.org/projects/funit
-* http://funit.rubyforge.org
-* mailto:funit-support@rubyforge.org
+* http://rubyforge.org/projects/nasarb
+* http://nasrb.rubyforge.org
 
 == DESCRIPTION:
 
