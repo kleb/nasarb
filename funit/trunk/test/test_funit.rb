@@ -54,7 +54,7 @@ class TestFunit < Test::Unit::TestCase
              .and.a-2*spacing(real(a)).le.b)
     EOF
     assert_equal ans.chomp, @condition
-    assert_equal '"b (",b,") is not",a,"within",2*spacing(real(a))', @message
+    assert_equal %|"b (",b,") is not", &\n a,"within",2*spacing(real(a))|, @message
     isrealequal("IsRealEqual(1.0,m(1,1))")
     ans = <<-EOF
 .not.(1.0+2*spacing(real(1.0)).ge.m(1,1) &
