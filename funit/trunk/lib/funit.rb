@@ -1,4 +1,10 @@
-require 'fortran'
+begin
+  require 'rubygems'
+  require 'fortran'
+rescue LoadError
+  STDERR.puts "gem install fortran"
+  exit 1
+end
 
 require 'funit/compiler'
 require 'funit/functions'
