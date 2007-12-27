@@ -1,0 +1,15 @@
+0a1,14
+> === 0.9.7 / 2007-10-24
+> * 4 major enchancement
+>   * User can now use 'funit --clean' to remove the generated files
+>   * Source directory and test directory can be different: specify source dir with -s (or --source) flag
+>   * Only the minimum number of files that need recompilation are compiled
+>   * The .fun file name is not constrained anymore, but now each test suite must be surrounded by 'test_suite name' and 'end test_suite', where name is the name of the module to be tested
+>   * Multiple test suites can exist inside the same file
+> * 5 minor enchancement
+>   * Change blocks nomenclature: beginTest -> test and endTest -> end test (and similarly for setup and teardown)
+>   * Change assertions nomenclature (eg. IsEqual -> assert_equal)
+>   * Added one new assertion: assert_array_equal
+>   * Added a summary of all the test suites results, printed at the end
+>   * Minor code clean-up
+>                      
