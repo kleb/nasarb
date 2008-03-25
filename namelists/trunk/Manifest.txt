@@ -1,0 +1,7 @@
+History.txt
+Manifest.txt
+README.txt
+Rakefile
+bin/namelists
+lib/namelists.rb
+test/test_namelists.rb
