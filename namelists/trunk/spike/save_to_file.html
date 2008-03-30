@@ -1,0 +1,401 @@
+<html>
+<head>
+  <title>LAURA Namelist Generator</title> 
+  <script type="text/javascript" src="prototype-1.6.0.2.js"></script>
+  <script type="text/javascript">
+    // TODO:
+    // - cross-browser save
+    // - validation
+    // - generalize to handle a struct worth of fields, validations,
+    //   and mouseover tips
+    // - layout and style
+   
+// Write file to disk functions from http://tiddlywiki.com created
+// by Jeremy Ruston, Copyright (c) UnaMesa Association 2004-2007
+function saveFile(filePath,content){
+  var saved = mozillaSaveFile(filePath,content);
+  if (!saved) saved = ieSaveFile(filePath,content);
+  return saved;
+}
+function mozillaSaveFile(filePath,content){
+  if (window.Components) {
+    try {
+      netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+      var file = Components.classes["@mozilla.org/file/local;1"].
+                   createInstance(Components.interfaces.nsILocalFile);
+      file.initWithPath(filePath);
+      if (!file.exists()) file.create(0,0664);
+      var out = Components.classes["@mozilla.org/network/file-output-stream;1"].
+                createInstance(Components.interfaces.nsIFileOutputStream);
+      out.init(file,0x20|0x02,00004,null);
+      out.write(content,content.length);
+      out.flush();
+      out.close();
+      return true;
+    } catch(ex) {
+      return false;
+    }
+  }
+  return null;
+}
+function ieSaveFile(filePath,content){
+  try {
+    var fso = new ActiveXObject("Scripting.FileSystemObject");
+  } catch(ex) {
+    return null;
+  }
+  var file = fso.OpenTextFile(filePath,2,-1,0);
+  file.Write(content);
+  file.Close();
+  return true;
+}
+    function dirname(path){ return path.match( /.*[\\\/]/ ) };
+    function process(form){
+      var filePath = dirname(document.location.pathname)+'laura_namelist_data';
+      with(form){
+        var fields =[
+         {name: 'velocity_ref', value: $F(velocity_ref) },
+         {name: 'density_ref',  value: $F(density_ref) },
+         {name: 'tref', value: $F(tref) },
+         {name: 'alpha', value: $F(alpha) },
+         {name: 'yaw', value: $F(yaw) },
+         {name: 'twall_bc', value: $F(twall_bc) },
+         {name: 'chem_flag', value: $F(chem_flag) },
+         {name: 'therm_flag', value: $F(therm_flag) },
+         {name: 'turb_model_type', value: $F(turb_model_type) },
+         {name: 'turb_int_inf', value: $F(turb_int_inf) },
+         {name: 'turb_vis_ratio_inf', value: $F(turb_vis_ratio_inf) },
+         {name: 'prandtl_turb', value: $F(prandtl_turb) },
+         {name: 'schmidt_turb', value: $F(schmidt_turb) },
+         {name: 'xtr', value: $F(xtr) },
+         {name: 'ivisc', value: $F(ivisc) },
+         {name: 'irest', value: $F(irest) },
+         {name: 'ncyc', value: $F(ncyc) },
+         {name: 'jupdate', value: $F(jupdate) },
+         {name: 'ntran', value: $F(ntran) },
+         {name: 'nitfo', value: $F(nitfo) },
+         {name: 'cfl1', value: $F(cfl1) },
+         {name: 'cfl2', value: $F(cfl2) },
+         {name: 'iramp', value: $F(iramp) },
+         {name: 'iterwrt', value: $F(iterwrt) },
+         {name: 'rmstol', value: $F(rmstol) },
+         {name: 'itime', value: $F(itime) },
+         {name: 'dt', value: $F(dt) },
+         {name: 'subiters', value: $F(subiters) },
+         {name: 'rf_inv', value: $F(rf_inv) },
+         {name: 'rf_vis', value: $F(rf_vis) },
+         {name: 'epsa', value: $F(epsa) },
+         {name: 'hrs', value: $F(hrs) },
+         {name: 'movegrd', value: $F(movegrd) },
+         {name: 'maxmoves', value: $F(maxmoves) },
+         {name: 'errd', value: $F(errd) },
+         {name: 'kmax_d', value: $F(kmax_d) },
+         {name: 'nexch', value: $F(nexch) },
+         {name: 'navier_stokes', value: $F(navier_stokes) },
+         {name: 'nordbc', value: $F(nordbc) },
+         {name: 'frac_line_implicit', value: $F(frac_line_implicit) },
+         {name: 'surface_temperature_type_0', value: $F(surface_temperature_type_0) },
+         {name: 'catalysis_model_0', value: $F(catalysis_model_0) },
+         {name: 'emiss_a_0', value: $F(emiss_a_0) },
+         {name: 'ept', value: $F(ept) },
+         {name: 'axi_symmetric', value: $F(axi_symmetric) },
+         {name: 'two_dimensional', value: $F(two_dimensional) },
+         {name: 'xmc', value: $F(xmc) },
+         {name: 'ymc', value: $F(ymc) },
+         {name: 'zmc', value: $F(zmc) },
+         {name: 'length_ref', value: $F(length_ref) },
+         {name: 'sref', value: $F(sref) },
+         {name: 'cref', value: $F(cref) }
+	];
+        var template = new Template(' #{name} = #{value}\n');
+        var contents = '&laura_namelist\n';
+        fields.each( function(tuple){ contents += template.evaluate(tuple) } );
+        contents += '/\n';
+        alert(contents);
+      }
+      if (!saveFile(filePath, contents)) alert('save failed');
+    }
+  </script>
+</head>
+<body>
+
+  <form name='laura_namelist_data'>
+
+    <fieldset>
+    <legend>laura_namelist</legend>
+
+      <input type="text"
+             name="velocity_ref"
+             value="5000.0"/>
+      velocity_ref,
+      m/s<br/>
+
+      <input type="text"
+             name="density_ref"
+             value="0.001"/>
+      density_ref,
+      kg/m<sup>3</sup><br/>
+
+      <input type="text"
+             name="tref"
+             value="200."/>
+      tref<br/>
+
+      <input type="text"
+             name="alpha"
+             value="0."/>
+      alpha<br/>
+
+      <input type="text"
+             name="yaw"
+             value="0."/>
+      yaw<br/>
+
+      <input type="text"
+             name="twall_bc"
+             value="500."/>
+      twall_bc<br/>
+
+      <input type="text"
+             name="chem_flag"
+             value="0"/>
+      chem_flag<br/>
+
+      <input type="text"
+             name="therm_flag"
+             value="0"/>
+      therm_flag<br/>
+
+      <input type="text"
+             name="turb_model_type"
+             value="0"/>
+      turb_model_type<br/>
+
+      <input type="text"
+             name="turb_int_inf"
+             value="0.001"/>
+      turb_int_inf<br/>
+
+      <input type="text"
+             name="turb_vis_ratio_inf"
+             value="0.01"/>
+      turb_vis_ratio_inf<br/>
+
+      <input type="text"
+             name="prandtl_turb"
+             value="0.9"/>
+      prandtl_turb<br/>
+
+      <input type="text"
+             name="schmidt_turb"
+             value="0.9"/>
+      schmidt_turb<br/>
+
+      <input type="text"
+             name="xtr"
+             value="0."/>
+      xtr<br/>
+
+      <input type="text"
+             name="ivisc"
+             value="2"/>
+      ivisc<br/>
+
+      <input type="text"
+             name="irest"
+             value="0"/>
+      irest<br/>
+
+      <input type="text"
+             name="ncyc"
+             value="6000"/>
+      ncyc<br/>
+
+      <input type="text"
+             name="jupdate"
+             value="20"/>
+      jupdate<br/>
+
+      <input type="text"
+             name="ntran"
+             value="20"/>
+      ntran<br/>
+
+      <input type="text"
+             name="nitfo"
+             value="500"/>
+      nitfo<br/>
+
+      <input type="text"
+             name="cfl1"
+             value="5.e+00"/>
+      cfl1<br/>
+
+      <input type="text"
+             name="cfl2"
+             value="5.e+00"/>
+      cfl2<br/>
+
+      <input type="text"
+             name="iramp"
+             value="200"/>
+      iramp<br/>
+
+      <input type="text"
+             name="iterwrt"
+             value="200"/>
+      iterwrt<br/>
+
+      <input type="text"
+             name="rmstol"
+             value="1.e-10"/>
+      rmstol<br/>
+
+      <input type="text"
+             name="itime"
+             value="0"/>
+      itime<br/>
+
+      <input type="text"
+             name="dt"
+             value="0.1"/>
+      dt<br/>
+
+      <input type="text"
+             name="subiters"
+             value="1"/>
+      subiters<br/>
+
+      <input type="text"
+             name="rf_inv"
+             value="3.0"/>
+      rf_inv<br/>
+
+      <input type="text"
+             name="rf_vis"
+             value="1.0"/>
+      rf_vis<br/>
+
+      <input type="text"
+             name="epsa"
+             value=".25"/>
+      epsa<br/>
+
+      <input type="text"
+             name="hrs"
+             value="10.0"/>
+      hrs<br/>
+
+      <input type="text"
+             name="movegrd"
+             value="100"/>
+      movegrd<br/>
+
+      <input type="text"
+             name="maxmoves"
+             value="0"/>
+      maxmoves<br/>
+
+      <input type="text"
+             name="errd"
+             value="0.005"/>
+      errd<br/>
+
+      <input type="text"
+             name="kmax_d"
+             value="64"/>
+      kmax_d<br/>
+
+      <input type="text"
+             name="nexch"
+             value="1"/>
+      nexch<br/>
+
+      <input type="text"
+             name="navier_stokes"
+             value=".false."/>
+      navier_stokes<br/>
+
+      <input type="text"
+             name="nordbc"
+             value="1"/>
+      nordbc<br/>
+
+      <input type="text"
+             name="frac_line_implicit"
+             value="0.7"/>
+      frac_line_implicit<br/>
+
+      <input type="text"
+             name="surface_temperature_type_0"
+             value="'constant'"/>
+      surface_temperature_type_0<br/>
+
+      <input type="text"
+             name="catalysis_model_0"
+             value="'super-catalytic'"/>
+      catalysis_model_0<br/>
+
+      <input type="text"
+             name="emiss_a_0"
+             value="0.90"/>
+      emiss_a_0<br/>
+
+      <input type="text"
+             name="ept"
+             value="0.0010"/>
+      ept<br/>
+
+      <input type="text"
+             name="axi_symmetric"
+             value=".false."/>
+      axi_symmetric<br/>
+
+      <input type="text"
+             name="two_dimensional"
+             value=".false."/>
+      two_dimensional<br/>
+
+      <input type="text"
+             name="xmc"
+             value="0.0000"/>
+      xmc<br/>
+
+      <input type="text"
+             name="ymc"
+             value="0."/>
+      ymc<br/>
+
+      <input type="text"
+             name="zmc"
+             value="-0.0000"/>
+      zmc<br/>
+
+      <input type="text"
+             name="length_ref"
+             value="0.01000"/>
+      length_ref<br/>
+
+      <input type="text"
+             name="sref"
+             value="1258.16644"/>
+      sref<br/>
+
+      <input type="text"
+             name="cref"
+             value="20.00000"/>
+      cref<br/>
+
+    </fieldset>
+
+    <input type="button"
+           value="write laura_namelist_data"
+           onclick="process(this.form)"/>
+
+    <input type="reset"
+           value="reset form"/>
+
+  </form>
+
+</body>
+</html>

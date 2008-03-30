@@ -1,5 +1,6 @@
 History.txt
 Manifest.txt
+License.txt
 README.txt
 Rakefile
 bin/namelists

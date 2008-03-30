@@ -11,41 +11,43 @@ program sample
   namelist /object/ volume, density, parts, &
                     furry, color, name
 
-! begin namelist /object/ description
+! namelist /object/ description
 
   volume = 1.0
 
-!    type: float
-!   units: m^3
-! minimum: 0.0
-! details: Volume of the object as Archimedes would have measured it,
-!          i.e., by the displacement.
+!     type: real
+!    units: m^3
+!   min-ex: 0.0
+!  details: >
+!    Volume of the object as Archimedes would have measured it,
+!    i.e., by displacement.
 
   density = 0.1
 
-!    type: float
+!    type: real
 !   units: kg/m^3
-! minimum: 0.0
-! maximum: 1.0e+3
+!  min-ex: 0.0
+!     max: 1.0e+3
 
   parts = 1
 
-!  prompt: number of parts
-!    type: integer
-! minimum: 1
+!  label: number of parts
+!   type: integer
+!    min: 1
 
   furry = .false.
 
-!    type: boolean
+!  type: logical
 
   color = 'black'
 
-!    type: enumerable
-! options: [ 'black', 'red', 'blue' ]
+!         type: enum
+!  enumerators: [ black, red, blue ]
 
   name = ''
 
-! maximum: 8
+!  type: character
+!   max: 8
 
 ! end namelist /object/ description
 
