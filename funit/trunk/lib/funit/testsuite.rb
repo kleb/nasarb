@@ -19,6 +19,7 @@ module Funit
       @line_number = 'blank'
       @suite_name = suite_name
       @suite_content = suite_content
+      return nil unless funit_exists?(suite_name)
       File.delete(suite_name+"_fun.f90") if File.exists?(suite_name+"_fun.f90")
       super(suite_name+"_fun.f90","w")
       @tests, @setup, @teardown = [], [], []
