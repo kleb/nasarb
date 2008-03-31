@@ -45,7 +45,7 @@ module Funit
       write_assert
     end
 
-    def assertequal(line)
+    def assert_equal(line)
       line.match(/\((\w+\(.*\)|[^,]+),(.+)\)/)
       @type = 'AssertEqual'
       @condition = ".not.(#$1==#$2)"
