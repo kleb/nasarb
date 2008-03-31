@@ -29,7 +29,7 @@ module Funit
 
       write(*,*)
       write(*,'(a)') "==========[ SUMMARY ]=========="
-      <% max_length = test_suites.max{|a,b| a.length<=>b.length}.length -%>
+      <% max_length = test_suites.empty? ? 0 : test_suites.max.length -%>
       <% test_suites.each_with_index do |test_suite,i| -%>
       write(*,'(a<%=max_length+2%>)',advance="no") " <%= test_suite %>:"
       if ( numFailures(<%= i+1 %>) == 0 ) then
