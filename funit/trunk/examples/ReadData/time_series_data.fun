@@ -1,6 +1,6 @@
 test_suite time_series_data
 
-  character(len=*), parameter :: FILE = 'values.txt'
+  character(len=10), parameter :: FILE = 'values.txt'
 
 setup
   open(8, file=FILE)
@@ -26,7 +26,7 @@ test load_time_series_data_from_file
 end test
 
 teardown
-  call system('rm '//FILE)
+  call system('/bin/rm '//FILE)
 end teardown
 
 end test_suite
