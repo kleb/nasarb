@@ -1,7 +1,7 @@
 FUnit
 
 * http://rubyforge.org/projects/nasarb
-* http://nasrb.rubyforge.org
+* http://nasarb.rubyforge.org
 
 == DESCRIPTION:
 
