@@ -40,7 +40,7 @@ class TestFunit < Test::Unit::TestCase
     @suite_name = "dummy"
     @test_name = "dummy"
     @line_number = "dummy"
-    isequal("IsEqual(1.0,m(1,1))")
+    assertequal("AssertEqual(1.0,m(1,1))")
     assert_equal '.not.(1.0==m(1,1))', @condition
   end 
 
@@ -48,13 +48,13 @@ class TestFunit < Test::Unit::TestCase
     @suite_name = "dummy"
     @test_name = "dummy"
     @line_number = "dummy"
-    isrealequal("IsRealEqual(a,b)")
+    assert_real_equal("AssertRealEqual(a,b)")
     ans = <<-EOF
 .not.( (a &\n        +2*spacing(real(a)) ) &\n        .ge. &\n        (b) &\n            .and. &\n     (a &\n      -2*spacing(real(a)) ) &\n      .le. &\n       (b) )
     EOF
     assert_equal ans.chomp, @condition
     assert_equal %|"b (", &\n b, &\n  ") is not", &\n a,&\n "within", &\n  2*spacing(real(a))|, @message
-    isrealequal("IsRealEqual(1.0,m(1,1))")
+    assert_real_equal("AssertRealEqual(1.0,m(1,1))")
     ans = <<-EOF
 .not.( (1.0 &\n        +2*spacing(real(1.0)) ) &\n        .ge. &\n        (m(1,1)) &\n            .and. &\n     (1.0 &\n      -2*spacing(real(1.0)) ) &\n      .le. &\n       (m(1,1)) )
     EOF
@@ -69,7 +69,7 @@ class TestFunit < Test::Unit::TestCase
       f.printf "module unita\n  integer :: a = 5\nend module unita\n"
     end
     File.open('unit.fun','w') do |f|
-      f.printf "beginTest a_gets_set\n  IsEqual(5, a)\nendTest\n"
+      f.printf "beginTest a_gets_set\n  AssertEqual(5, a)\nendTest\n"
     end
     assert_nothing_raised{run_tests}
   end
@@ -85,7 +85,7 @@ class TestFunit < Test::Unit::TestCase
       f.printf "module unitb\n  integer,parameter :: b = 5\nend module unitb\n"
     end
     File.open('unit.fun','w') do |f|
-      f.printf "beginTest a_gets_set\n  IsEqual(5, a)\nendTest\n"
+      f.printf "beginTest a_gets_set\n  AssertEqual(5, a)\nendTest\n"
     end
     assert_nothing_raised{run_tests}
  end

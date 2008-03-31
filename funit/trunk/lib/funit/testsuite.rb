@@ -9,12 +9,13 @@ module Funit
 
   class TestSuite < File
 
-    KEYWORDS = Regexp.union(/(end\s+)?(setup|teardown|test)/i,Assertions::ASSERTION_PATTERN)
+    KEYWORDS = Regexp.union(/(end\s+)?(setup|teardown|test)/i,
+                            Assertions::ASSERTION_PATTERN)
     COMMENT_LINE = /^\s*!/
     
     include Funit #FIXME
 
-    def initialize suite_name, suite_content
+    def initialize suite_name, suite_content=''
       @line_number = 'blank'
       @suite_name = suite_name
       @suite_content = suite_content
