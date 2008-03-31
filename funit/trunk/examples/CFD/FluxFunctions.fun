@@ -1,47 +1,51 @@
+test_suite FluxFunctions
+
 real :: leftState, rightState, interfaceFlux
 
-beginsetup
+setup
   leftState  = 0
   rightState = 1
-endsetup
+end setup
 
-beginTest FluxZero
+test FluxZero
   real :: state
   state = 0
-  IsEqualWithin( 0, Flux(state), 0.00001 )
-endTest
+  Assert_Equal_Within( 0, Flux(state), 0.00001 )
+end test
  
-beginTest FluxOne
+test FluxOne
   real :: state = 1
-  IsEqualWithin( 0.5, Flux(state), 0.00001 )
-endTest
+  Assert_Equal_Within( 0.5, Flux(state), 0.00001 )
+end test
 
-beginTest RoeAvgZero
-  IsRealEqual( 0, RoeAvg(0.0,0.0) )
-  IsFalse( RoeAvg(0.0,0.0)==1 )
-endTest
+test RoeAvgZero
+  Assert_Real_Equal( 0, RoeAvg(0.0,0.0) )
+  Assert_False( RoeAvg(0.0,0.0)==1 )
+end test
 
-beginTest RoeAvgKnown
-  IsRealEqual( 0.5, RoeAvg(leftState,rightState) )
-  IsTrue( RoeAvg(leftState,rightState) > 0 )
-endTest
+test RoeAvgKnown
+  Assert_Real_Equal( 0.5, RoeAvg(leftState,rightState) )
+  Assert_True( RoeAvg(leftState,rightState) > 0 )
+end test
 
-beginTest CentralFluxKnown
+test CentralFluxKnown
   call CentralFlux( leftState, rightState, interfaceFlux )
-  IsEqualWithin( 0.25, interfaceFlux, 0.001 )
-  IsEqualWithin( 0.25, interfaceFlux, 0.00000001 )
-  IsEqual( 0.25, interfaceFlux )
-endTest
+  Assert_Equal_Within( 0.25, interfaceFlux, 0.001 )
+  Assert_Equal_Within( 0.25, interfaceFlux, 0.00000001 )
+  Assert_Equal( 0.25, interfaceFlux )
+end test
 
-beginTest RoeFluxExpansionShock
+test RoeFluxExpansionShock
   leftState = -1
   call RoeFlux( leftState, rightState, interfaceFlux )
-  IsEqual( 0.5, interfaceFlux )
-endTest
+  Assert_Equal( 0.5, interfaceFlux )
+end test
 
-beginTest RoeFluxZero
+test RoeFluxZero
   rightState = 0
   call RoeFlux( leftState, rightState, interfaceFlux )
-  IsRealEqual( 0, interfaceFlux )
-  IsEqual( 0, interfaceFlux )
-endTest
+  Assert_Real_Equal( 0, interfaceFlux )
+  Assert_Equal( 0, interfaceFlux )
+end test
+
+end test_suite

@@ -1,49 +1,51 @@
+test_suite StopWatch
+
 integer, dimension(8) :: dateAndTime1, dateAndTime2
 real :: seconds
 
-beginSetup
+setup
   NotInitialized = .TRUE.
   last    = 0
   seconds = HUGE(0.0)
-endSetup
+end setup
 
-beginTest SystemDateAndTimeWorks
+test SystemDateAndTimeWorks
  call date_and_time(values=dateAndTime1)
- IsTrue( dateAndTime1(1) /= -huge(0) )
- IsTrue( size(dateAndTime1,1) == 8 )
-endTest
+ Assert_True( dateAndTime1(1) /= -huge(0) )
+ Assert_True( size(dateAndTime1,1) == 8 )
+end test
 
 ! test secBetween
-beginTest OneMSecDifference
+test OneMSecDifference
   dateAndTime1 = (/ 2000, 1, 1, 0, 0, 0, 0, 0 /)
   dateAndTime2 = (/ 2000, 1, 1, 0, 0, 0, 0, 1 /)
   seconds = SecBetween(dateAndTime1, dateAndTime2)
-  IsRealEqual( 0.001, seconds)
-endTest
+  Assert_Real_Equal( 0.001, seconds)
+end test
 
-beginTest MinuteRollover
+test MinuteRollover
   dateAndTime1 = (/ 2000, 1, 1, 0, 0, 0,59, 0 /)
   dateAndTime2 = (/ 2000, 1, 1, 0, 0, 1, 0, 0 /)
   seconds = SecBetween(dateAndTime1, dateAndTime2)
-  IsRealEqual( 1.0, seconds )
-endTest
+  Assert_Real_Equal( 1.0, seconds )
+end test
 
 ! test secSinceLast
-beginTest InitializationState
-  IsTrue(notInitialized)
+test InitializationState
+  Assert_True(notInitialized)
   seconds = secSinceLast()
-  IsFalse(notInitialized)
+  Assert_False(notInitialized)
   seconds = secSinceLast()
-  IsFalse(notInitialized)
-endTest
+  Assert_False(notInitialized)
+end test
 
-beginTest InitiallyReturnsZero
+test InitiallyReturnsZero
   seconds = secSinceLast()
-  IsRealEqual( 0.0, seconds )
+  Assert_Real_Equal( 0.0, seconds )
   call timeDelay(seconds)
   seconds = secSinceLast()
-  IsTrue( seconds /= 0.0 )
-endTest
+  Assert_True( seconds /= 0.0 )
+end test
 
 subroutine timeDelay (sum)
   integer :: i
@@ -53,14 +55,14 @@ subroutine timeDelay (sum)
   enddo
 end subroutine timeDelay
 
-beginTest ComputesSeconds
+test ComputesSeconds
   seconds = secSinceLast()
   call timeDelay (seconds)
   seconds = secSinceLast()
-  IsTrue( seconds > 0.0 )
-endTest
+  Assert_True( seconds > 0.0 )
+end test
 
-beginTest ComputesSecondsSpecial
+test ComputesSecondsSpecial
   real :: expectedSeconds
 
   seconds = secSinceLast()
@@ -69,5 +71,7 @@ beginTest ComputesSecondsSpecial
   seconds = secSinceLast()
   dateAndTime2 = last
   expectedSeconds = secBetween(dateAndTime1,dateAndTime2)
-  IsRealEqual( expectedSeconds, seconds )
-endTest
+  Assert_Real_Equal( expectedSeconds, seconds )
+end test
+
+end test_suite

@@ -1,28 +1,33 @@
-character(len=*), parameter :: FILE = 'values.txt'
+test_suite time_series_data
 
-beginSetup
+  character(len=*), parameter :: FILE = 'values.txt'
+
+setup
   open(8, file=FILE)
     write(8,'(a)'), '200609300000 0.223200546265E+003'
     write(8,'(a)'), '200609300132 0.226001495361E+003'
   close(8)
-endSetup
+end setup
 
-beginTest load_time_series_data_from_file
-  call read_time_series( FILE )
-  IsEqual(        2006, ts_data(1)%date_time%year )
-  IsEqual(           9, ts_data(1)%date_time%month )
-  IsEqual(          30, ts_data(1)%date_time%day )
-  IsEqual(           0, ts_data(1)%date_time%hour )
-  IsEqual(           0, ts_data(1)%date_time%minute )
-  IsEqualWithin( 223.2, ts_data(1)%value, 0.1 )
-  IsEqual(        2006, ts_data(2)%date_time%year )
-  IsEqual(           9, ts_data(2)%date_time%month )
-  IsEqual(          30, ts_data(2)%date_time%day )
-  IsEqual(           1, ts_data(2)%date_time%hour )
-  IsEqual(          32, ts_data(2)%date_time%minute )
-  IsEqualWithin( 226.0, ts_data(2)%value, 0.1 )
-endTest
+test load_time_series_data_from_file
+    call read_time_series( FILE )
+    Assert_Equal(        2006, ts_data(1)%date_time%year )
+    Assert_Equal(           9, ts_data(1)%date_time%month )
+    Assert_Equal(          30, ts_data(1)%date_time%day )
+    Assert_Equal(           0, ts_data(1)%date_time%hour )
+    Assert_Equal(           0, ts_data(1)%date_time%minute )
+    Assert_Equal_Within( 223.2, ts_data(1)%value, 0.1 )
+    Assert_Equal(        2006, ts_data(2)%date_time%year )
+    Assert_Equal(           9, ts_data(2)%date_time%month )
+    Assert_Equal(          30, ts_data(2)%date_time%day )
+    Assert_Equal(           1, ts_data(2)%date_time%hour )
+    Assert_Equal(          32, ts_data(2)%date_time%minute )
+    Assert_Equal_Within( 226.0, ts_data(2)%value, 0.1 )
+end test
 
-beginTeardown
-  call system('rm '//FILE)
-endTeardown
+teardown
+    call system('rm '//FILE)
+end teardown
+
+end test_suite
+
