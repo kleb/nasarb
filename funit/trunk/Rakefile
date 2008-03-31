@@ -11,10 +11,20 @@ Hoe.new('funit', Funit::VERSION) do |funit|
   funit.extra_deps << [ 'fortran', '>= 1.0.1' ]
   funit.spec_extras[:requirements] = "A Fortran compiler."
   funit.author =
-    [ 'Karen Bibb','Bil Kleb','Beth Lee-Rausch','Mike Park','Bill Wood']
+    [ 'Karen Bibb', 'Bil Kleb', 'Beth Lee-Rausch', 'Mike Park', 'Bill Wood' ]
   funit.email = 'nasarb-developers@rubyforge.org'
-  funit.clean_globs.concat %w( **/*_fun.f90 examples/**/TestRunner* **/*.o **/*.mod **/*.MOD )
+  funit.clean_globs.
+    concat %w[ **/*_fun.f90 examples/**/TestRunner* **/*.o **/*.mod **/*.MOD ]
   funit.rsync_args = '-rpv --delete' # to preserve group permissions 
+end
+
+desc "run all examples"
+task :examples do
+  Dir['examples/*'].each do |dir|
+    cd dir do
+      ruby "-Ilib ../../bin/funit"
+    end
+  end
 end
 
 # vim: syntax=Ruby
