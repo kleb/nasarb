@@ -5,16 +5,15 @@ FUnit
 
 == DESCRIPTION:
 
-FUnit is a unit testing framework for Fortran modules.
+FUnit is a unit testing framework for Fortran.
 
 Unit tests are written as Fortran fragments that use a small
 set of testing-specific keywords and functions.  FUnit transforms
 these fragments into valid Fortran code, compiles, links, and
-runs them against the module under test.
+runs them against the code under test.
 
 FUnit is {opinionated software}[http://www.oreillynet.com/pub/a/network/2005/08/30/ruby-rails-david-heinemeier-hansson.html], which values convention over
 configuration. Specifically, FUnit,
-
 * requires a Fortran 95 compiler,
 * only supports testing routines contained in modules,
 * requires tests to be stored along side the code under test, and
