@@ -42,7 +42,7 @@ class TestFunit < Test::Unit::TestCase
     @line_number = "dummy"
     assertequal("AssertEqual(1.0,m(1,1))")
     assert_equal '.not.(1.0==m(1,1))', @condition
-  end 
+  end
 
   def test_is_real_equal
     @suite_name = "dummy"
