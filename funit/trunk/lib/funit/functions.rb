@@ -38,7 +38,7 @@ module Funit
       <% end %>
       print *, ""
     end program TestRunner
-    }.gsub(/^/,'    '), nil, '<>' # turn off newlines due to <%%>
+    }.gsub(/^    /,''), nil, '<>' # turn off newlines due to <%%>
 
   MAKEFILE = ERB.new(%q{
     # makefile to compile TestRunner.f90
