@@ -50,15 +50,13 @@ class TestFunit < Test::Unit::TestCase
     @line_number = "dummy"
     isrealequal("IsRealEqual(a,b)")
     ans = <<-EOF
-.not.(a+2*spacing(real(a)).ge.b &
-             .and.a-2*spacing(real(a)).le.b)
+.not.( (a &\n        +2*spacing(real(a)) ) &\n        .ge. &\n        (b) &\n            .and. &\n     (a &\n      -2*spacing(real(a)) ) &\n      .le. &\n       (b) )
     EOF
     assert_equal ans.chomp, @condition
-    assert_equal %|"b (",b,") is not", &\n a,"within",2*spacing(real(a))|, @message
+    assert_equal %|"b (", &\n b, &\n  ") is not", &\n a,&\n "within", &\n  2*spacing(real(a))|, @message
     isrealequal("IsRealEqual(1.0,m(1,1))")
     ans = <<-EOF
-.not.(1.0+2*spacing(real(1.0)).ge.m(1,1) &
-             .and.1.0-2*spacing(real(1.0)).le.m(1,1))
+.not.( (1.0 &\n        +2*spacing(real(1.0)) ) &\n        .ge. &\n        (m(1,1)) &\n            .and. &\n     (1.0 &\n      -2*spacing(real(1.0)) ) &\n      .le. &\n       (m(1,1)) )
     EOF
     assert_equal ans.chomp, @condition
   end
