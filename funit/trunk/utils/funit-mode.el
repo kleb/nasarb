@@ -30,16 +30,18 @@
 
 ;; add some new font-locks to f90's extensive list
 (font-lock-add-keywords 'funit-mode
- '(("\\<AssertFalse\\>"		. font-lock-function-name-face)
-   ("\\<AssertEqual\\>"		. font-lock-function-name-face)
-   ("\\<AssertRealEqual\\>"	. font-lock-function-name-face)
-   ("\\<AssertTrue\\>"		. font-lock-function-name-face)
-   ("\\<AssertEqualWithin\\>"	. font-lock-function-name-face)
-   ("\\<begin test\\>"		. font-lock-builtin-face)
+ '(("\\<Assert_False\\>"	. font-lock-function-name-face)
+   ("\\<Assert_Equal\\>"	. font-lock-function-name-face)
+   ("\\<Assert_Real_Equal\\>"	. font-lock-function-name-face)
+   ("\\<Assert_True\\>"		. font-lock-function-name-face)
+   ("\\<Assert_Equal_Within\\>"	. font-lock-function-name-face)
+   ("\\<test_suite\\>"		. font-lock-builtin-face)
+   ("\\<end test_suite\\>"	. font-lock-builtin-face)
+   ("\\<test\\>"		. font-lock-builtin-face)
    ("\\<end test\\>"		. font-lock-builtin-face)
-   ("\\<begin teardown\\>"	. font-lock-builtin-face)
+   ("\\<teardown\\>"		. font-lock-builtin-face)
    ("\\<end teardown\\>"	. font-lock-builtin-face)
-   ("\\<begin setup\\>"		. font-lock-builtin-face)
+   ("\\<setup\\>"		. font-lock-builtin-face)
    ("\\<end setup\\>"		. font-lock-builtin-face))
 )
 
