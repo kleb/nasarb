@@ -30,17 +30,17 @@
 
 ;; add some new font-locks to f90's extensive list
 (font-lock-add-keywords 'funit-mode
- '(("\\<IsFalse\\>"		. font-lock-function-name-face)
-   ("\\<IsEqual\\>"		. font-lock-function-name-face)
-   ("\\<IsRealEqual\\>"		. font-lock-function-name-face)
-   ("\\<IsTrue\\>"		. font-lock-function-name-face)
-   ("\\<IsEqualWithin\\>"	. font-lock-function-name-face)
-   ("\\<beginTest\\>"		. font-lock-builtin-face)
-   ("\\<endTest\\>"		. font-lock-builtin-face)
-   ("\\<beginTeardown\\>"	. font-lock-builtin-face)
-   ("\\<endTeardown\\>"		. font-lock-builtin-face)
-   ("\\<beginSetup\\>"		. font-lock-builtin-face)
-   ("\\<endSetup\\>"		. font-lock-builtin-face))
+ '(("\\<AssertFalse\\>"		. font-lock-function-name-face)
+   ("\\<AssertEqual\\>"		. font-lock-function-name-face)
+   ("\\<AssertRealEqual\\>"	. font-lock-function-name-face)
+   ("\\<AssertTrue\\>"		. font-lock-function-name-face)
+   ("\\<AssertEqualWithin\\>"	. font-lock-function-name-face)
+   ("\\<begin test\\>"		. font-lock-builtin-face)
+   ("\\<end test\\>"		. font-lock-builtin-face)
+   ("\\<begin teardown\\>"	. font-lock-builtin-face)
+   ("\\<end teardown\\>"	. font-lock-builtin-face)
+   ("\\<begin setup\\>"		. font-lock-builtin-face)
+   ("\\<end setup\\>"		. font-lock-builtin-face))
 )
 
 (defvar funit-buffer-command "funit"

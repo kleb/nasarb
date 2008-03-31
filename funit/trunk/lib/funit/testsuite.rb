@@ -1,6 +1,4 @@
-require 'funit/assertions'
-require 'funit/functions'
-require 'ftools' # FIXME: use fileutils
+require 'funit'
 
 module Funit
   
@@ -11,16 +9,15 @@ module Funit
 
   class TestSuite < File
 
-    ASSERTION_PATTERN = /Is(RealEqual|False|True|EqualWithin|Equal)\(.*\)/i
-    KEYWORDS = /(begin|end)(Setup|Teardown|Test)|Is(RealEqual|Equal|False|True|EqualWithin)\(.*\)/i
+    KEYWORDS = Regexp.union(/(end\s+)?(setup|teardown|test)/i,Assertions::ASSERTION_PATTERN)
     COMMENT_LINE = /^\s*!/
     
     include Funit #FIXME
 
-    def initialize suite_name
+    def initialize suite_name, suite_content
       @line_number = 'blank'
       @suite_name = suite_name
-      return nil unless funit_exists?(suite_name)
+      @suite_content = suite_content
       File.delete(suite_name+"_fun.f90") if File.exists?(suite_name+"_fun.f90")
       super(suite_name+"_fun.f90","w")
       @tests, @setup, @teardown = [], [], []
@@ -57,10 +54,8 @@ module #{@suite_name}_fun
     end
 
     def expand
-      funit_file = @suite_name+".fun"
-      $stderr.print "expanding #{funit_file}..."
-   
-      funit_contents = IO.readlines(funit_file)
+      $stderr.print "expanding test suite: #{@suite_name}..."
+      funit_contents = @suite_content.split("\n")
       @funit_total_lines = funit_contents.length
 
       while (line = funit_contents.shift) && line !~ KEYWORDS
@@ -75,20 +70,20 @@ module #{@suite_name}_fun
         case line
         when COMMENT_LINE
           puts line
-        when /beginSetup/i
+        when /^setup/i
           add_to_setup funit_contents
-        when /beginTeardown/i
+        when /^teardown/i
           add_to_teardown funit_contents
-        when /XbeginTest\s+(\w+)/i
+        when /^Xtest\s+(\w+)/i
           ignore_test($1,funit_contents)
-        when /beginTest\s+(\w+)/i
+        when /^test\s+(\w+)/i
           a_test($1,funit_contents)
-        when /beginTest/i
-          syntax_error "no name given for beginTest", @suite_name
-        when /end(Setup|Teardown|Test)/i
-          syntax_error "no matching begin#$1 for an #$&", @suite_name
-        when ASSERTION_PATTERN
-          syntax_error "#$1 assert not in a test block", @suite_name
+        when /^test/i
+          syntax_error "no name given for test", @suite_name
+        when /^end\s+(setup|teardown|test)/i
+          syntax_error "no matching #$1 for an #$&", @suite_name
+        when Assertions::ASSERTION_PATTERN
+          syntax_error "#$1 assertion not in a test block", @suite_name
         else
           puts line
         end
@@ -97,20 +92,20 @@ module #{@suite_name}_fun
     end
 
     def add_to_setup funit_contents
-      while (line = funit_contents.shift) && line !~ /endSetup/i
+      while (line = funit_contents.shift) && line !~ /end\s+setup/i
         @setup.push line
       end
     end
 
     def add_to_teardown funit_contents
-      while (line = funit_contents.shift) && line !~ /endTeardown/i
+      while (line = funit_contents.shift) && line !~ /end\s+teardown/i
         @teardown.push line
       end
     end
 
     def ignore_test test_name, funit_contents
       warning("Ignoring test: #{test_name}", @suite_name)
-      line = funit_contents.shift while line !~ /endTest/i
+      line = funit_contents.shift while line !~ /end\s+Test/i
     end
 
     def a_test test_name, funit_contents
@@ -122,14 +117,14 @@ module #{@suite_name}_fun
 
       num_of_asserts = 0
   
-      while (line = funit_contents.shift) && line !~ /endTest/i
+      while (line = funit_contents.shift) && line !~ /end\s+test/i
         case line
         when COMMENT_LINE
           puts line
-        when /Is(RealEqual|False|True|EqualWithin|Equal)/i
+        when Assertions::ASSERTION_PATTERN
           @line_number = @funit_total_lines - funit_contents.length
           num_of_asserts += 1
-          puts send( $&.downcase!, line )
+          puts send( $1.downcase, line )
         else
           puts line
         end
