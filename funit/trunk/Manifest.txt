@@ -18,8 +18,11 @@ lib/funit/assertions.rb
 lib/funit/compiler.rb
 lib/funit/functions.rb
 lib/funit/testsuite.rb
+pitch/slides.tex
 test/test_compiler.rb
 test/test_functions.rb
 test/test_funit.rb
 test/test_testsuite.rb
+utils/errorFinder.el
+utils/funit-generic-mode.el
 utils/funit-mode.el
