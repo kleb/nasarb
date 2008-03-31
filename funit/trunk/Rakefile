@@ -14,7 +14,7 @@ Hoe.new('funit', Funit::VERSION) do |funit|
     [ 'Karen Bibb', 'Bil Kleb', 'Beth Lee-Rausch', 'Mike Park', 'Bill Wood' ]
   funit.email = 'nasarb-developers@rubyforge.org'
   funit.clean_globs.
-    concat %w[ **/*_fun.f90 examples/**/TestRunner* **/*.o **/*.mod **/*.MOD ]
+    concat %w[ **/*_fun.f90 **/makeTestRunner examples/**/TestRunner* **/*.o **/*.mod **/*.MOD ]
   funit.rsync_args = '-rpv --delete' # to preserve group permissions 
 end
 
