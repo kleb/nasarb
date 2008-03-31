@@ -29,8 +29,8 @@ module Funit
       line.match(/\((.*)\)/)
       expected, actual = *(get_args($1))
       @type = 'IsRealEqual'
-      @condition = ".not.(#{expected}+2*spacing(real(#{expected})).ge.#{actual} &\n             .and.#{expected}-2*spacing(real(#{expected})).le.#{actual})"
-      @message = "\"#{actual} (\",#{actual},\") is not\", &\n #{expected},\"within\",2*spacing(real(#{expected}))"
+      @condition = ".not.( (#{expected} &\n        +2*spacing(real(#{expected})) ) &\n        .ge. &\n        (#{actual}) &\n            .and. &\n     (#{expected} &\n      -2*spacing(real(#{expected})) ) &\n      .le. &\n       (#{actual}) )"
+      @message = "\"#{actual} (\", &\n #{actual}, &\n  \") is not\", &\n #{expected},\&\n \"within\", &\n  2*spacing(real(#{expected}))"
       syntax_error("invalid body for #@type",@suite_name) unless $&
       write_assert
     end
@@ -39,7 +39,7 @@ module Funit
       line.match(/\((.*)\)/)
       expected, actual, tolerance = *(get_args($1))
       @type = 'IsEqualWithin'
-      @condition = ".not.(#{actual}+#{tolerance}.ge.#{expected} &\n             .and.#{actual}-#{tolerance}.le.#{expected})"
+      @condition = ".not.((#{actual} &\n     +#{tolerance}) &\n     .ge. &\n     (#{expected}) &\n             .and. &\n     (#{actual} &\n     -#{tolerance}) &\n     .le. &\n     (#{expected}) )"
       @message = "\"#{expected} (\",#{expected},\") is not\", &\n #{actual},\"within\",#{tolerance}"
       syntax_error("invalid body for #@type",@suite_name) unless $&
       write_assert
