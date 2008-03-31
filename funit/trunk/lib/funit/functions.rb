@@ -2,45 +2,48 @@ require 'erb'
 
 module Funit
 
-  TEST_RUNNER = ERB.new %q{
+  TEST_RUNNER = ERB.new( %q{
     ! TestRunner.f90 - runs fUnit test suites
     !
     ! <%= File.basename $0 %> generated this file on <%= Time.now %>.
 
     program TestRunner
-      <%= test_suites.inject('') { |result,test_suite| result << "\n  use #{test_suite}_fun" } %>
+
+      <% test_suites.each do |test_suite| -%>
+      use <%= test_suite %>_fun
+      <% end -%>
 
       implicit none
 
-      integer,dimension(<%=test_suites.size%>) :: numTests, numAsserts, &
-                                                 numAssertsTested, numFailures
+      integer, dimension(<%=test_suites.size%>) :: numTests, numAsserts, numAssertsTested, numFailures
 
-      <% test_suites.each_index do |i| %>
-      print *, ""
-      print *, "<%= test_suites[i] %> test suite:"
-      call test_<%= test_suites[i] %> &
-        ( numTests(<%=i%>), numAsserts(<%=i%>), numAssertsTested(<%=i%>), numFailures(<%=i%>) )
-      print *, "Passed", numAssertsTested(<%=i%>), "of", numAsserts(<%=i%>), &
-               "possible asserts comprising",                &
-               numTests(<%=i%>)-numFailures(<%=i%>), "of", numTests(<%=i%>), "tests."
-      <% end %>
-      print *, ""
+      <% test_suites.each_with_index do |test_suite,i| -%>
+      write(*,*)
+      write(*,*) "<%= test_suite %> test suite:"
+      call test_<%= test_suite %> &
+        ( numTests(<%= i+1 %>), numAsserts(<%= i+1 %>), numAssertsTested(<%= i+1 %>), numFailures(<%= i+1 %>) )
+      write(*,*) "Passed", numAssertsTested(<%= i+1 %>), "of", numAsserts(<%= i+1 %>), &
+                 "possible asserts comprising", numTests(<%= i+1 %>)-numFailures(<%= i+1 %>), &
+                 "of", numTests(<%= i+1 %>), "tests."
+      <% end -%>
 
-      write(*,'(A)') "==========[ SUMMARY ]=========="
-      <% max_length = test_suites.max{|a,b| a.length<=>b.length}.length %>
-      <% test_suites.each_index do |i| %>
-      write(*,'(A<%=max_length+2%>)',advance="no") " <%= test_suites[i] %>:"
-      if(numFailures(<%=i%>)==0) then
+      write(*,*)
+      write(*,'(a)') "==========[ SUMMARY ]=========="
+      <% max_length = test_suites.max{|a,b| a.length<=>b.length}.length -%>
+      <% test_suites.each_with_index do |test_suite,i| -%>
+      write(*,'(a<%=max_length+2%>)',advance="no") " <%= test_suite %>:"
+      if ( numFailures(<%= i+1 %>) == 0 ) then
         write(*,*) " passed"
       else
         write(*,*) " failed   <<<<<"
       end if
-      <% end %>
-      print *, ""
-    end program TestRunner
-    }.gsub(/^    /,''), nil, '<>' # turn off newlines due to <%%>
+      <% end -%>
+      write(*,*)
 
-  MAKEFILE = ERB.new(%q{
+    end program TestRunner
+    }.gsub(/^    /,''), nil, '-' ) # turn off newlines for <% -%>
+
+  MAKEFILE = ERB.new( %q{
     # makefile to compile TestRunner.f90
     #
     # <%= File.basename $0 %> generated this file on <%= Time.now %>.
@@ -52,12 +55,11 @@ module Funit
     testrunner: $(OBJ)
     <%= "\t#{ENV['FC']}" %> -o TestRunner $(OBJ)
 
-    <% file_dependencies.each do |h,d| %> 
-     <%= h.chomp('.f90')+".o" %>: <%= h+"  "+d.map{|s| s.chomp('.f90')+".o"}.join(' ')+"\n" %>
-     <%= "\tcd "+File.dirname(h) %>;<%= "#{ENV['FC']} #{sourceflag}" %> -c <%= File.basename(h) %>
-    <% end %>
-
-  }.gsub(/^ +/,''), nil, '<>')
+    <% file_dependencies.each do |source,dep| -%>
+    <%= "#{source.sub(/\.f90/i,'.o')}: #{source} #{dep.map{ |d| d.sub(/\.f90/i,'.o') }.join(' ')}" %>
+    <%= "\t(cd #{File.dirname(source)}; #{ENV['FC']} #{sourceflag} -c #{File.basename(source)})" %>
+    <% end -%>
+  }.gsub(/^    /,''), nil, '-' ) # turn off newlines for <% -%>
 
   def requested_modules(module_names)
     if module_names.empty?
@@ -111,7 +113,7 @@ module Funit
     puts "computing dependencies"
 
     # calculates parameters
-    if(prog_source_dir=='.') then
+    if ( prog_source_dir=='.' ) then
       sourceflag = ""
     else
 #      prog_source_dir = File.expand_path(prog_source_dir)  # commented as it doesn't seem necessary
