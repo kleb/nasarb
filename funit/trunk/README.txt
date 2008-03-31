@@ -109,11 +109,8 @@ rewrote the framework in Ruby[http://www.ruby-lang.org].
 
 == TODO:
 
-* Rename assertions to more consistent with other xUnits.
-* Use <tt>test</tt> keyword instead of <tt>beginTest</tt> business.
+* Add --version option.
 * To avoid Fortran's 32-character limit, don't add test name during translation.
-* Add some command line options (especially <tt>clean</tt>), possibly
-  using CmdParse[http://cmdparse.rubyforge.org].
 * Add assertions that capture stops, warning messages, and other exits.
 * For compilation, use internal rake task instead of a single, ordered command line.
 * Allow users to specify dependency search paths (currently hardwired).
