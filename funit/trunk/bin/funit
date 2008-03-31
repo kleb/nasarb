@@ -1,3 +1,5 @@
+#! /usr/bin/env ruby
+
 # Main fUnit routine
 
 begin require 'rubygems'; rescue LoadError; end
