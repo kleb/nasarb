@@ -5,6 +5,7 @@
   * Source directory and test directory can be different: specify
     source dir with -s (or --source) flag
   * Only the minimum number of files that need recompilation are compiled
+    via makefile
   * The .fun file name is not constrained anymore, but now each test suite
     must be surrounded by 'test_suite name' and 'end test_suite', where name
     is the name of the module to be tested
@@ -17,7 +18,7 @@
   * Added one new assertion: assert_array_equal
   * Added a summary of all the test suites results, printed at the end
   * Minor code clean-up
-                     
+
 === 0.9.4 / 2008-01-08
 
 * 2 minor enhancements
