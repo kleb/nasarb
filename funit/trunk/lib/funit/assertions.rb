@@ -6,10 +6,12 @@ module Funit
 
   module Assertions
 
-    ASSERTION_PATTERN = /^\s*?(assert_(array_equal|real_equal|false|true|equal_within|equal))\(.*\)/i
+    ASSERTION_PATTERN =
+     /^\s*?(assert_(array_equal|real_equal|false|true|equal_within|equal))\(.*\)/i
+
     def assert_true(line)
       line.match(/\((.+)\)/)
-      @type = 'AssertTrue'
+      @type = 'Assert_True'
       @condition = ".not.(#$1)"
       @message = "\"#$1 is not true\""
       syntax_error("invalid body for #@type",@suite_name) unless $1=~/\S+/
@@ -18,7 +20,7 @@ module Funit
 
     def assert_false(line)
       line.match(/\((.+)\)/)
-      @type = 'AssertFalse'
+      @type = 'Assert_False'
       @condition = "#$1"
       @message = "\"#$1 is not false\""
       syntax_error("invalid body for #@type",@suite_name) unless $1=~/\S+/
@@ -28,7 +30,7 @@ module Funit
     def assert_real_equal(line)
       line.match(/\((.*)\)/)
       expected, actual = *(get_args($1))
-      @type = 'AssertRealEqual'
+      @type = 'Assert_Real_Equal'
       @condition = ".not.( (#{expected} &\n        +2*spacing(real(#{expected})) ) &\n        .ge. &\n        (#{actual}) &\n            .and. &\n     (#{expected} &\n      -2*spacing(real(#{expected})) ) &\n      .le. &\n       (#{actual}) )"
       @message = "\"#{actual} (\", &\n #{actual}, &\n  \") is not\", &\n #{expected},\&\n \"within\", &\n  2*spacing(real(#{expected}))"
       syntax_error("invalid body for #@type",@suite_name) unless $&
@@ -38,7 +40,7 @@ module Funit
     def assert_equal_within(line)
       line.match(/\((.*)\)/)
       expected, actual, tolerance = *(get_args($1))
-      @type = 'AssertEqualWithin'
+      @type = 'Assert_Equal_Within'
       @condition = ".not.((#{actual} &\n     +#{tolerance}) &\n     .ge. &\n     (#{expected}) &\n             .and. &\n     (#{actual} &\n     -#{tolerance}) &\n     .le. &\n     (#{expected}) )"
       @message = "\"#{expected} (\",#{expected},\") is not\", &\n #{actual},\"within\",#{tolerance}"
       syntax_error("invalid body for #@type",@suite_name) unless $&
@@ -47,7 +49,7 @@ module Funit
 
     def assert_equal(line)
       line.match(/\((\w+\(.*\)|[^,]+),(.+)\)/)
-      @type = 'AssertEqual'
+      @type = 'Assert_Equal'
       @condition = ".not.(#$1==#$2)"
       @message = "\"#$1 (\",#$1,\") is not\", #$2"
       syntax_error("invalid body for #@type",@suite_name) unless $&
@@ -56,7 +58,7 @@ module Funit
     
     def assert_array_equal(line)
       line.match(/\((\w+),(\w+)\)/)
-      @type = 'AssertArrayEqual'
+      @type = 'Assert_Array_Equal'
       @condition = ".not. all(#$1==#$2)"
       @message = "\"array #$1 is not #$2\""
       syntax_error("invalid body for #@type",@suite_name) unless $&
