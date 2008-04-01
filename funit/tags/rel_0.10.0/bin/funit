@@ -1,0 +1,69 @@
+#! /usr/bin/env ruby
+
+# Main fUnit routine
+
+begin require 'rubygems'; rescue LoadError; end
+
+$:.push "#{File.dirname $0}/../lib"
+require 'funit'
+require 'getoptlong'
+
+include Funit
+
+prog_source_dir = nil
+  
+opts = GetoptLong.new(
+ ['--help', '-h', GetoptLong::NO_ARGUMENT],
+ ['--clean', '-c', GetoptLong::NO_ARGUMENT],
+ ['--source', '-s', GetoptLong::REQUIRED_ARGUMENT]
+)
+
+opts.each do |opt,arg|
+  begin
+    case opt
+      when '--help'
+        Funit::print_help
+        exit
+      when '--clean'
+        Funit::clean_genFiles
+        exit
+      when '--source'
+        if(ENV['FSFLAG'].nil?) then
+          puts <<-EOF
+No environment variable FSFLAG set.
+
+For example for most compilers such as gfortran you will need: -I
+      sh: export FSFLAG=-I
+     csh: setenv FSFLAG -I
+ windows: set FSFLAG=-I
+
+but for some such as Sun's f95 compiler you will need: -M
+      sh: export FSFLAG=-M
+     csh: setenv FSFLAG -M
+ windows: set FSFLAG=-M
+          EOF
+          exit
+        end
+        prog_source_dir = arg
+    end
+  rescue => err
+    puts err
+    break
+  end
+end
+
+if(prog_source_dir.nil?) then
+  Funit::run_tests
+else
+  Funit::run_tests(prog_source_dir)
+end
+
+#--
+# Copyright 2006-2007 United States Government as represented by
+# NASA Langley Research Center. No copyright is claimed in
+# the United States under Title 17, U.S. Code. All Other Rights
+# Reserved.
+#
+# This file is governed by the NASA Open Source Agreement.
+# See License.txt for details.
+#++
