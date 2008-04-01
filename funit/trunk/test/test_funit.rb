@@ -22,13 +22,13 @@ class TestFunit < Test::Unit::TestCase
 
   def teardown
     File.rm_f(*Dir["dummyunit*"])
-#    File.rm_f(*Dir["unit*"])
+    File.rm_f(*Dir["unit*"])
     File.rm_f(*Dir["another*"])
     File.rm_f(*Dir["ydsbe*"])
     File.rm_f(*Dir["lmzd*"])
     File.rm_f(*Dir["ldfdl*"])
     File.rm_f(*Dir["ydsbe*"])
- #   File.rm_f(*Dir["*TestRunner*"])
+    File.rm_f(*Dir["*TestRunner*"])
   end
 
   def test_empty_test_runner_created_and_compilable
