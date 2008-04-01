@@ -14,6 +14,7 @@ runs them against the code under test.
 
 FUnit is {opinionated software}[http://www.oreillynet.com/pub/a/network/2005/08/30/ruby-rails-david-heinemeier-hansson.html], which values convention over
 configuration. Specifically, FUnit,
+
 * requires a Fortran 95 compiler,
 * only supports testing routines contained in modules,
 * requires tests to be stored along side the code under test, and
@@ -40,12 +41,16 @@ viscosity as a function of temperature, e.g.,
  end module
 
 Tests of this module would be contained in <tt>gas_physics.fun</tt>,
-dkfand might contain a test like,
+and might contain a test like,
 
- beginTest viscosity_varies_as_temperature
-  IsRealEqual( 0.0, viscosity(0.0) )
-  IsEqualWithin( 0.7071, viscosity(50.0), 1e-3 )
- endTest
+ test_suite gas_physics
+
+ test viscosity_varies_as_temperature
+  assert_real_equal(      0.0, viscosity(0.0) )
+  assert_equal_within( 0.7071, viscosity(50.0), 1e-3 )
+ end test
+
+ end test_suite
 
 This brief fragment is all you need.  The framework provides the rest
 of the trappings to turn this into valid Fortran code.
@@ -58,16 +63,14 @@ which would transform your fragments contained in <tt>gas_physics.fun</tt>
 into valid Fortran code, create a test runner program, compile everything,
 and run the tests, viz,
 
- parsing gas_physics.fun
- computing dependencies
- locating associated source files and sorting for compilation
- g95 -o TestRunner
-   gas_physics.f90 \
-   gas_physics_fun.f90 \
-   TestRunner.f90
+  expanding test suite: gas_physics... done.
+  locating associated source files and sorting for compilation
+  (cd .; g95   -c gas_physics_fun.f90)
+  (cd .; g95   -c TestRunner.f90)
+  g95  -o TestRunner gas_physics.o gas_physics_fun.o TestRunner.o
 
- gas_physics test suite:
- Passed 2 of 2 possible asserts comprising 1 of 1 tests.
+  gas_physics test suite:
+  Passed 2 of 2 possible asserts comprising 1 of 1 tests.
 
 This and other examples come with the FUnit distribution in the
 <tt>examples</tt> directory.  There is also an emacs mode in
@@ -77,8 +80,8 @@ these directories can be found in your Rubygems library directory, e.g., <tt>/us
 == REQUIREMENTS:
 
 * Fortran 90/95/2003 compiler
-* Ruby with Rubygems
-* fortran Ruby Gem
+* Ruby with Rubygems package manager
+* The fortran Rubygem
 
 == INSTALL:
 
@@ -109,10 +112,9 @@ rewrote the framework in Ruby[http://www.ruby-lang.org].
 
 == TODO:
 
-* Add --version option.
 * To avoid Fortran's 32-character limit, don't add test name during translation.
 * Add assertions that capture stops, warning messages, and other exits.
-* For compilation, use internal rake task instead of a single, ordered command line.
+* For compilation, use internal rake task instead of an external makefile.
 * Allow users to specify dependency search paths (currently hardwired).
 * To increase portability, create stand-alone executables with Erik Veenstra's
   RubyScript2Exe[http://www.erikveen.dds.nl/rubyscript2exe/].
