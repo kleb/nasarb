@@ -14,7 +14,7 @@ require 'fileutils'
 
 module Funit
 
-  VERSION = '0.10.0'
+  VERSION = '0.10.1'
 
   ##
   # run all tests
@@ -34,7 +34,7 @@ module Funit
       }
     }
     compile_tests(test_suites,prog_source_dir)
-    raise "TestRunner failed to execute." unless system "env PATH='.' TestRunner"
+    exit 1 unless system "env PATH='.' TestRunner"
   end
 
   ##

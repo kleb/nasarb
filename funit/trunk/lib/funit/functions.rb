@@ -40,6 +40,8 @@ module Funit
       <% end -%>
       write(*,*)
 
+      if ( sum(numFailures) /= 0 ) stop 1
+
     end program TestRunner
     }.gsub(/^    /,''), nil, '-' ) # turn off newlines for <% -%>
 

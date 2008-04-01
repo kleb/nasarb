@@ -13,9 +13,10 @@ include Funit
 prog_source_dir = nil
   
 opts = GetoptLong.new(
- ['--help', '-h', GetoptLong::NO_ARGUMENT],
- ['--clean', '-c', GetoptLong::NO_ARGUMENT],
- ['--source', '-s', GetoptLong::REQUIRED_ARGUMENT]
+ ['--help',    '-h', GetoptLong::NO_ARGUMENT],
+ ['--clean',   '-c', GetoptLong::NO_ARGUMENT],
+ ['--version', '-V', GetoptLong::NO_ARGUMENT],
+ ['--source',  '-s', GetoptLong::REQUIRED_ARGUMENT]
 )
 
 opts.each do |opt,arg|
@@ -23,6 +24,9 @@ opts.each do |opt,arg|
     case opt
       when '--help'
         Funit::print_help
+        exit
+      when '--version'
+        puts Funit::VERSION
         exit
       when '--clean'
         Funit::clean_genFiles

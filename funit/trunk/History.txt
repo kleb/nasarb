@@ -1,6 +1,14 @@
+=== 0.10.0 / 2008-03-30
+
+* 1 major enhancement
+  * Non-passing tests exit with non-zero exit code
+
+* 1 minor enhancement
+  * --version / -V options
+
 === 0.10.0 / 2008-03-30 (all courtesy of Diego Virasoro)
 
-* 4 major enchancements
+* 4 major enhancements
   * User can now use 'funit --clean' to remove the generated files
   * Source directory and test directory can be different: specify
     source dir with -s (or --source) flag
@@ -11,7 +19,7 @@
     is the name of the module to be tested
   * Multiple test suites can exist inside the same file
 
-* 5 minor enchancements
+* 5 minor enhancements
   * Change blocks nomenclature: beginTest -> test and endTest -> end test
     (and similarly for setup and teardown)
   * Change assertions nomenclature (eg. IsEqual -> assert_equal)
