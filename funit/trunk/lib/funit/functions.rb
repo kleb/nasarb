@@ -53,11 +53,11 @@ module Funit
     all:testrunner
 
     testrunner: $(OBJ)
-    <%= "\t#{ENV['FC']}" %> -o TestRunner $(OBJ)
+    <%= "\t#{ENV['FC']} #{ENV['FCFLAGS']}" %> -o TestRunner $(OBJ)
 
     <% file_dependencies.each do |source,dep| -%>
     <%= "#{source.sub(/\.f90/i,'.o')}: #{source} #{dep.map{ |d| d.sub(/\.f90/i,'.o') }.join(' ')}" %>
-    <%= "\t(cd #{File.dirname(source)}; #{ENV['FC']} #{sourceflag} -c #{File.basename(source)})" %>
+    <%= "\t(cd #{File.dirname(source)}; #{ENV['FC']} #{ENV['FCFLAGS']} #{sourceflag} -c #{File.basename(source)})" %>
     <% end -%>
   }.gsub(/^    /,''), nil, '-' ) # turn off newlines for <% -%>
 
