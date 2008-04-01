@@ -3,7 +3,9 @@
 require 'rubygems'
 require 'hoe'
 
-require './lib/funit.rb'
+$LOAD_PATH.unshift File.join( File.dirname(__FILE__), 'lib')
+
+require 'funit.rb'
 
 Hoe.new('funit', Funit::VERSION) do |funit|
   funit.rubyforge_name  = 'nasarb'
