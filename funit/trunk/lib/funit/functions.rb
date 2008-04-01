@@ -126,8 +126,8 @@ module Funit
     puts "locating associated source files and sorting for compilation"
     dependencies.source_file_dependencies('TestRunner.f90')
     file_dependencies = dependencies.file_dependencies
-    required_objects = file_dependencies.values.flatten.uniq.map{|s|s.chomp('f90')+"o"}
-    required_objects += ['TestRunner.o']
+    required_objects = file_dependencies.values.flatten.uniq.map{|s|s.sub(/\.f90/i,'.o')}
+    required_objects << 'TestRunner.o'
 
     File.open("makeTestRunner", "w") {|file| file.puts MAKEFILE.result(binding)}
 

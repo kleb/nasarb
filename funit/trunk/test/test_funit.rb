@@ -22,13 +22,13 @@ class TestFunit < Test::Unit::TestCase
 
   def teardown
     File.rm_f(*Dir["dummyunit*"])
-    File.rm_f(*Dir["unit*"])
+#    File.rm_f(*Dir["unit*"])
     File.rm_f(*Dir["another*"])
     File.rm_f(*Dir["ydsbe*"])
     File.rm_f(*Dir["lmzd*"])
     File.rm_f(*Dir["ldfdl*"])
     File.rm_f(*Dir["ydsbe*"])
-    File.rm_f(*Dir["*TestRunner*"])
+ #   File.rm_f(*Dir["*TestRunner*"])
   end
 
   def test_empty_test_runner_created_and_compilable
@@ -90,6 +90,16 @@ class TestFunit < Test::Unit::TestCase
     end
     File.open('unit.fun','w') do |f|
       f.puts "begin test_suite unit\ntest a_gets_set\n Assert_Equal(5, a)\nend test\nend test_suite"
+    end
+    assert_nothing_raised{run_tests}
+ end
+
+  def test_should_accommodate_cap_F_extensions
+    File.open('unit.F90','w') do |f|
+      f.puts "module unit\n integer :: a = 1\nend module unit"
+    end
+    File.open('unit.fun','w') do |f|
+      f.puts "begin test_suite unit\ntest a_gets_set\n Assert_Equal(1, a)\nend test\nend test_suite"
     end
     assert_nothing_raised{run_tests}
  end
