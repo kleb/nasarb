@@ -1,0 +1,2264 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<TITLE>USM3D input preparation form</TITLE>
+<LINK REV="MADE" HREF="mailto:mpandya@paragon.langley.net">
+<SCRIPT>
+<!--Hide the script from the non javascript-savvy browsers
+//
+   fieldOK = true;
+
+   machOK = true;
+   alphaOK = true;
+   betaOK = true;
+   renoldOK = true;
+   tinfOK = true;
+   twratioOK = true;
+
+   srefOK = true;
+   brefOK = true;
+   crefOK = true;
+   xmcOK = true;
+   ymcOK = true;
+   zmcOK = true;
+
+   dtcfl1OK = true;
+   irampOK = true;
+   cfl2OK = true;
+   cflminOK = true;
+   gstolOK = true;
+
+   dqmaxOK = true;
+   pbreakOK = true;
+   pminOK = true;
+
+   nupdateOK = true;
+   nwrestOK = true;
+   nodeyplOK = true;
+
+   evlimOK = true;
+
+   ncycOK = true;
+   cldesOK = true;
+
+   function USM_hlp(usm_URL,wdt,hgt){
+      win2=window.open("USM_HELP/Help.htm"+usm_URL,"HELP_USM",
+                       "width="+wdt+",height="+hgt+",scrollbars=yes");
+      win2.creator=self;
+   }
+
+   function Message1(){
+      win2=window.open("USM_HELP/Message1.htm","HELP_USM",
+                       "width=430,height=300");
+      win2.creator=self;
+   }
+
+   function validateForm(form) {
+
+      if(!machOK) return false;
+      if(!alphaOK) return false;
+      if(!betaOK) return false;
+      if(!renoldOK) return false;
+      if(!tinfOK) return false;
+      if(!twratioOK) return false;
+
+      if(!srefOK) return false;
+      if(!brefOK) return false;
+      if(!crefOK) return false;
+      if(!xmcOK) return false;
+      if(!ymcOK) return false;
+      if(!zmcOK) return false;
+
+      if(!dtcfl1OK) return false;
+      if(!irampOK) return false;
+      if(!cfl2OK) return false;
+      if(!cflminOK) return false;
+      if(!gstolOK) return false;
+
+      if(!dqmaxOK) return false;
+      if(!pbreakOK) return false;
+      if(!pminOK) return false;
+
+      if(!nupdateOK) return false;
+      if(!nwrestOK) return false;
+      if(!nodeyplOK) return false;
+
+      if(!evlimOK) return false;
+
+      if(!ncycOK) return false;
+      if(!cldesOK) return false;
+
+      var noInptFields = form.elements.length - 2 ;
+      for(var i = 1; i < noInptFields; i++) {
+         var anInptField = form.elements[i];
+         if((i==6) || (i==8) || (i==15) || ((i>=21)&&(i<=23)) )continue;
+         if((i==27) || (i==30) || (i==31) )continue;
+         if( ((i>=33)&&(i<=37)) || (i==40) || (i==41) ) continue;
+//       alert("The element name is " + anInptField.name);
+         if(anInptField.value.length == 0){
+            alert("The textfield " + anInptField.name + " left balnk!")
+            anInptField.focus();
+            anInptField.select();
+            return false;
+         }
+      }
+      if(!dtValid(form))return false;
+      return true;
+   }
+
+   function dtValid(form) {
+      var irsm = form.iresmth.options[form.iresmth.selectedIndex].value;
+      if( form.dtcfl1.value > 0 && Math.abs(irsm) == 1 ) {
+         alert("Time accurate calculations: iresmth has to be equal to zero!");
+         return false;
+      }
+      
+      if(form.impl.options[0].selected && form.dtcfl1.value < 0){
+         if(form.dtcfl1.value < -4){
+            alert("Explicit calculations: |dt/cfl1| " +
+                  "greater than 4 NOT allowed!");
+            form.dtcfl1.focus();
+            form.dtcfl1.select();
+            return false;
+         }
+         if(form.cfl2.value > 4){
+            alert("Explicit calculations: cfl2 " +
+                  "greater than 4 NOT allowed!");
+            form.cfl2.focus();
+            form.cfl2.select();
+            return false;
+         }
+      }
+      return true;
+   }
+
+   function validateField(textobj) {
+
+//initialize global variables
+
+      if(textobj.name == "mach") machOK = false;
+      if(textobj.name == "alpha") alphaOK = false;
+      if(textobj.name == "beta") betaOK = false;
+      if(textobj.name == "renold") renoldOK = false;
+      if(textobj.name == "tinf") tinfOK = false;
+      if(textobj.name == "twratio") twratioOK = false;
+
+      if(textobj.name == "sref") srefOK = false;
+      if(textobj.name == "bref") brefOK = false;
+      if(textobj.name == "cref") crefOK = false;
+      if(textobj.name == "xmc") xmcOK = false;
+      if(textobj.name == "ymc") ymcOK = false;
+      if(textobj.name == "zmc") zmcOK = false;
+
+      if(textobj.name == "dtcfl1") dtcfl1OK = false;
+      if(textobj.name == "iramp") irampOK = false;
+      if(textobj.name == "cfl2") cfl2OK = false;
+      if(textobj.name == "cflmin") cflminOK = false;
+      if(textobj.name == "gstol") gstolOK = false;
+
+      if(textobj.name == "dqmax") dqmaxOK = false;
+      if(textobj.name == "pbreak") pbreakOK = false;
+      if(textobj.name == "pmin") pminOK = false;
+
+      if(textobj.name == "nupdate") nupdateOK = false;
+      if(textobj.name == "nwrest") nwrestOK = false;
+      if(textobj.name == "nodeypl") nodeyplOK = false;
+      if(textobj.name == "evlim") evlimOK = false;
+
+      if(textobj.name == "ncyc") ncycOK = false;
+      if(textobj.name == "cldes") cldesOK = false;
+
+      //screen out non-numeric characters
+      if(notaNumber(textobj.value)) {
+         alert("Non-numeric data NOT allowed in textfield: " + textobj.name);
+         textobj.focus();
+         textobj.select();
+         fieldOK = false;
+         return false;
+      }
+
+      fieldOK = true;
+
+      if(textobj.name == "mach") return (machOK = true);
+      if(textobj.name == "alpha") return (alphaOK= true);
+      if(textobj.name == "beta") return (betaOK = true);
+      if(textobj.name == "renold") return (renoldOK = true);
+      if(textobj.name == "tinf") return (tinfOK = true);
+      if(textobj.name == "twratio") return (twratioOK = true);
+
+      if(textobj.name == "sref") return (srefOK = true);
+      if(textobj.name == "bref") return (brefOK = true);
+      if(textobj.name == "cref") return (crefOK = true);
+      if(textobj.name == "xmc") return (xmcOK = true);
+      if(textobj.name == "ymc") return (ymcOK = true);
+      if(textobj.name == "zmc") return (zmcOK = true);
+
+      if(textobj.name == "dtcfl1") return (dtcfl1OK = true);
+      if(textobj.name == "iramp") return (irampOK = true);
+      if(textobj.name == "cfl2") return (cfl2OK = true);
+      if(textobj.name == "cflmin") return (cflminOK = true);
+      if(textobj.name == "gstol") return (gstolOK = true);
+
+      if(textobj.name == "dqmax") return (dqmaxOK = true);
+      if(textobj.name == "pbreak") return (pbreakOK = true);
+      if(textobj.name == "pmin") return (pminOK = true);
+
+      if(textobj.name == "nupdate") return (nupdateOK = true);
+      if(textobj.name == "nwrest") return (nwrestOK = true);
+      if(textobj.name == "nodeypl") return (nodeyplOK = true);
+
+      if(textobj.name == "evlim") return (evlimOK = true);
+
+      if(textobj.name == "ncyc") return (ncycOK = true);
+      if(textobj.name == "cldes") return (cldesOK = true);
+   }
+
+   function notaNumber(textString) {
+      var OK = false;
+      var decimalp = 0;
+
+      if(textString.length == 1){
+         var loneChar = textString.charAt(0);
+         if( (loneChar == "+") || (loneChar == "-") || (loneChar == ".") ){
+            OK = true;
+            return OK;
+         }
+      }
+      for(var i = 0; i < textString.length; i++) {
+         aChar = textString.charAt(i);
+         if(aChar == ".")decimalp++;
+         if(((aChar == "+") || (aChar == "-")) && (i != 0)){
+            OK = true;
+            break;
+         }
+         if((aChar != "+") && (aChar != "-") && (aChar != ".") &&
+             ((aChar < "0") || (aChar > "9"))) {
+            OK = true;
+            break;
+         }
+         if(decimalp > 1){
+            OK = true;
+            break;
+         }
+      }
+      return OK;
+   }
+
+   function validateSign(textobj) {
+      if(textobj.name == "renold") renoldOK = false;
+      if(textobj.name == "sref") srefOK = false;
+      if(textobj.name == "bref") brefOK = false;
+      if(textobj.name == "cref") crefOK = false;
+      if(textobj.name == "iramp") irampOK = false;
+      if(textobj.name == "cfl2") cfl2OK = false;
+      if(textobj.name == "cflmin") cflminOK = false;
+      if(textobj.name == "dqmax") dqmaxOK = false;
+      if(textobj.name == "nodeypl") nodeyplOK = false;
+
+      if(fieldOK == false)return false;
+
+      if(textobj.value < 0){
+         alert("Negative value is NOT allowed in textfield: " + textobj.name);
+         textobj.focus();
+         textobj.select();
+         return false;
+      }
+
+      if(textobj.name == "renold") return (renoldOK = true);
+      if(textobj.name == "sref") return (srefOK = true);
+      if(textobj.name == "bref") return (brefOK = true);
+      if(textobj.name == "cref") return (crefOK = true);
+      if(textobj.name == "iramp") return (irampOK = true);
+      if(textobj.name == "cfl2") return (cfl2OK = true);
+      if(textobj.name == "cflmin") return (cflminOK = true);
+      if(textobj.name == "dqmax") return (dqmaxOK = true);
+      if(textobj.name == "nodeypl") return (nodeyplOK = true);
+   }
+
+function array(len) {
+   for(var i = 0; i < len; i++)
+      this[i]=0;
+   this.length=len;
+}
+function doJump(doc,menu,prevform) {
+
+var machV = prevform.mach.value;
+var alphaV = prevform.alpha.value;
+var betaV = prevform.beta.value;
+var renoldV = prevform.renold.value;
+var tinfV = prevform.tinf.value;
+var twratioV = prevform.twratio.value;
+var itwallV = prevform.itwall.options[prevform.itwall.selectedIndex].value;
+var ipwallV = prevform.ipwall.options[prevform.ipwall.selectedIndex].value;
+//
+var srefV = prevform.sref.value;
+var brefV = prevform.bref.value;
+var crefV = prevform.cref.value;
+var xmcV = prevform.xmc.value;
+var ymcV = prevform.ymc.value;
+var zmcV = prevform.zmc.value;
+//
+var implV = prevform.impl.options[prevform.impl.selectedIndex].value;
+var dtcfl1V = prevform.dtcfl1.value;
+var irampV = prevform.iramp.value;
+var cfl2V = prevform.cfl2.value;
+var cflminV = prevform.cflmin.value;
+var gstolV = prevform.gstol.value;
+//
+var irestV = prevform.irest.options[prevform.irest.selectedIndex].value;
+var dqmaxV = prevform.dqmax.value;
+var pbreakV = prevform.pbreak.value;
+var pminV = prevform.pmin.value;
+var mstageV = prevform.mstage.options[prevform.mstage.selectedIndex].value;
+var iresmthV = prevform.iresmth.options[prevform.iresmth.selectedIndex].value;
+var limiterV = prevform.limiter.options[prevform.limiter.selectedIndex].value;
+//
+var nupdateV = prevform.nupdate.value;
+var nwrestV = prevform.nwrest.value;
+var ipltqnV = prevform.ipltqn.options[prevform.ipltqn.selectedIndex].value;
+var idiagnosV= prevform.idiagnos.options[prevform.idiagnos.selectedIndex].value;
+var nodeyplV = prevform.nodeypl.value;
+//
+var iorderV = prevform.iorder.options[prevform.iorder.selectedIndex].value;
+var lapl_avgV=prevform.lapl_avg.options[prevform.lapl_avg.selectedIndex].value;
+var high_bcV = prevform.high_bc.options[prevform.high_bc.selectedIndex].value;
+var ifdsV = prevform.ifds.options[prevform.ifds.selectedIndex].value;
+var iviscV = prevform.ivisc.options[prevform.ivisc.selectedIndex].value;
+var evlimV = prevform.evlim.value;
+//
+var ncycV = prevform.ncyc.value;
+var nenginesV=prevform.nengines.options[prevform.nengines.selectedIndex].value;
+var compFMV = prevform.compFM.options[prevform.compFM.selectedIndex].value;
+var cldesV = prevform.cldes.value;
+//
+//alert("MACH = " + prevform.mach.value);
+//alert("ALPHA = " + prevform.alpha.value);
+//var val = menu.options[menu.selectedIndex].value;
+//RS+=  "numeng = menu.options[menu.selectedIndex].value;";
+var numeng = menu.options[menu.selectedIndex].value;
+var secnumeng = 0;
+alert("You have selected " + numeng + " engine(s)");
+var seceng1 = 0;
+var seceng2 = 0;
+var seceng3 = 0;
+var seceng4 = 0;
+var secjet=prompt("Provide a list of engines with a secondary jet", "1,4");
+//alert("secjet is " + secjet);
+if(secjet!=null){
+   for(var i = 0; i<secjet.length; i++){
+      if((secjet.charAt(i) == 1) && numeng >= 1){
+         seceng1 = 1;
+         secnumeng+=1;
+         continue;
+      }
+      if((secjet.charAt(i) == 2) && numeng >= 2){
+         seceng2 = 2;
+         secnumeng+=1;
+         continue;
+      }
+      if((secjet.charAt(i) == 3) && numeng >= 3){
+         seceng3 = 3;
+         secnumeng+=1;
+         continue;
+      }
+      if((secjet.charAt(i) == 4) && numeng >= 4){
+         seceng4 = 4;
+         secnumeng+=1;
+         continue;
+      }
+   }
+}
+//alert("Your sec. jets: " +seceng1+ " " +seceng2+ " " +seceng3+ " " +seceng4);
+//if(val > 0){
+doc.clear();
+doc.open("text/html");
+var RS = '';
+RS+=  "<HTML>";
+RS+=  "<HEAD>";
+RS+=  "<TITLE>USM3D input preparation form</TITLE>";
+RS+=  "<SCRIPT>";
+doc.writeln(RS);
+var RS = '';
+
+RS+='function USM_hlp(usm_URL,wdt,hgt){';
+RS+='   win2=window.open("USM_HELP/Help.htm"+usm_URL,"HELP_USM",';
+RS+=                    '"width="+wdt+",height="+hgt+",scrollbars=yes");';
+RS+='   win2.creator=self;';
+RS+="}";
+doc.writeln(RS);
+var RS = '';
+
+RS+=  "function engInpt(englist) {";
+
+RS+=  '   numeng = englist.options[englist.selectedIndex].value;';
+RS+=  '  alert("You have selected " + numeng + " engine(s)");';
+RS+=  "  seceng1 = 0;";
+RS+=  "  seceng2 = 0;";
+RS+=  "  seceng3 = 0;";
+RS+=  "  seceng4 = 0;";
+RS+=  "if(numeng > 0){";
+RS+=  '   var secjet=prompt("Provide a list of engines with a secondary jet",';
+RS+=                      ' "1,4");';
+RS+=  '   if(secjet!=null){';
+//RS+=  '      alert("secjet is " + secjet);';
+RS+=  '      for(var i = 0; i<secjet.length; i++){';
+RS+=  '         if(secjet.charAt(i) == 1){';
+RS+=  '            seceng1 = 1;';
+RS+=  '            continue;';
+RS+=  '         }';
+RS+=  '         if(secjet.charAt(i) == 2 && numeng >= 2){';
+RS+=  '            seceng2 = 2;';
+RS+=  '            continue;';
+RS+=  '         }';
+RS+=  '         if(secjet.charAt(i) == 3 && numeng >= 3){';
+RS+=  '            seceng3 = 3;';
+RS+=  '            continue;';
+RS+=  '         }';
+RS+=  '         if(secjet.charAt(i) == 4 && numeng >= 4){';
+RS+=  '            seceng4 = 4;';
+RS+=  '            continue;';
+RS+=  '         }';
+RS+=  '      }';
+RS+=  '   }';
+RS+=  '}';
+//RS+=  'alert("Your sec. jets: " +seceng1+ " " +seceng2+ " " +seceng3+';
+//RS+=  ' " " +seceng4);';
+
+RS+=  "}";
+
+doc.writeln(RS);
+var RS = '';
+
+RS+=  "fieldOK = true;";
+RS+=  "machOK = true;";
+RS+=  "alphaOK = true;";
+RS+=  "betaOK = true;";
+RS+=  "renoldOK = true;";
+RS+=  "tinfOK = true;";
+RS+=  "twratioOK = true;";
+
+RS+=  "srefOK = true;";
+RS+=  "brefOK = true;";
+RS+=  "crefOK = true;";
+RS+=  "xmcOK = true;";
+RS+=  "ymcOK = true;";
+RS+=  "zmcOK = true;";
+
+RS+=  "dtcfl1OK = true;";
+RS+=  "irampOK = true;";
+RS+=  "cfl2OK = true;";
+RS+=  "cflminOK = true;";
+RS+=  "gstolOK = true;";
+
+RS+=  "dqmaxOK = true;";
+RS+=  "pbreakOK = true;";
+RS+=  "pminOK = true;";
+
+RS+=  "nupdateOK = true;";
+RS+=  "nwrestOK = true;";
+RS+=  "nodeyplOK = true;";
+
+RS+=  "evlimOK = true;";
+
+RS+=  "ncycOK = true;";
+RS+=  "cldesOK = true;";
+//RS+=  "renoldOK = true;";
+
+///CONSTRUCTION
+   for(var i = 1; i <= numeng; i++){
+      if((i==seceng1) || (i==seceng2) || (i==seceng3) || (i==seceng4)){
+RS+='sENGjet';
+RS+=  i;
+RS+='OK = true;';
+//
+RS+='sENGfuel';
+RS+=  i;
+RS+='OK = true;';
+//
+RS+='sENGgamj';
+RS+=  i;
+RS+='OK = true;';
+//
+RS+='sENGpjet';
+RS+=  i;
+RS+='OK = true;';
+//
+RS+='sENGp0jet';
+RS+=  i;
+RS+='OK = true;';
+//
+RS+='sENGRratio';
+RS+=  i;
+RS+='OK = true;';
+//
+RS+='sENGT0jet';
+RS+=  i;
+RS+='OK = true;';
+//
+RS+='sENGvec1';
+RS+=  i;
+RS+='OK = true;';
+//
+RS+='sENGvec2';
+RS+=  i;
+RS+='OK = true;';
+//
+RS+='sENGvec3';
+RS+=  i;
+RS+='OK = true;';
+  
+      }
+
+RS+='ENGjet';
+RS+=  i;
+RS+='OK = true;';
+//
+RS+='ENGfuel';
+RS+=  i;
+RS+='OK = true;';
+//
+RS+='ENGgamj';
+RS+=  i;
+RS+='OK = true;';
+//
+RS+='ENGpjet';
+RS+=  i;
+RS+='OK = true;';
+//
+RS+='ENGp0jet';
+RS+=  i;
+RS+='OK = true;';
+//
+RS+='ENGRratio';
+RS+=  i;
+RS+='OK = true;';
+//
+RS+='ENGT0jet';
+RS+=  i;
+RS+='OK = true;';
+//
+RS+='ENGvec1';
+RS+=  i;
+RS+='OK = true;';
+//
+RS+='ENGvec2';
+RS+=  i;
+RS+='OK = true;';
+//
+RS+='ENGvec3';
+RS+=  i;
+RS+='OK = true;';
+
+   }
+///CONSTRUCTION
+
+RS+=  "function validateForm(form) {";
+
+RS+=  "   if(!machOK) return false;";
+RS+=  "   if(!alphaOK) return false;";
+RS+=  "   if(!betaOK) return false;";
+RS+=  "   if(!renoldOK) return false;";
+RS+=  "   if(!tinfOK) return false;";
+RS+=  "   if(!twratioOK) return false;";
+
+RS+=  "   if(!srefOK) return false;";
+RS+=  "   if(!brefOK) return false;";
+RS+=  "   if(!crefOK) return false;";
+RS+=  "   if(!xmcOK) return false;";
+RS+=  "   if(!ymcOK) return false;";
+RS+=  "   if(!zmcOK) return false;";
+
+RS+=  "   if(!dtcfl1OK) return false;";
+RS+=  "   if(!irampOK) return false;";
+RS+=  "   if(!cfl2OK) return false;";
+RS+=  "   if(!cflminOK) return false;";
+RS+=  "   if(!gstolOK) return false;";
+
+RS+=  "   if(!dqmaxOK) return false;";
+RS+=  "   if(!pbreakOK) return false;";
+RS+=  "   if(!pminOK) return false;";
+
+RS+=  "   if(!nupdateOK) return false;";
+RS+=  "   if(!nwrestOK) return false;";
+RS+=  "   if(!nodeyplOK) return false;";
+
+RS+=  "   if(!evlimOK) return false;";
+
+RS+=  "   if(!ncycOK) return false;";
+RS+=  "   if(!cldesOK) return false;";
+
+//RS+=  "   if(!renoldOK) return false;";
+///CONSTRUCTION
+   for(var i = 1; i <= numeng; i++){
+      if((i==seceng1) || (i==seceng2) || (i==seceng3) || (i==seceng4)){
+
+RS+='    if(!sENGjet';
+RS+=  i;
+RS+='OK) return false;';
+//
+RS+='    if(!sENGfuel';
+RS+=  i;
+RS+='OK) return false;';
+//
+RS+='    if(!sENGgamj';
+RS+=  i;
+RS+='OK) return false;';
+//
+RS+='    if(!sENGpjet';
+RS+=  i;
+RS+='OK) return false;';
+//
+RS+='    if(!sENGp0jet';
+RS+=  i;
+RS+='OK) return false;';
+//
+RS+='    if(!sENGRratio';
+RS+=  i;
+RS+='OK) return false;';
+//
+RS+='    if(!sENGT0jet';
+RS+=  i;
+RS+='OK) return false;';
+//
+RS+='    if(!sENGvec1';
+RS+=  i;
+RS+='OK) return false;';
+//
+RS+='    if(!sENGvec2';
+RS+=  i;
+RS+='OK) return false;';
+//
+RS+='    if(!sENGvec3';
+RS+=  i;
+RS+='OK) return false;';
+  
+      }
+RS+='    if(!ENGjet';
+RS+=  i;
+RS+='OK) return false;';
+//
+RS+='    if(!ENGfuel';
+RS+=  i;
+RS+='OK) return false;';
+//
+RS+='    if(!ENGgamj';
+RS+=  i;
+RS+='OK) return false;';
+//
+RS+='    if(!ENGpjet';
+RS+=  i;
+RS+='OK) return false;';
+//
+RS+='    if(!ENGp0jet';
+RS+=  i;
+RS+='OK) return false;';
+//
+RS+='    if(!ENGRratio';
+RS+=  i;
+RS+='OK) return false;';
+//
+RS+='    if(!ENGT0jet';
+RS+=  i;
+RS+='OK) return false;';
+//
+RS+='    if(!ENGvec1';
+RS+=  i;
+RS+='OK) return false;';
+//
+RS+='    if(!ENGvec2';
+RS+=  i;
+RS+='OK) return false;';
+//
+RS+='    if(!ENGvec3';
+RS+=  i;
+RS+='OK) return false;';
+
+   }
+///CONSTRUCTION
+RS+=  "   var noInptFields = form.elements.length - 2;";
+RS+=  "   for(var i = 1; i < noInptFields; i++) {";
+RS+=  "      var anInptField = form.elements[i];";
+RS+=  '      if((i==6) || (i==8) || (i==15) || ((i>=21)&&(i<=23)) )continue;';
+RS+=  '      if((i==27) || (i==30) || (i==31) )continue;';
+RS+=  '      if( ((i>=33)&&(i<=37)) || (i==40) || (i==41) ) continue;';
+RS+=  '      if(anInptField.value.length == 0){';
+RS+=  '         alert("The textfield " + anInptField.name + " left balnk!");';
+RS+=  "         anInptField.focus();";
+RS+=  "         anInptField.select();";
+RS+=  "         return false;";
+RS+=  "      }";
+RS+=  "   }";
+RS+=  "   if(!dtValid(form))return false;";
+RS+=  "   return true;";
+RS+=  "}";
+
+doc.writeln(RS);
+var RS = '';
+
+RS+=  "function dtValid(form) {";
+RS+=  '   var irsm = form.iresmth.options[form.iresmth.selectedIndex].value;';
+RS+=  '   if( form.dtcfl1.value > 0 && Math.abs(irsm) == 1 ) {';
+RS+=  '      alert("Time accurate calculations: iresmth ';
+RS+=                'has to be equal to zero!");';
+RS+=  "      return false;";
+RS+=  "   }";
+RS+=  '   if(form.impl.options[0].selected && form.dtcfl1.value < 0){';
+RS+=  '      if(form.dtcfl1.value < -4){';
+RS+=  '         alert("Explicit calculations: |dt/cfl1| " +';
+RS+=  '               "greater than 4 NOT allowed!");';
+RS+=  "         form.dtcfl1.focus();";
+RS+=  "         form.dtcfl1.select();";
+RS+=  "         return false;";
+RS+=  "      }";
+RS+=  '      if(form.cfl2.value > 4){';
+RS+=  '         alert("Explicit calculations: cfl2 " +';
+RS+=  '               "greater than 4 NOT allowed!");';
+RS+=  "         form.cfl2.focus();";
+RS+=  "         form.cfl2.select();";
+RS+=  "         return false;";
+RS+=  "      }";
+RS+=  "   }";
+RS+=  "   return true;";
+RS+=  "}";
+
+doc.writeln(RS);
+var RS = '';
+
+RS+=  "function validateField(textobj) {";
+
+RS+='     if(textobj.name == "mach") machOK = false;';
+RS+='     if(textobj.name == "alpha") alphaOK = false;';
+RS+='     if(textobj.name == "beta") betaOK = false;';
+RS+='     if(textobj.name == "renold") renoldOK = false;';
+RS+='     if(textobj.name == "tinf") tinfOK = false;';
+RS+='     if(textobj.name == "twratio") twratioOK = false;';
+
+RS+='     if(textobj.name == "sref") srefOK = false;';
+RS+='     if(textobj.name == "bref") brefOK = false;';
+RS+='     if(textobj.name == "cref") crefOK = false;';
+RS+='     if(textobj.name == "xmc") xmcOK = false;';
+RS+='     if(textobj.name == "ymc") ymcOK = false;';
+RS+='     if(textobj.name == "zmc") zmcOK = false;';
+
+RS+='     if(textobj.name == "dtcfl1") dtcfl1OK = false;';
+RS+='     if(textobj.name == "iramp") irampOK = false;';
+RS+='     if(textobj.name == "cfl2") cfl2OK = false;';
+RS+='     if(textobj.name == "cflmin") cflminOK = false;';
+RS+='     if(textobj.name == "gstol") gstolOK = false;';
+
+RS+='     if(textobj.name == "dqmax") dqmaxOK = false;';
+RS+='     if(textobj.name == "pbreak") pbreakOK = false;';
+RS+='     if(textobj.name == "pmin") pminOK = false;';
+
+RS+='     if(textobj.name == "nupdate") nupdateOK = false;';
+RS+='     if(textobj.name == "nwrest") nwrestOK = false;';
+RS+='     if(textobj.name == "nodeypl") nodeyplOK = false;';
+RS+='     if(textobj.name == "evlim") evlimOK = false;';
+
+RS+='     if(textobj.name == "ncyc") ncycOK = false;';
+RS+='     if(textobj.name == "cldes") cldesOK = false;';
+//RS+=  '   if(textobj.name == "renold") renoldOK = false;';
+
+///CONSTRUCTION
+RS+= 'var hold = textobj.name;';
+RS+= 'if((hold.substring(1,4)=="ENG")||(hold.substring(0,3)=="ENG")){';
+//RS+='alert(" = " +hold);';
+
+   for(var i = 1; i <= numeng; i++){
+      if((i==seceng1) || (i==seceng2) || (i==seceng3) || (i==seceng4)){
+  
+RS+='    if(textobj.name == "sENGjet';
+RS+=  i;
+RS+='"){sENGjet';
+RS+=  i;
+RS+='OK = false;';
+RS+='textobj.value='
+RS+=i*100+3
+RS+=';}';
+//RS+='alert("inside vField:Before noNum:sENGjet1.value = " +textobj.value);';
+//
+RS+='    if(textobj.name == "sENGfuel';
+RS+=  i;
+RS+='")sENGfuel';
+RS+=  i;
+RS+='OK = false;';
+//
+RS+='    if(textobj.name == "sENGgamj';
+RS+=  i;
+RS+='")sENGgamj';
+RS+=  i;
+RS+='OK = false;';
+//
+RS+='    if(textobj.name == "sENGpjet';
+RS+=  i;
+RS+='")sENGpjet';
+RS+=  i;
+RS+='OK = false;';
+//
+RS+='    if(textobj.name == "sENGp0jet';
+RS+=  i;
+RS+='")sENGp0jet';
+RS+=  i;
+RS+='OK = false;';
+//
+RS+='    if(textobj.name == "sENGRratio';
+RS+=  i;
+RS+='")sENGRratio';
+RS+=  i;
+RS+='OK = false;';
+//
+RS+='    if(textobj.name == "sENGT0jet';
+RS+=  i;
+RS+='")sENGT0jet';
+RS+=  i;
+RS+='OK = false;';
+//
+RS+='    if(textobj.name == "sENGvec1';
+RS+=  i;
+RS+='")sENGvec1';
+RS+=  i;
+RS+='OK = false;';
+//
+RS+='    if(textobj.name == "sENGvec2';
+RS+=  i;
+RS+='")sENGvec2';
+RS+=  i;
+RS+='OK = false;';
+//
+RS+='    if(textobj.name == "sENGvec3';
+RS+=  i;
+RS+='")sENGvec3';
+RS+=  i;
+RS+='OK = false;';
+  
+      }
+
+RS+='    if(textobj.name == "ENGjet';
+RS+=  i;
+RS+='"){ENGjet';
+RS+=  i;
+RS+='OK = false;';
+RS+='textobj.value='
+RS+=i*100+2
+RS+=';}';
+//RS+='alert("inside vField:Before noNum:ENGjet1.value = " +textobj.value);';
+//
+RS+='    if(textobj.name == "ENGfuel';
+RS+=  i;
+RS+='")ENGfuel';
+RS+=  i;
+RS+='OK = false;';
+//
+RS+='    if(textobj.name == "ENGgamj';
+RS+=  i;
+RS+='")ENGgamj';
+RS+=  i;
+RS+='OK = false;';
+//
+RS+='    if(textobj.name == "ENGpjet';
+RS+=  i;
+RS+='")ENGpjet';
+RS+=  i;
+RS+='OK = false;';
+//
+RS+='    if(textobj.name == "ENGp0jet';
+RS+=  i;
+RS+='")ENGp0jet';
+RS+=  i;
+RS+='OK = false;';
+//
+RS+='    if(textobj.name == "ENGRratio';
+RS+=  i;
+RS+='")ENGRratio';
+RS+=  i;
+RS+='OK = false;';
+//
+RS+='    if(textobj.name == "ENGT0jet';
+RS+=  i;
+RS+='")ENGT0jet';
+RS+=  i;
+RS+='OK = false;';
+//
+RS+='    if(textobj.name == "ENGvec1';
+RS+=  i;
+RS+='")ENGvec1';
+RS+=  i;
+RS+='OK = false;';
+//
+RS+='    if(textobj.name == "ENGvec2';
+RS+=  i;
+RS+='")ENGvec2';
+RS+=  i;
+RS+='OK = false;';
+//
+RS+='    if(textobj.name == "ENGvec3';
+RS+=  i;
+RS+='")ENGvec3';
+RS+=  i;
+RS+='OK = false;';
+  
+   }
+
+RS+='}';
+///CONSTRUCTION
+RS+=  "   if(notaNumber(textobj.value)) {";
+RS+=  '      alert("Non-numeric data NOT allowed ';
+RS+=               'in textfield: " + textobj.name);';
+RS+=  "      textobj.focus();";
+RS+=  "      textobj.select();";
+RS+=  "      fieldOK = false;";
+RS+=  "      return false;";
+RS+=  "   }";
+RS+=  "   fieldOK = true;";
+RS+=  '   if(textobj.name == "mach") return (machOK = true);';
+RS+=  '   if(textobj.name == "alpha") return (alphaOK= true);';
+RS+=  '   if(textobj.name == "beta") return (betaOK = true);';
+RS+=  '   if(textobj.name == "renold") return (renoldOK = true);';
+RS+=  '   if(textobj.name == "tinf") return (tinfOK = true);';
+RS+=  '   if(textobj.name == "twratio") return (twratioOK = true);';
+
+RS+=  '   if(textobj.name == "sref") return (srefOK = true);';
+RS+=  '   if(textobj.name == "bref") return (brefOK = true);';
+RS+=  '   if(textobj.name == "cref") return (crefOK = true);';
+RS+=  '   if(textobj.name == "xmc") return (xmcOK = true);';
+RS+=  '   if(textobj.name == "ymc") return (ymcOK = true);';
+RS+=  '   if(textobj.name == "zmc") return (zmcOK = true);';
+
+RS+=  '   if(textobj.name == "dtcfl1") return (dtcfl1OK = true);';
+RS+=  '   if(textobj.name == "iramp") return (irampOK = true);';
+RS+=  '   if(textobj.name == "cfl2") return (cfl2OK = true);';
+RS+=  '   if(textobj.name == "cflmin") return (cflminOK = true);';
+RS+=  '   if(textobj.name == "gstol") return (gstolOK = true);';
+
+RS+=  '   if(textobj.name == "dqmax") return (dqmaxOK = true);';
+RS+=  '   if(textobj.name == "pbreak") return (pbreakOK = true);';
+RS+=  '   if(textobj.name == "pmin") return (pminOK = true);';
+
+RS+=  '   if(textobj.name == "nupdate") return (nupdateOK = true);';
+RS+=  '   if(textobj.name == "nwrest") return (nwrestOK = true);';
+RS+=  '   if(textobj.name == "nodeypl") return (nodeyplOK = true);';
+
+RS+=  '   if(textobj.name == "evlim") return (evlimOK = true);';
+
+RS+=  '   if(textobj.name == "ncyc") return (ncycOK = true);';
+RS+=  '   if(textobj.name == "cldes") return (cldesOK = true);';
+//RS+=  '   if(textobj.name == "renold") return (renoldOK = true);';
+
+///CONSTRUCTION
+RS+= 'if((hold.substring(1,4)=="ENG")||(hold.substring(0,3)=="ENG")){';
+//RS+='alert(" = " +hold);';
+
+   for(var i = 1; i <= numeng; i++){
+      if((i==seceng1) || (i==seceng2) || (i==seceng3) || (i==seceng4)){
+
+RS+='    if(textobj.name == "sENGjet';
+RS+=  i;
+RS+='") return(sENGjet';
+RS+=  i;
+RS+='OK = true);';
+//
+RS+='    if(textobj.name == "sENGfuel';
+RS+=  i;
+RS+='") return(sENGfuel';
+RS+=  i;
+RS+='OK = true);';
+//
+RS+='    if(textobj.name == "sENGgamj';
+RS+=  i;
+RS+='") return(sENGgamj';
+RS+=  i;
+RS+='OK = true);';
+//
+RS+='    if(textobj.name == "sENGpjet';
+RS+=  i;
+RS+='") return(sENGpjet';
+RS+=  i;
+RS+='OK = true);';
+//
+RS+='    if(textobj.name == "sENGp0jet';
+RS+=  i;
+RS+='") return(sENGp0jet';
+RS+=  i;
+RS+='OK = true);';
+//
+RS+='    if(textobj.name == "sENGRratio';
+RS+=  i;
+RS+='") return(sENGRratio';
+RS+=  i;
+RS+='OK = true);';
+//
+RS+='    if(textobj.name == "sENGT0jet';
+RS+=  i;
+RS+='") return(sENGT0jet';
+RS+=  i;
+RS+='OK = true);';
+//
+RS+='    if(textobj.name == "sENGvec1';
+RS+=  i;
+RS+='") return(sENGvec1';
+RS+=  i;
+RS+='OK = true);';
+//
+RS+='    if(textobj.name == "sENGvec2';
+RS+=  i;
+RS+='") return(sENGvec2';
+RS+=  i;
+RS+='OK = true);';
+//
+RS+='    if(textobj.name == "sENGvec3';
+RS+=  i;
+RS+='") return(sENGvec3';
+RS+=  i;
+RS+='OK = true);';
+  
+      }
+
+RS+='    if(textobj.name == "ENGjet';
+RS+=  i;
+RS+='") return(ENGjet';
+RS+=  i;
+RS+='OK = true);';
+//
+RS+='    if(textobj.name == "ENGfuel';
+RS+=  i;
+RS+='") return(ENGfuel';
+RS+=  i;
+RS+='OK = true);';
+//
+RS+='    if(textobj.name == "ENGgamj';
+RS+=  i;
+RS+='") return(ENGgamj';
+RS+=  i;
+RS+='OK = true);';
+//
+RS+='    if(textobj.name == "ENGpjet';
+RS+=  i;
+RS+='") return(ENGpjet';
+RS+=  i;
+RS+='OK = true);';
+//
+RS+='    if(textobj.name == "ENGp0jet';
+RS+=  i;
+RS+='") return(ENGp0jet';
+RS+=  i;
+RS+='OK = true);';
+//
+RS+='    if(textobj.name == "ENGRratio';
+RS+=  i;
+RS+='") return(ENGRratio';
+RS+=  i;
+RS+='OK = true);';
+//
+RS+='    if(textobj.name == "ENGT0jet';
+RS+=  i;
+RS+='") return(ENGT0jet';
+RS+=  i;
+RS+='OK = true);';
+//
+RS+='    if(textobj.name == "ENGvec1';
+RS+=  i;
+RS+='") return(ENGvec1';
+RS+=  i;
+RS+='OK = true);';
+//
+RS+='    if(textobj.name == "ENGvec2';
+RS+=  i;
+RS+='") return(ENGvec2';
+RS+=  i;
+RS+='OK = true);';
+//
+RS+='    if(textobj.name == "ENGvec3';
+RS+=  i;
+RS+='") return(ENGvec3';
+RS+=  i;
+RS+='OK = true);';
+   }
+//RS+='alert("inside vField:Aft noNum:sENGjet1OK = " + sENGjet1OK);';
+RS+='}';
+///CONSTRUCTION
+RS+=  "}";
+
+doc.writeln(RS);
+var RS = '';
+
+RS+=  'function notaNumber(textString) {';
+RS+=  '   var OK = false;';
+RS+=  "   var decimalp = 0;";
+RS+=  "   if(textString.length == 1){";
+RS+=  "      var loneChar = textString.charAt(0);";
+RS+=  '      if( (loneChar == "+") || (loneChar == "-")||(loneChar == ".") ){';
+RS+=  "         OK = true;";
+RS+=  "         return OK;";
+RS+=  "      }";
+RS+=  "   }";
+RS+=  "   for(var i = 0; i < textString.length; i++) {";
+RS+=  "      aChar = textString.charAt(i);";
+RS+=  '      if(aChar == ".")decimalp++;';
+RS+=  '         if(((aChar == "+") || (aChar == "-")) && (i != 0)){';
+RS+=  "            OK = true;";
+RS+=  "            break;";
+RS+=  "         }";
+RS+=  '         if((aChar != "+") && (aChar != "-") && (aChar != ".") &&';
+RS+=  '             ((aChar < "0") || (aChar > "9"))) {';
+RS+=  "            OK = true;";
+RS+=  "            break;";
+RS+=  "         }";
+RS+=  "         if(decimalp > 1){";
+RS+=  "            OK = true;";
+RS+=  "            break;";
+RS+=  "         }";
+RS+=  "   }";
+RS+=  '   return OK;';
+RS+=  "}";
+
+doc.writeln(RS);
+var RS = '';
+
+RS+=  "function validateSign(textobj) {";
+
+RS+=  '   if(textobj.name == "renold") renoldOK = false;';
+RS+=  '   if(textobj.name == "sref") srefOK = false;';
+RS+=  '   if(textobj.name == "bref") brefOK = false;';
+RS+=  '   if(textobj.name == "cref") crefOK = false;';
+RS+=  '   if(textobj.name == "iramp") irampOK = false;';
+RS+=  '   if(textobj.name == "cfl2") cfl2OK = false;';
+RS+=  '   if(textobj.name == "cflmin") cflminOK = false;';
+RS+=  '   if(textobj.name == "dqmax") dqmaxOK = false;';
+RS+=  '   if(textobj.name == "nodeypl") nodeyplOK = false;';
+//RS+=  '   if(textobj.name == "renold") renoldOK = false;';';
+
+///CONSTRUCTION
+RS+= 'var hold = textobj.name;';
+RS+= 'if((hold.substring(1,4)=="ENG")||(hold.substring(0,3)=="ENG")){';
+
+   for(var i = 1; i <= numeng; i++){
+      if((i==seceng1) || (i==seceng2) || (i==seceng3) || (i==seceng4)){
+  
+RS+='    if(textobj.name == "sENGfuel';
+RS+=  i;
+RS+='")sENGfuel';
+RS+=  i;
+RS+='OK = false;';
+//
+RS+='    if(textobj.name == "sENGgamj';
+RS+=  i;
+RS+='")sENGgamj';
+RS+=  i;
+RS+='OK = false;';
+//
+RS+='    if(textobj.name == "sENGpjet';
+RS+=  i;
+RS+='")sENGpjet';
+RS+=  i;
+RS+='OK = false;';
+//
+RS+='    if(textobj.name == "sENGp0jet';
+RS+=  i;
+RS+='")sENGp0jet';
+RS+=  i;
+RS+='OK = false;';
+//
+RS+='    if(textobj.name == "sENGRratio';
+RS+=  i;
+RS+='")sENGRratio';
+RS+=  i;
+RS+='OK = false;';
+//
+RS+='    if(textobj.name == "sENGT0jet';
+RS+=  i;
+RS+='")sENGT0jet';
+RS+=  i;
+RS+='OK = false;';
+ 
+      }
+
+RS+='    if(textobj.name == "ENGfuel';
+RS+=  i;
+RS+='")ENGfuel';
+RS+=  i;
+RS+='OK = false;';
+//
+RS+='    if(textobj.name == "ENGgamj';
+RS+=  i;
+RS+='")ENGgamj';
+RS+=  i;
+RS+='OK = false;';
+//
+RS+='    if(textobj.name == "ENGpjet';
+RS+=  i;
+RS+='")ENGpjet';
+RS+=  i;
+RS+='OK = false;';
+//
+RS+='    if(textobj.name == "ENGp0jet';
+RS+=  i;
+RS+='")ENGp0jet';
+RS+=  i;
+RS+='OK = false;';
+//
+RS+='    if(textobj.name == "ENGRratio';
+RS+=  i;
+RS+='")ENGRratio';
+RS+=  i;
+RS+='OK = false;';
+//
+RS+='    if(textobj.name == "ENGT0jet';
+RS+=  i;
+RS+='")ENGT0jet';
+RS+=  i;
+RS+='OK = false;';
+   }
+
+RS+='}';
+
+///CONSTRUCTION
+
+RS+=  "   if(fieldOK == false)return false;";
+
+RS+=  "   if(textobj.value < 0){";
+RS+=  '      alert("Negative value is NOT allowed in textfield: "';
+RS+=  '             +textobj.name);';
+RS+=  "      textobj.focus();";
+RS+=  "      textobj.select();";
+RS+=  "      return false;";
+RS+=  "   }";
+
+RS+=  '   if(textobj.name == "renold") return (renoldOK = true);';
+RS+=  '   if(textobj.name == "sref") return (srefOK = true);';
+RS+=  '   if(textobj.name == "bref") return (brefOK = true);';
+RS+=  '   if(textobj.name == "cref") return (crefOK = true);';
+RS+=  '   if(textobj.name == "iramp") return (irampOK = true);';
+RS+=  '   if(textobj.name == "cfl2") return (cfl2OK = true);';
+RS+=  '   if(textobj.name == "cflmin") return (cflminOK = true);';
+RS+=  '   if(textobj.name == "dqmax") return (dqmaxOK = true);';
+RS+=  '   if(textobj.name == "nodeypl") return (nodeyplOK = true);';
+//RS+=  '   if(textobj.name == "renold") return (renoldOK = true);';
+
+///CONSTRUCTION
+RS+= 'if((hold.substring(1,4)=="ENG")||(hold.substring(0,3)=="ENG")){';
+
+   for(var i = 1; i <= numeng; i++){
+      if((i==seceng1) || (i==seceng2) || (i==seceng3) || (i==seceng4)){
+
+RS+='    if(textobj.name == "sENGfuel';
+RS+=  i;
+RS+='") return(sENGfuel';
+RS+=  i;
+RS+='OK = true);';
+//
+RS+='    if(textobj.name == "sENGgamj';
+RS+=  i;
+RS+='") return(sENGgamj';
+RS+=  i;
+RS+='OK = true);';
+//
+RS+='    if(textobj.name == "sENGpjet';
+RS+=  i;
+RS+='") return(sENGpjet';
+RS+=  i;
+RS+='OK = true);';
+//
+RS+='    if(textobj.name == "sENGp0jet';
+RS+=  i;
+RS+='") return(sENGp0jet';
+RS+=  i;
+RS+='OK = true);';
+//
+RS+='    if(textobj.name == "sENGRratio';
+RS+=  i;
+RS+='") return(sENGRratio';
+RS+=  i;
+RS+='OK = true);';
+//
+RS+='    if(textobj.name == "sENGT0jet';
+RS+=  i;
+RS+='") return(sENGT0jet';
+RS+=  i;
+RS+='OK = true);';
+ 
+      }
+
+RS+='    if(textobj.name == "ENGfuel';
+RS+=  i;
+RS+='") return(ENGfuel';
+RS+=  i;
+RS+='OK = true);';
+//
+RS+='    if(textobj.name == "ENGgamj';
+RS+=  i;
+RS+='") return(ENGgamj';
+RS+=  i;
+RS+='OK = true);';
+//
+RS+='    if(textobj.name == "ENGpjet';
+RS+=  i;
+RS+='") return(ENGpjet';
+RS+=  i;
+RS+='OK = true);';
+//
+RS+='    if(textobj.name == "ENGp0jet';
+RS+=  i;
+RS+='") return(ENGp0jet';
+RS+=  i;
+RS+='OK = true);';
+//
+RS+='    if(textobj.name == "ENGRratio';
+RS+=  i;
+RS+='") return(ENGRratio';
+RS+=  i;
+RS+='OK = true);';
+//
+RS+='    if(textobj.name == "ENGT0jet';
+RS+=  i;
+RS+='") return(ENGT0jet';
+RS+=  i;
+RS+='OK = true);';
+
+   }
+
+RS+='}';
+///CONSTRUCTION
+RS+=  "}";
+
+doc.writeln(RS);
+var RS = '';
+
+RS+=  "<\/SCRIPT>";
+RS+=  "<\/HEAD>";
+RS+=  '<BODY BGCOLOR="white">';
+RS+=  '<CENTER><H2 ALIGN="CENTER">';
+RS+=  "USM3D (V5.2) input file</H2>";
+RS+=  "</CENTER><P>";
+RS+=  "</P>";
+RS+=  '<FORM METHOD="POST" NAME="inptForm" ACTION="../../cgi-bin/usm52.pl"';
+RS+=  '      TARGET="scrout" onSubmit="return validateForm(this)">';
+
+doc.writeln(RS);
+var RS = '';
+
+RS+="<CENTER>";
+RS+="<TABLE>";
+RS+='   <CAPTION><B>YOUR CASE TITLE : </B><INPUT TYPE="TEXT" NAME="title"';
+RS+=            'MAXLENGTH="80" SIZE="60"></CAPTION>';
+RS+="<TR>";
+RS+='  <TD><A HREF=javascript:USM_hlp("#Mach","450","30")>Mach</A> </TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#alpha","450","30")>alpha</A> </TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#beta","450","30")>beta</A> </TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#Re","450","30")>ReUe,mil</A> </TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#Tinf","450","50")>Tinf,dR</A> </TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#itw","450","160")>itwall</A> </TD>';
+RS+=' <TD><A HREF=javascript:USM_hlp("#tratio","450","110")>Tw/Tinf</A></TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#ipw","450","150")>ipwall</A> </TD>';
+RS+="</TR>";
+RS+="<TR>";
+RS+='  <TD><INPUT TYPE="TEXT" NAME="mach" MAXLENGTH="20" SIZE="10"';
+RS+='VALUE="';
+RS+=machV;
+RS+='" ';
+RS+='                         onChange="validateField(this)"></TD>';
+RS+='  <TD><INPUT TYPE="TEXT" NAME="alpha" MAXLENGTH="20" SIZE="6"';
+RS+='VALUE="';
+RS+=alphaV;
+RS+='" ';
+RS+='                         onChange="validateField(this)"></TD>';
+RS+='  <TD><INPUT TYPE="TEXT" NAME="beta" MAXLENGTH="20" SIZE="10"';
+RS+='VALUE="';
+RS+=betaV;
+RS+='" ';
+RS+='                         onChange="validateField(this)"></TD>';
+RS+='  <TD><INPUT TYPE="TEXT" NAME="renold" MAXLENGTH="20" SIZE="10"';
+RS+='VALUE="';
+RS+=renoldV;
+RS+='" ';
+RS+='                         onChange="validateField(this);';
+RS+='                                   validateSign(this)"></TD>';
+RS+='  <TD><INPUT TYPE="TEXT" NAME="tinf" MAXLENGTH="20" SIZE="10"'; 
+RS+='VALUE="';
+RS+=tinfV;
+RS+='" ';
+RS+='            onChange="validateField(this)"></TD>';
+RS+='  <TD><FONT SIZE="1"><SELECT NAME="itwall">';
+if(itwallV == '0'){
+RS+='          <OPTION SELECTED VALUE="0"> adiabatic wall';
+RS+='          <OPTION VALUE="1"> isothermal wall';
+}else{
+RS+='          <OPTION SELECTED VALUE="1"> isothermal wall';
+RS+='          <OPTION VALUE="0"> adiabatic wall';
+}
+RS+='        </SELECT></FONT></TD>';
+//
+RS+='  <TD><INPUT TYPE="TEXT" NAME="twratio" MAXLENGTH="20" SIZE="6"';
+RS+='VALUE="';
+RS+=twratioV;
+RS+='" ';
+RS+='                         onChange="validateField(this)"></TD>';
+//
+RS+='  <TD><FONT SIZE="1"><SELECT NAME="ipwall">';
+if(ipwallV == '0'){
+RS+='          <OPTION SELECTED VALUE="0"> 0';
+RS+='          <OPTION VALUE="1"> 1';
+}else{
+RS+='          <OPTION VALUE="0"> 0';
+RS+='          <OPTION SELECTED VALUE="1"> 1';
+}
+RS+='          </SELECT></FONT></TD>';
+RS+="</TR>";
+
+RS+="<TR>";
+RS+='  <TD><A HREF=javascript:USM_hlp("#ref","450","320")>sref</A> </TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#ref","450","320")>bref</A> </TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#ref","450","320")>cref</A> </TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#ref","450","320")>xmc</A> </TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#ref","450","320")>ymc</A> </TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#ref","450","320")>zmc</A> </TD>';
+RS+="</TR>";
+
+RS+="<TR>";
+RS+='  <TD><INPUT TYPE="TEXT" NAME="sref" MAXLENGTH="20" SIZE="10"';
+RS+='VALUE="';
+RS+=srefV;
+RS+='" ';
+RS+='                         onChange="validateField(this);';
+RS+='                                   validateSign(this)"></TD>';
+RS+='  <TD><INPUT TYPE="TEXT" NAME="bref" MAXLENGTH="20" SIZE="6"';
+RS+='VALUE="';
+RS+=brefV;
+RS+='" ';
+RS+='                         onChange="validateField(this);';
+RS+='                                   validateSign(this)"></TD>';
+RS+='  <TD><INPUT TYPE="TEXT" NAME="cref" MAXLENGTH="20" SIZE="10"'; 
+RS+='VALUE="';
+RS+=crefV;
+RS+='" ';
+RS+='                         onChange="validateField(this);';
+RS+='                                   validateSign(this)"></TD>';
+RS+='  <TD><INPUT TYPE="TEXT" NAME="xmc" MAXLENGTH="20" SIZE="10"';
+RS+='VALUE="';
+RS+=xmcV;
+RS+='" ';
+RS+='                         onChange="validateField(this)"></TD>';
+RS+='  <TD><INPUT TYPE="TEXT" NAME="ymc" MAXLENGTH="20" SIZE="10"';
+RS+='VALUE="';
+RS+=ymcV;
+RS+='" ';
+RS+='                         onChange="validateField(this)"></TD>';
+RS+='  <TD><INPUT TYPE="TEXT" NAME="zmc" MAXLENGTH="20" SIZE="6"';
+RS+='VALUE="';
+RS+=zmcV;
+RS+='" ';
+RS+='                         onChange="validateField(this)"></TD>';
+RS+="</TR>";
+
+RS+="<TR>";
+RS+='  <TD><A HREF=javascript:USM_hlp("#Impl","450","180")>impl</A></TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#Dtcfl","450","380")>dt/cfl1</A></TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#Dtcfl","450","380")>iramp</A></TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#Dtcfl","450","380")>cfl2</A></TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#Cflmin","450","40")>cflmin</A></TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#GSTOL","450","150")>GS_tol</A></TD>';
+RS+="</TR>";
+
+RS+="<TR>";
+RS+='  <TD><FONT SIZE="1"><SELECT NAME="impl">';
+if(implV == '1'){
+RS+='      <OPTION VALUE="0">explicit';
+RS+='      <OPTION SELECTED VALUE="1">implicit';
+}else{
+RS+='      <OPTION SELECTED VALUE="0">explicit';
+RS+='      <OPTION VALUE="1">implicit';
+}
+RS+='      </SELECT></FONT></TD>';
+RS+='  <TD><INPUT TYPE="TEXT" NAME="dtcfl1" MAXLENGTH="20" SIZE="6"';
+RS+='VALUE="';
+RS+=dtcfl1V;
+RS+='" ';
+RS+='                         onChange="validateField(this)"></TD>';
+RS+='  <TD><INPUT TYPE="TEXT" NAME="iramp" MAXLENGTH="20" SIZE="10"';
+RS+='VALUE="';
+RS+=irampV;
+RS+='" ';
+RS+='                         onChange="validateField(this);';
+RS+='                                   validateSign(this)"></TD>';
+RS+='  <TD><INPUT TYPE="TEXT" NAME="cfl2" MAXLENGTH="20" SIZE="10"';
+RS+='VALUE="';
+RS+=cfl2V;
+RS+='" ';
+RS+='                         onChange="validateField(this);';
+RS+='                                   validateSign(this)"></TD>';
+RS+='  <TD><INPUT TYPE="TEXT" NAME="cflmin" MAXLENGTH="20" SIZE="10"';
+RS+='VALUE="';
+RS+=cflminV;
+RS+='" ';
+RS+='                         onChange="validateField(this);';
+RS+='                                   validateSign(this)"></TD>';
+RS+='  <TD><INPUT TYPE="TEXT" NAME="gstol" MAXLENGTH="20" SIZE="6"';
+RS+='VALUE="';
+RS+=gstolV;
+RS+='" ';
+RS+='                         onChange="validateField(this)"></TD>';
+RS+="</TR>";
+
+RS+="<TR>";
+RS+='  <TD><A HREF=javascript:USM_hlp("#Irest","450","210")>irest</A></TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#Mstage","450","150")>mstage</A></TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#Iresmth","450","280")>';
+RS+='         iresmth</A></TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#Dqmax","450","150")>dqmax</A></TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#Pbrk","450","20")>p_break</A></TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#Pmin","450","70")>p_min</A></TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#Limiter","450","300")>';
+RS+='         limiter</A></TD>';
+RS+="</TR>";
+
+RS+="    <TR>";
+RS+='        <TD><FONT SIZE="1"><SELECT NAME="irest">';
+if(irestV == '0'){
+RS+='            <OPTION SELECTED VALUE="0">fresh run';
+RS+='            <OPTION VALUE="1">restart';
+}else{
+RS+='            <OPTION VALUE="0">fresh run';
+RS+='            <OPTION SELECTED VALUE="1">restart';
+}
+RS+='            </SELECT></FONT></TD>';
+//
+RS+='        <TD><FONT SIZE="1"><SELECT NAME="mstage">';
+if(mstageV == '3'){
+RS+='            <OPTION  VALUE="2">2';
+RS+='            <OPTION  SELECTED VALUE="3">3';
+RS+='            <OPTION  VALUE="4">4';
+RS+='            <OPTION  VALUE="5">5';
+}else if(mstageV == '4'){
+RS+='            <OPTION  VALUE="2">2';
+RS+='            <OPTION  VALUE="3">3';
+RS+='            <OPTION  SELECTED VALUE="4">4';
+RS+='            <OPTION  VALUE="5">5';
+}else if(mstageV == '2'){
+RS+='            <OPTION  SELECTED VALUE="2">2';
+RS+='            <OPTION  VALUE="3">3';
+RS+='            <OPTION  VALUE="4">4';
+RS+='            <OPTION  VALUE="5">5';
+}else{
+RS+='            <OPTION  VALUE="2">2';
+RS+='            <OPTION  VALUE="3">3';
+RS+='            <OPTION  VALUE="4">4';
+RS+='            <OPTION  SELECTED VALUE="5">5';
+}
+RS+='            </SELECT></FONT></TD>';
+//
+RS+='        <TD><FONT SIZE="1"><SELECT NAME="iresmth">';
+if(iresmthV == '1'){
+RS+='            <OPTION SELECTED VALUE="1">1';
+RS+='            <OPTION VALUE="0">0';
+RS+='            <OPTION VALUE="-1">-1';
+}else if(iresmthV == '0'){
+RS+='            <OPTION VALUE="1">1';
+RS+='            <OPTION SELECTED VALUE="0">0';
+RS+='            <OPTION VALUE="-1">-1';
+}else{
+RS+='            <OPTION VALUE="1">1';
+RS+='            <OPTION VALUE="0">0';
+RS+='            <OPTION SELECTED VALUE="-1">-1';
+}
+RS+='            </SELECT></FONT></TD>';
+//
+RS+='        <TD><INPUT TYPE="TEXT" NAME="dqmax" MAXLENGTH="20" SIZE="10"';
+RS+='VALUE="';
+RS+=dqmaxV;
+RS+='" ';
+RS+='                               onChange="validateField(this);';
+RS+='                                         validateSign(this)"></TD>';
+//
+RS+='        <TD><INPUT TYPE="TEXT" NAME="pbreak" MAXLENGTH="20" SIZE="10"';
+RS+='VALUE="';
+RS+=pbreakV;
+RS+='" ';
+RS+='                               onChange="validateField(this)"></TD>';
+//
+RS+='        <TD><INPUT TYPE="TEXT" NAME="pmin" MAXLENGTH="20" SIZE="6"';
+RS+='VALUE="';
+RS+=pminV;
+RS+='" ';
+RS+='                           onChange="validateField(this)"></TD>';
+//
+RS+='        <TD><FONT SIZE="1"><SELECT NAME="limiter">';
+if(limiterV == "1.0"){
+RS+='            <OPTION VALUE="0.0">no limiter';
+RS+='            <OPTION SELECTED VALUE="1.0">min-mod';
+RS+='            <OPTION VALUE="2.0">superbee';
+}else if(limiterV == "0.0"){
+RS+='            <OPTION SELECTED VALUE="0.0">no limiter';
+RS+='            <OPTION VALUE="1.0">min-mod';
+RS+='            <OPTION VALUE="2.0">superbee';
+}else{
+RS+='            <OPTION VALUE="0.0">no limiter';
+RS+='            <OPTION VALUE="1.0">min-mod';
+RS+='            <OPTION SELECTED VALUE="2.0">superbee';
+}
+RS+='            </SELECT></FONT></TD>';
+RS+="    </TR>";
+
+RS+="<TR>";
+RS+='  <TD><A HREF=javascript:USM_hlp("#Nupdate","450","230")>';
+RS+='         nupdate</A></TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#Nwrest","450","230")>nwrest</A></TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#Ipltqn","450","330")>ipltqn</A></TD>';
+RS+=' <TD><A HREF=javascript:USM_hlp("#Idiag","450","200")>idiagnos</A></TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#Nodey","450","150")>nodeypl</A></TD>';
+RS+="</TR>";
+
+RS+="<TR>";
+RS+='  <TD><INPUT TYPE="TEXT" NAME="nupdate" MAXLENGTH="20" SIZE="10"';
+RS+='VALUE="';
+RS+=nupdateV;
+RS+='" ';
+RS+='                         onChange="validateField(this)"></TD>';
+//
+RS+='  <TD><INPUT TYPE="TEXT" NAME="nwrest" MAXLENGTH="20" SIZE="6"';
+RS+='VALUE="';
+RS+=nwrestV;
+RS+='" ';
+RS+='                         onChange="validateField(this)"></TD>';
+//
+RS+='  <TD><FONT SIZE="1"><SELECT NAME="ipltqn">';
+if(ipltqnV == '2'){
+RS+='       <OPTION VALUE="0">no q-file';
+RS+='       <OPTION VALUE="1">unformatted';
+RS+='       <OPTION SELECTED VALUE="2">formatted';
+}else if(ipltqnV == '0'){
+RS+='       <OPTION SELECTED VALUE="0">no q-file';
+RS+='       <OPTION VALUE="1">unformatted';
+RS+='       <OPTION VALUE="2">formatted';
+}else{
+RS+='       <OPTION VALUE="0">no q-file';
+RS+='       <OPTION SELECTED VALUE="1">unformatted';
+RS+='       <OPTION VALUE="2">formatted';
+}
+RS+='       </SELECT></FONT></TD>';
+//
+RS+='  <TD><FONT SIZE="1"><SELECT NAME="idiagnos">';
+if(idiagnosV == '0'){
+RS+='       <OPTION SELECTED VALUE="0"> 0';
+RS+='       <OPTION VALUE="1"> 1';
+RS+='       <OPTION VALUE="2"> 2';
+RS+='       <OPTION VALUE="3"> 3';
+}
+if(idiagnosV == '1'){
+RS+='       <OPTION VALUE="0"> 0';
+RS+='       <OPTION SELECTED VALUE="1"> 1';
+RS+='       <OPTION VALUE="2"> 2';
+RS+='       <OPTION VALUE="3"> 3';
+}
+if(idiagnosV == '2'){
+RS+='       <OPTION VALUE="0"> 0';
+RS+='       <OPTION VALUE="1"> 1';
+RS+='       <OPTION SELECTED VALUE="2"> 2';
+RS+='       <OPTION VALUE="3"> 3';
+}
+if(idiagnosV == '3'){
+RS+='       <OPTION VALUE="0"> 0';
+RS+='       <OPTION VALUE="1"> 1';
+RS+='       <OPTION VALUE="2"> 2';
+RS+='       <OPTION SELECTED VALUE="3"> 3';
+}
+RS+='       </SELECT></FONT></TD>';
+RS+='  <TD><INPUT TYPE="TEXT" NAME="nodeypl" MAXLENGTH="20" SIZE="6"';
+RS+='VALUE="';
+RS+=nodeyplV;
+RS+='" ';
+RS+='                         onChange="validateField(this);';
+RS+='                                   validateSign(this)"></TD>';
+RS+="</TR>";
+RS+="<TR>";
+//
+RS+='  <TD><A HREF=javascript:USM_hlp("#Iorder","450","260")>iorder</A></TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#Lapl","450","200")>lapl-avg</A></TD>';
+RS+=' <TD><A HREF=javascript:USM_hlp("#Highbc","450","150")>high-bc</A></TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#Ifds","450","140")>ifds</A></TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#Ivisc","450","220")>ivisc</A></TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#Evlim","450","20")>EV_lim</A> </TD>';
+RS+="</TR>";
+
+RS+="<TR>";
+RS+='  <TD><FONT SIZE="1"><SELECT NAME="iorder">';
+if(iorderV == '0'){
+RS+='      <OPTION SELECTED VALUE="0">auto select';
+RS+='      <OPTION VALUE="1">1st order';
+RS+='      <OPTION VALUE="2">higher ord';
+}else if(iorderV == '2'){
+RS+='      <OPTION VALUE="0">auto select';
+RS+='      <OPTION VALUE="1">1st order';
+RS+='      <OPTION SELECTED VALUE="2">higher ord';
+}else{
+RS+='      <OPTION VALUE="0">auto select';
+RS+='      <OPTION SELECTED VALUE="1">1st order';
+RS+='      <OPTION VALUE="2">higher ord';
+}
+RS+='      </SELECT></FONT></TD>';
+//
+RS+='  <TD><FONT SIZE="1"><SELECT NAME="lapl_avg">';
+if(lapl_avgV == '2'){
+RS+='      <OPTION VALUE="0">0';
+RS+='      <OPTION VALUE="1">1';
+RS+='      <OPTION SELECTED VALUE="2">2';
+RS+='      <OPTION VALUE="-1">-1';
+}else if(lapl_avgV == '1'){
+RS+='      <OPTION VALUE="0">0';
+RS+='      <OPTION SELECTED VALUE="1">1';
+RS+='      <OPTION VALUE="2">2';
+RS+='      <OPTION VALUE="-1">-1';
+}else if(lapl_avgV == '0'){
+RS+='      <OPTION SELECTED VALUE="0">0';
+RS+='      <OPTION VALUE="1">1';
+RS+='      <OPTION VALUE="2">2';
+RS+='      <OPTION VALUE="-1">-1';
+}else{
+RS+='      <OPTION VALUE="0">0';
+RS+='      <OPTION VALUE="1">1';
+RS+='      <OPTION VALUE="2">2';
+RS+='      <OPTION SELECTED VALUE="-1">-1';
+}
+RS+='      </SELECT></FONT></TD>';
+//
+RS+='  <TD><FONT SIZE="1"><SELECT NAME="high_bc">';
+if(high_bcV == '1'){
+RS+='      <OPTION VALUE="0">1st order bc';
+RS+='      <OPTION SELECTED VALUE="1">higher ord bc';
+}else{
+RS+='      <OPTION SELECTED VALUE="0">1st order bc';
+RS+='      <OPTION VALUE="1">higher ord bc';
+}
+RS+='      </SELECT></FONT></TD>';
+//
+RS+='  <TD><FONT SIZE="1"><SELECT NAME="ifds">';
+if(ifdsV == '1'){
+RS+='      <OPTION VALUE="0">0';
+RS+='      <OPTION SELECTED VALUE="1">1';
+}else{
+RS+='      <OPTION SELECTED VALUE="0">0';
+RS+='      <OPTION VALUE="1">1';
+}
+RS+='      </SELECT></FONT></TD>';
+//
+RS+='  <TD><FONT SIZE="1"><SELECT NAME="ivisc">';
+if(iviscV == '0'){
+RS+='      <OPTION SELECTED VALUE="0">inviscid';
+RS+='      <OPTION VALUE="1">laminar';
+RS+='      <OPTION VALUE="2">full visc';
+RS+='      <OPTION VALUE="3">wall-funct';
+}else if(iviscV == 2){
+RS+='      <OPTION VALUE="0">inviscid';
+RS+='      <OPTION VALUE="1">laminar';
+RS+='      <OPTION SELECTED VALUE="2">full visc';
+RS+='      <OPTION VALUE="3">wall-funct';
+}else if(iviscV == 3){
+RS+='      <OPTION VALUE="0">inviscid';
+RS+='      <OPTION VALUE="1">laminar';
+RS+='      <OPTION VALUE="2">full visc';
+RS+='      <OPTION SELECTED VALUE="3">wall-funct';
+}else{
+RS+='      <OPTION VALUE="0">inviscid';
+RS+='      <OPTION SELECTED VALUE="1">laminar';
+RS+='      <OPTION VALUE="2">full visc';
+RS+='      <OPTION VALUE="3">wall-funct';
+}
+RS+='      </SELECT></FONT></TD>';
+//
+RS+='  <TD><INPUT TYPE="TEXT" NAME="evlim" MAXLENGTH="20" SIZE="10"';
+RS+='VALUE="';
+RS+=evlimV;
+RS+='" ';
+RS+='               onChange="validateField(this)"></TD>';
+RS+="</TR>";
+
+RS+="<TR>";
+RS+='  <TD><A HREF=javascript:USM_hlp("#Ncyc","450","50")>ncyc</A></TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#Ngines","450","180")>';
+RS+='         nengines</A></TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#Icomp","450","150")>';
+RS+='         compF&amp;M</A></TD>';
+RS+='  <TD><A HREF=javascript:USM_hlp("#Cldes","450","160")>cldes</A></TD>';
+RS+="</TR>";
+
+RS+="<TR>";
+RS+='  <TD><INPUT TYPE="TEXT" NAME="ncyc" MAXLENGTH="20" SIZE="10"';
+RS+='VALUE="';
+RS+=ncycV;
+RS+='" ';
+RS+='                         onChange="validateField(this)"></TD>';
+RS+='  <TD><FONT SIZE="1"><SELECT NAME="nengines" onChange="engInpt(this)">';
+if(nenginesV == '1'){
+RS+='      <OPTION VALUE="0">0';
+RS+='      <OPTION SELECTED VALUE="1">1';
+RS+='      <OPTION VALUE="2">2';
+RS+='      <OPTION VALUE="3">3';
+RS+='      <OPTION VALUE="4">4';
+}else if(nenginesV == '2'){
+RS+='      <OPTION VALUE="0">0';
+RS+='      <OPTION VALUE="1">1';
+RS+='      <OPTION SELECTED VALUE="2">2';
+RS+='      <OPTION VALUE="3">3';
+RS+='      <OPTION VALUE="4">4';
+}else if(nenginesV == '4'){
+RS+='      <OPTION VALUE="0">0';
+RS+='      <OPTION VALUE="1">1';
+RS+='      <OPTION VALUE="2">2';
+RS+='      <OPTION VALUE="3">3';
+RS+='      <OPTION SELECTED VALUE="4">4';
+}else if(nenginesV == '0'){
+RS+='      <OPTION SELECTED VALUE="0">0';
+RS+='      <OPTION VALUE="1">1';
+RS+='      <OPTION VALUE="2">2';
+RS+='      <OPTION VALUE="3">3';
+RS+='      <OPTION VALUE="4">4';
+}else{
+RS+='      <OPTION VALUE="0">0';
+RS+='      <OPTION VALUE="1">1';
+RS+='      <OPTION VALUE="2">2';
+RS+='      <OPTION SELECTED VALUE="3">3';
+RS+='      <OPTION VALUE="4">4';
+}
+RS+='      </SELECT></FONT></TD>';
+//
+RS+='  <TD><FONT SIZE="1"><SELECT NAME="compFM">';
+if(compFMV == '0'){
+RS+='      <OPTION SELECTED VALUE="0">0';
+RS+='      <OPTION VALUE="1">1';
+}else{
+RS+='      <OPTION VALUE="0">0';
+RS+='      <OPTION SELECTED VALUE="1">1';
+}
+RS+='      </SELECT></FONT></TD>';
+//
+RS+='  <TD><INPUT TYPE="TEXT" NAME="cldes" MAXLENGTH="20" SIZE="10"';
+RS+='VALUE="';
+RS+=cldesV;
+RS+='" ';
+RS+='                         onChange="validateField(this)"></TD>';
+RS+="</TR>";
+//alert("Hello from a form");
+if(secnumeng > 0){
+RSB3 ="<TR>";
+RSB3+=' <TD><A HREF=javascript:USM_hlp("#Jet","450","260")>fan/jet</A></TD>';
+}
+   for(var i = 1; i <= numeng; i++){
+
+RSB1 ='  <TD><A HREF=javascript:USM_hlp("#fuel","450","200")>fuel</A></TD>';
+RSB1+='  <TD><A HREF=javascript:USM_hlp("#gammaj","450","150")>gamj</A></TD>';
+RSB1+='  <TD><A HREF=javascript:USM_hlp("#pjet","450","140")>pjet</A></TD>';
+RSB1+='  <TD><A HREF=javascript:USM_hlp("#p0jet","450","220")>p0jet</A></TD>';
+RSB1+='  <TD><A HREF=javascript:USM_hlp("#Rratio","450","20")>Rratio</A></TD>';
+RSB1+='  <TD><A HREF=javascript:USM_hlp("#T0jet","450","20")>T0jet</A> </TD>';
+RSB1+="</TR>";
+
+RSB2 ='  <TD><A HREF=javascript:USM_hlp("#vec","450","200")>vec(1)</A></TD>';
+RSB2+='  <TD><A HREF=javascript:USM_hlp("#vec","450","150")>vec(2)</A></TD>';
+RSB2+='  <TD><A HREF=javascript:USM_hlp("#vec","450","140")>vec(3)</A></TD>';
+RSB2+="</TR>";
+
+RSB4 ="<TR>";
+RSB4+=' <TD><A HREF=javascript:USM_hlp("#Jet","450","260")>jet</A></TD>';
+
+      var engBC = i*100 + 2;
+      var engBCsec = engBC + 1;
+
+      if((i==seceng1) || (i==seceng2) || (i==seceng3) || (i==seceng4)){
+
+RS+= RSB3;
+RS+= RSB1;
+RS+="<TR>";
+RS+='  <TD><INPUT TYPE="TEXT" NAME="sENGjet';
+RS+=   i;
+RS+=   '" MAXLENGTH="20" VALUE="';
+RS+=   engBCsec;
+RS+=   '"';
+RS+='               SIZE="3" onChange="validateField(this)"></TD>';
+/////
+RS+='  <TD><INPUT TYPE="TEXT" NAME="sENGfuel';
+RS+=   i;
+RS+=   '" MAXLENGTH="20" VALUE="0.0"';
+RS+='               SIZE="8"  onChange="validateField(this);';
+RS+='                                   validateSign(this)"></TD>';
+/////
+RS+='  <TD><INPUT TYPE="TEXT" NAME="sENGgamj';
+RS+=   i;
+RS+=   '" MAXLENGTH="20" VALUE="1.4"';
+RS+='               SIZE="8"  onChange="validateField(this);';
+RS+='                                   validateSign(this)"></TD>';
+/////
+RS+='  <TD><INPUT TYPE="TEXT" NAME="sENGpjet';
+RS+=   i;
+RS+=   '" MAXLENGTH="20" VALUE="0.7143"';
+RS+='               SIZE="8"  onChange="validateField(this);';
+RS+='                                   validateSign(this)"></TD>';
+/////
+RS+='  <TD><INPUT TYPE="TEXT" NAME="sENGp0jet';
+RS+=   i;
+RS+=   '" MAXLENGTH="20" VALUE="1.07143"';
+RS+='               SIZE="8"  onChange="validateField(this);';
+RS+='                                   validateSign(this)"></TD>';
+/////
+RS+='  <TD><INPUT TYPE="TEXT" NAME="sENGRratio';
+RS+=   i;
+RS+=   '" MAXLENGTH="20" VALUE="1.0"';
+RS+='               SIZE="8"  onChange="validateField(this);';
+RS+='                                   validateSign(this)"></TD>';
+/////
+RS+='  <TD><INPUT TYPE="TEXT" NAME="sENGT0jet';
+RS+=   i;
+RS+=   '" MAXLENGTH="20" VALUE="1.3261"';
+RS+='               SIZE="8"  onChange="validateField(this);';
+RS+='                                   validateSign(this)"></TD>';
+RS+="</TR>";
+/////
+RS+=RSB3;
+RS+=RSB2;
+RS+="<TR>";
+RS+='  <TD><INPUT TYPE="TEXT" NAME="sENGjet';
+RS+=   i;
+RS+=   '" MAXLENGTH="20" VALUE="';
+RS+=   engBCsec;
+RS+=   '"';
+RS+='               SIZE="3" onChange="validateField(this)"></TD>';
+////
+RS+='  <TD><INPUT TYPE="TEXT" NAME="sENGvec1';
+RS+=   i;
+RS+=   '" MAXLENGTH="20" VALUE="1.0"';
+RS+='               SIZE="8" onChange="validateField(this)"></TD>';
+////
+RS+='  <TD><INPUT TYPE="TEXT" NAME="sENGvec2';
+RS+=   i;
+RS+=   '" MAXLENGTH="20" VALUE="0.0"';
+RS+='               SIZE="8" onChange="validateField(this)"></TD>';
+////
+RS+='  <TD><INPUT TYPE="TEXT" NAME="sENGvec3';
+RS+=   i;
+RS+=   '" MAXLENGTH="20" VALUE="0.0"';
+RS+='               SIZE="8" onChange="validateField(this)"></TD>';
+RS+="</TR>";
+}
+//////////////////////////////
+RS+= RSB4;
+RS+= RSB1;
+RS+="<TR>";
+RS+='  <TD><INPUT TYPE="TEXT" NAME="ENGjet';
+RS+=   i;
+RS+=   '" MAXLENGTH="20" VALUE="';
+RS+=   engBC;
+RS+=   '"';
+RS+='               SIZE="3" onChange="validateField(this)"></TD>';
+////
+RS+='  <TD><INPUT TYPE="TEXT" NAME="ENGfuel';
+RS+=   i;
+RS+=   '" MAXLENGTH="20" VALUE="0.02"';
+RS+='               SIZE="8"  onChange="validateField(this);';
+RS+='                                   validateSign(this)"></TD>';
+/////
+RS+='  <TD><INPUT TYPE="TEXT" NAME="ENGgamj';
+RS+=   i;
+RS+=   '" MAXLENGTH="20" VALUE="1.3"';
+RS+='               SIZE="8"  onChange="validateField(this);';
+RS+='                                   validateSign(this)"></TD>';
+/////
+RS+='  <TD><INPUT TYPE="TEXT" NAME="ENGpjet';
+RS+=   i;
+RS+=   '" MAXLENGTH="20" VALUE="0.7143"';
+RS+='               SIZE="8"  onChange="validateField(this);';
+RS+='                                   validateSign(this)"></TD>';
+/////
+RS+='  <TD><INPUT TYPE="TEXT" NAME="ENGp0jet';
+RS+=   i;
+RS+=   '" MAXLENGTH="20" VALUE="1.42857"';
+RS+='               SIZE="8"  onChange="validateField(this);';
+RS+='                                   validateSign(this)"></TD>';
+/////
+RS+='  <TD><INPUT TYPE="TEXT" NAME="ENGRratio';
+RS+=   i;
+RS+=   '" MAXLENGTH="20" VALUE="0.77400"';
+RS+='               SIZE="8"  onChange="validateField(this);';
+RS+='                                   validateSign(this)"></TD>';
+/////
+RS+='  <TD><INPUT TYPE="TEXT" NAME="ENGT0jet';
+RS+=   i;
+RS+=   '" MAXLENGTH="20" VALUE="3.17390"';
+RS+='               SIZE="8"  onChange="validateField(this);';
+RS+='                                   validateSign(this)"></TD>';
+RS+="</TR>";
+/////
+RS+=RSB4;
+RS+=RSB2;
+RS+="<TR>";
+RS+='  <TD><INPUT TYPE="TEXT" NAME="ENGjet';
+RS+=   i;
+RS+=   '" MAXLENGTH="20" VALUE="';
+RS+=   engBC;
+RS+=   '"';
+RS+='               SIZE="3" onChange="validateField(this)"></TD>';
+////
+RS+='  <TD><INPUT TYPE="TEXT" NAME="ENGvec1';
+RS+=   i;
+RS+=   '" MAXLENGTH="20" VALUE="1.0"';
+RS+='               SIZE="8" onChange="validateField(this)"></TD>';
+////
+RS+='  <TD><INPUT TYPE="TEXT" NAME="ENGvec2';
+RS+=   i;
+RS+=   '" MAXLENGTH="20" VALUE="0.0"';
+RS+='               SIZE="8" onChange="validateField(this)"></TD>';
+////
+RS+='  <TD><INPUT TYPE="TEXT" NAME="ENGvec3';
+RS+=   i;
+RS+=   '" MAXLENGTH="20" VALUE="0.0"';
+RS+='               SIZE="8" onChange="validateField(this)"></TD>';
+RS+="</TR>";
+/////
+}
+
+RS+=  "</TABLE>";
+RS+=  "</CENTER>";
+RS+=  '<CENTER><P ALIGN="CENTER">';
+RS+=  '<INPUT TYPE="SUBMIT" NAME="input" VALUE="submit">';
+RS+=  ' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+RS+=  '<INPUT TYPE="RESET" NAME="Reset"> </P>';
+RS+=  "<\/CENTER><\/FORM>";
+RS+=  "<\/BODY>";
+RS+=  "<\/HTML>";
+doc.writeln(RS);
+doc.close();
+//}
+}
+// end hiding -->
+</SCRIPT>
+</HEAD>
+<BODY BGCOLOR="white">
+<CENTER><H2 ALIGN="CENTER">
+USM3D (V5.2) input file</H2>
+</CENTER><P>
+</P>
+<FORM METHOD="POST" NAME="inptForm" ACTION="../../cgi-bin/usm52.pl" TARGET="scrout"
+      onSubmit="return validateForm(this)">
+<! ACTION="http://www.paragon.langley.net/cgi-bin/Usm3d5_2.pl">
+<! ACTION="../cgi-bin/Usm3d5_2.pl">
+<CENTER>
+<TABLE>
+    <CAPTION><B>YOUR CASE TITLE : </B><INPUT TYPE="TEXT" NAME="title"
+     MAXLENGTH="200" SIZE="70"></CAPTION>
+    <TR>
+       <TD><A HREF="javascript:USM_hlp('#Mach','450','30')">Mach</A> </TD>
+       <TD><A HREF="javascript:USM_hlp('#alpha','450','30')">alpha</A> </TD>
+       <TD><A HREF="javascript:USM_hlp('#beta','450','30')">beta</A> </TD>
+       <TD><A HREF="javascript:USM_hlp('#Re','450','30')">ReUe,mil</A> </TD>
+       <TD><A HREF="javascript:USM_hlp('#Tinf','450','50')">Tinf,dR</A> </TD>
+       <TD><A HREF="javascript:USM_hlp('#itw','450','160')">itwall</A> </TD>
+       <TD><A HREF="javascript:USM_hlp('#tratio','450','110')">Tw/Tinf</A> </TD>
+       <TD><A HREF="javascript:USM_hlp('#ipw','450','150')">ipwall</A> </TD>
+    </TR>
+    <TR>
+       <TD><INPUT TYPE="TEXT" NAME="mach" MAXLENGTH="20" SIZE="10"
+                              onChange="validateField(this)"></TD>
+       <TD><INPUT TYPE="TEXT" NAME="alpha" MAXLENGTH="20" SIZE="6"
+                              onChange="validateField(this)"></TD>
+       <TD><INPUT TYPE="TEXT" NAME="beta" MAXLENGTH="20" SIZE="10"
+                              onChange="validateField(this)"></TD>
+       <TD><INPUT TYPE="TEXT" NAME="renold" MAXLENGTH="20" SIZE="10"
+                              onChange="validateField(this);
+                                        validateSign(this)"></TD>
+       <TD><INPUT TYPE="TEXT" NAME="tinf" MAXLENGTH="20" SIZE="10" VALUE="460.0"
+                              onChange="validateField(this)"></TD>
+       <TD><FONT SIZE="1"><SELECT NAME="itwall">
+           <OPTION SELECTED VALUE="0"> adiabatic wall 
+           <OPTION VALUE="1"> isothermal wall 
+           </SELECT></FONT></TD>
+       <TD><INPUT TYPE="TEXT" NAME="twratio" MAXLENGTH="20" SIZE="6" VALUE="-1"
+                              onChange="validateField(this)"></TD>
+       <TD><FONT SIZE="1"><SELECT NAME="ipwall">
+           <OPTION SELECTED VALUE="0"> 0 
+           <OPTION VALUE="1"> 1 
+           </SELECT></FONT></TD>
+    </TR>
+    <TR>
+        <TD><A HREF="javascript:USM_hlp('#ref','450','320')">sref</A> </TD>
+        <TD><A HREF="javascript:USM_hlp('#ref','450','320')">bref</A> </TD>
+        <TD><A HREF="javascript:USM_hlp('#ref','450','320')">cref</A> </TD>
+        <TD><A HREF="javascript:USM_hlp('#ref','450','320')">xmc</A> </TD>
+        <TD><A HREF="javascript:USM_hlp('#ref','450','320')">ymc</A> </TD>
+        <TD><A HREF="javascript:USM_hlp('#ref','450','320')">zmc</A> </TD>
+    </TR>
+    <TR>
+        <TD><INPUT TYPE="TEXT" NAME="sref" MAXLENGTH="20" VALUE="1.00" SIZE="10"
+                               onChange="validateField(this);
+                                         validateSign(this)"></TD>
+        <TD><INPUT TYPE="TEXT" NAME="bref" MAXLENGTH="20" VALUE="1.00" SIZE="6"
+                               onChange="validateField(this);
+                                         validateSign(this)"></TD>
+        <TD><INPUT TYPE="TEXT" NAME="cref" MAXLENGTH="20" VALUE="1.00" SIZE="10"
+                               onChange="validateField(this);
+                                         validateSign(this)"></TD>
+        <TD><INPUT TYPE="TEXT" NAME="xmc" MAXLENGTH="20" VALUE="0.00" SIZE="10"
+                               onChange="validateField(this)"></TD>
+        <TD><INPUT TYPE="TEXT" NAME="ymc" MAXLENGTH="20" VALUE="0.00" SIZE="10"
+                               onChange="validateField(this)"></TD>
+        <TD><INPUT TYPE="TEXT" NAME="zmc" MAXLENGTH="20" VALUE="0.00" SIZE="6"
+                               onChange="validateField(this)"></TD>
+    </TR>
+    <TR>
+        <TD><A HREF="javascript:USM_hlp('#Impl','450','180')">impl</A> </TD>
+        <TD><A HREF="javascript:USM_hlp('#Dtcfl','450','380')">dt/cfl1</A></TD>
+        <TD><A HREF="javascript:USM_hlp('#Dtcfl','450','380')">iramp</A></TD>
+        <TD><A HREF="javascript:USM_hlp('#Dtcfl','450','380')">cfl2</A></TD>
+        <TD><A HREF="javascript:USM_hlp('#Cflmin','450','40')">cflmin</A></TD>
+        <TD><A HREF="javascript:USM_hlp('#GSTOL','450','150')">GS_tol</A></TD>
+    </TR>
+    <TR>
+        <TD><FONT SIZE="1"><SELECT NAME="impl">
+            <OPTION VALUE="0">explicit 
+            <OPTION SELECTED VALUE="1">implicit 
+            </SELECT></FONT></TD>
+        <TD><INPUT TYPE="TEXT" NAME="dtcfl1" MAXLENGTH="20" VALUE="-10.0"
+                      SIZE="6" onChange="validateField(this)"></TD>
+        <TD><INPUT TYPE="TEXT" NAME="iramp" MAXLENGTH="20" VALUE="40" 
+                     SIZE="10" onChange="validateField(this);
+                                         validateSign(this)"></TD>
+        <TD><INPUT TYPE="TEXT" NAME="cfl2" MAXLENGTH="20" VALUE="150.0"
+                     SIZE="10" onChange="validateField(this);
+                                         validateSign(this)"></TD>
+        <TD><INPUT TYPE="TEXT" NAME="cflmin" MAXLENGTH="20" VALUE="10.0" 
+                     SIZE="10" onChange="validateField(this);
+                                         validateSign(this)"></TD>
+        <TD><INPUT TYPE="TEXT" NAME="gstol" MAXLENGTH="20" VALUE="0.0" 
+                     SIZE="6"  onChange="validateField(this)"></TD>
+    </TR>
+    <TR>
+       <TD><A HREF="javascript:USM_hlp('#Irest','450','210')">irest</A></TD>
+       <TD><A HREF="javascript:USM_hlp('#Mstage','450','150')">mstage</A></TD>
+       <TD><A HREF="javascript:USM_hlp('#Iresmth','450','280')">iresmth</A></TD>
+       <TD><A HREF="javascript:USM_hlp('#Dqmax','450','150')">dqmax</A></TD>
+       <TD><A HREF="javascript:USM_hlp('#Pbrk','450','20')">p_break</A></TD>
+       <TD><A HREF="javascript:USM_hlp('#Pmin','450','70')">p_min</A></TD>
+       <TD><A HREF="javascript:USM_hlp('#Limiter','450','300')">limiter</A></TD>
+    </TR>
+    <TR>
+        <TD><FONT SIZE="1"><SELECT NAME="irest">
+            <OPTION SELECTED VALUE="0">fresh run 
+            <OPTION VALUE="1">restart 
+            </SELECT></FONT></TD>
+        <TD><FONT SIZE="1"><SELECT NAME="mstage">
+            <OPTION  VALUE="2">2
+            <OPTION SELECTED VALUE="3">3
+            <OPTION  VALUE="4">4
+            <OPTION  VALUE="5">5
+            </SELECT></FONT></TD>
+        <TD><FONT SIZE="1"><SELECT NAME="iresmth">
+            <OPTION SELECTED VALUE="1">1 
+            <OPTION VALUE="0">0
+            <OPTION VALUE="-1">-1 
+            </SELECT></FONT></TD>
+        <TD><INPUT TYPE="TEXT" NAME="dqmax" MAXLENGTH="20" VALUE="0.25" 
+                     SIZE="10" onChange="validateField(this);
+                                         validateSign(this)"></TD>
+        <TD><INPUT TYPE="TEXT" NAME="pbreak" MAXLENGTH="20" VALUE="0.01" 
+                     SIZE="10" onChange="validateField(this)"></TD>
+        <TD><INPUT TYPE="TEXT" NAME="pmin" MAXLENGTH="20" VALUE="0.001" 
+                     SIZE="6"  onChange="validateField(this)"></TD>
+        <TD><FONT SIZE="1"><SELECT NAME="limiter">
+            <OPTION SELECTED VALUE="0.0">no limiter 
+            <OPTION VALUE="1.0">min-mod 
+            <OPTION VALUE="2.0">superbee 
+            </SELECT></FONT></TD>
+    </TR>
+    <TR>
+       <TD><A HREF="javascript:USM_hlp('#Nupdate','450','230')">nupdate</A></TD>
+       <TD><A HREF="javascript:USM_hlp('#Nwrest','450','230')">nwrest</A></TD>
+       <TD><A HREF="javascript:USM_hlp('#Ipltqn','450','330')">ipltqn</A></TD>
+       <TD><A HREF="javascript:USM_hlp('#Idiag','450','200')">idiagnos</A></TD>
+       <TD><A HREF="javascript:USM_hlp('#Nodey','450','150')">nodeypl</A> </TD>
+    </TR>
+    <TR>
+       <TD><INPUT TYPE="TEXT" NAME="nupdate" MAXLENGTH="20" VALUE="10" 
+                    SIZE="10" onChange="validateField(this)"></TD>
+       <TD><INPUT TYPE="TEXT" NAME="nwrest" MAXLENGTH="20" VALUE="200" 
+                    SIZE="6" onChange="validateField(this)"></TD>
+       <TD><FONT SIZE="1"><SELECT NAME="ipltqn">
+            <OPTION VALUE="0">no q-file 
+            <OPTION VALUE="1">unformatted 
+            <OPTION SELECTED VALUE="2">formatted 
+            </SELECT></FONT></TD>
+       <TD><FONT SIZE="1"><SELECT NAME="idiagnos">
+            <OPTION VALUE="0"> 0 
+            <OPTION VALUE="1"> 1 
+            <OPTION VALUE="2"> 2
+            <OPTION SELECTED VALUE="3"> 3
+            </SELECT></FONT></TD>
+       <TD><INPUT TYPE="TEXT" NAME="nodeypl" MAXLENGTH="20" VALUE="0"
+                     SIZE="6" onChange="validateField(this);
+                                        validateSign(this)"></TD>
+    </TR>
+    <TR>
+        <TD><A HREF="javascript:USM_hlp('#Iorder','450','260')">iorder</A></TD>
+        <TD><A HREF="javascript:USM_hlp('#Lapl','450','200')">lapl-avg</A></TD>
+        <TD><A HREF="javascript:USM_hlp('#Highbc','450','150')">high-bc</A></TD>
+        <TD><A HREF="javascript:USM_hlp('#Ifds','450','140')">ifds</A></TD>
+        <TD><A HREF="javascript:USM_hlp('#Ivisc','450','220')">ivisc</A></TD>
+        <TD><A HREF="javascript:USM_hlp('#Evlim','450','20')">EV_lim</A> </TD>
+    </TR>
+    <TR>
+        <TD><FONT SIZE="1"><SELECT NAME="iorder">
+            <OPTION SELECTED VALUE="0">auto select 
+            <OPTION VALUE="1">1st order 
+            <OPTION VALUE="2">higher ord 
+            </SELECT></FONT></TD>
+        <TD><FONT SIZE="1"><SELECT NAME="lapl_avg">
+            <OPTION VALUE="0">0 
+            <OPTION VALUE="1">1 
+            <OPTION SELECTED VALUE="2">2 
+            <OPTION VALUE="-1">-1 
+            </SELECT></FONT></TD>
+        <TD><FONT SIZE="1"><SELECT NAME="high_bc">
+            <OPTION VALUE="0">1st order bc 
+            <OPTION SELECTED VALUE="1">higher ord bc 
+            </SELECT></FONT></TD>
+        <TD><FONT SIZE="1"><SELECT NAME="ifds">
+            <OPTION VALUE="0">0 
+            <OPTION SELECTED VALUE="1">1 
+            </SELECT></FONT></TD>
+        <TD><FONT SIZE="1"><SELECT NAME="ivisc">
+            <OPTION SELECTED VALUE="0">inviscid 
+            <OPTION VALUE="1">laminar 
+            <OPTION VALUE="2">full visc 
+            <OPTION VALUE="3">wall-funct 
+            </SELECT></FONT></TD>
+        <TD><INPUT TYPE="TEXT" NAME="evlim" MAXLENGTH="20" VALUE="0.1" 
+                     SIZE="10" onChange="validateField(this)"></TD>
+    </TR>
+    <TR>
+      <TD><A HREF="javascript:USM_hlp('#Ncyc','450','50')">ncyc</A></TD>
+      <TD><A HREF="javascript:USM_hlp('#Ngines','450','180')">nengines</A></TD>
+     <TD><A HREF="javascript:USM_hlp('#Icomp','450','150')">compF&amp;M</A></TD>
+      <TD><A HREF="javascript:USM_hlp('#Cldes','450','160')">cldes</A> </TD>
+    </TR>
+    <TR>
+      <TD><INPUT TYPE="TEXT" NAME="ncyc" MAXLENGTH="20" SIZE="10"
+                             onChange="validateField(this)"></TD>
+      <TD><FONT SIZE="1"><SELECT NAME="nengines" 
+           onChange="javascript:if(this.options[this.selectedIndex].value > 0)
+                     doJump(parent.document,this,this.form)">
+          <OPTION SELECTED VALUE="0">0
+          <OPTION VALUE="1">1
+          <OPTION VALUE="2">2
+          <OPTION VALUE="3">3
+          <OPTION VALUE="4">4
+          </SELECT></FONT></TD>
+      <TD><FONT SIZE="1"><SELECT NAME="compFM">
+          <OPTION SELECTED VALUE="0">0 
+          <OPTION VALUE="1">1 
+          </SELECT></FONT></TD>
+      <TD><INPUT TYPE="TEXT" NAME="cldes" MAXLENGTH="20" VALUE="0.0" 
+                   SIZE="10" onChange="validateField(this)"></TD>
+    </TR>
+</TABLE>
+</CENTER>
+<CENTER><P ALIGN="CENTER">
+<INPUT TYPE="SUBMIT" NAME="input" VALUE="submit">
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<INPUT TYPE="RESET" NAME="Reset"> </P>
+</CENTER></FORM>
+</BODY>
+</HTML>
