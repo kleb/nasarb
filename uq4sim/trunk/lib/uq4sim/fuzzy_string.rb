@@ -9,9 +9,9 @@ module Uq4sim
 
     FLOAT = /[-+]*(?=\d|\.\d)\d*(?:\.\d*)?(?:[eE][-+]\d+)*/
 
-    FUZZY_PATTERN = /(#{FLOAT}+)         # $1 : number
+    FUZZY_PATTERN = /(#{FLOAT})          # $1 : number
                      \s*\+\/-\s*
-                     (#{FLOAT}+)         # $2 : tolerance
+                     (#{FLOAT})          # $2 : tolerance
                      (%|o)?              # $3 : type of tolerance (optional)
                      (N|U|T)?            # $4 : distribution to use (opt)
                      (_(\d+[.]?\d*[#{Scanf::FormatString::SPECIFIERS}]))?
