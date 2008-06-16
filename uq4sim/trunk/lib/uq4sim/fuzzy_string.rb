@@ -7,10 +7,7 @@ module Uq4sim
 
     include Uq4sim
 
-    FLOAT = '[-+0-9eE.]'
-
-    # Note: `perldoc -q float` suggests
-    #       /([-+]?)(?=\d|\.\d)\d*(\.\d*)?([Ee]([-+]?\d+))?/ 
+    FLOAT = /[-+]*(?=\d|\.\d)\d*(?:\.\d*)?(?:[eE][-+]\d+)*/
 
     FUZZY_PATTERN = /(#{FLOAT}+)         # $1 : number
                      \s*\+\/-\s*
