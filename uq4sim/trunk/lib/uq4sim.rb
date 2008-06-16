@@ -16,6 +16,14 @@ module Uq4sim
   VERSION = '1.0.0'
 
 ##
+# Base error class for all UQ4SIM errors.
+  class Error < RuntimeError; end
+
+##
+# Raised when you have mismatched correlation arrays.
+  class CorrelationError < Error; end
+
+##
 # A Statistics struct to ease manipulation of sample distribution statistics.
   Struct.new( 'Statistics', :size, :min, :max, :mean, :median,
                             :standard_deviation, :skewness, :kurtosis )
