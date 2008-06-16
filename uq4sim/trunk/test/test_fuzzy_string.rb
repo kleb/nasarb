@@ -32,6 +32,11 @@ class TestFuzzyStringRegexp < Test::Unit::TestCase
     assert_equal( "5+/-1 'tag'", fs.fuzzies.to_s )
   end
 
+  def test_should_allow_no_space_between_tag_and_tolerance
+    fs = FuzzyString.new "5+/-1'tag'"
+    assert_equal( "5+/-1'tag'", fs.fuzzies.to_s )
+  end
+
   def test_tolerance_with_double_quoted_tag_with_single_quote
     fs = FuzzyString.new '5+/-1 "mix\'d"'
     assert_equal( '5+/-1 "mix\'d"', fs.fuzzies.to_s )
