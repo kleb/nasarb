@@ -31,5 +31,3 @@ while delta_minus < 0.99*delta_plus do
 end
 delta_err = 2*delta_est*sqrt(2.0/NUM_OF_SAMPLES)
 puts "estimated delta: %.3f +/- %.3f" % [delta_est, delta_err]
-
-#puts "99%% bound for delta: %.3f" % [ delta_bound, delta_err]
