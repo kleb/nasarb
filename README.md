@@ -1,4 +1,4 @@
-# NASA.rb
+# ![Image of NASA logo](https://raw.githubusercontent.com/kleb/nasarb/master/images/nasa_meatball.png)  NASA.rb
 
 A home for NASA's open source Ruby software:
 * funit (Fortran unit testing framework.) [![Gem Version](https://img.shields.io/gem/v/funit.svg)](https://rubygems.org/gems/funit)
@@ -7,4 +7,3 @@ A home for NASA's open source Ruby software:
 * namelists (Generates webpage for creating namelists found in Fortran programs.)
 * uq4sim (Uncertainty quantification for simulation.)
 
-![Image of NASA logo](https://raw.githubusercontent.com/kleb/nasarb/master/images/nasa_meatball.png)
