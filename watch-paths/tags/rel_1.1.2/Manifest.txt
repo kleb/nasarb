@@ -1,8 +1,0 @@
-History.txt
-License.txt
-Manifest.txt
-README.txt
-Rakefile
-bin/watch-paths
-lib/watch-paths.rb
-test/test_watch-paths.rb

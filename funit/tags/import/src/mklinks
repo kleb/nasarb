@@ -1,5 +1,0 @@
-ln -s ../examples/CFD/GasModel.f90 .
-ln -s ../examples/CFD/GasModelTS.ftk .
-ln -s ../examples/CFD/Gammas.f90 .
-ln -s ../examples/CFD/FluxFunctions.f90 .
-ln -s ../examples/CFD/FluxFunctionsTS.ftk .
