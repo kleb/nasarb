@@ -74,13 +74,13 @@ and run the tests, viz,
 
 This and other examples come with the funit distribution in the
 <tt>examples</tt> directory.  There is also an emacs mode in
-the <tt>utils</tt> directory.  If you installed the funit via Rubygems,
+the <tt>utils</tt> directory.  If you installed funit via Rubygems,
 these directories can be found in your Rubygems library directory, e.g., <tt>/usr/local/lib/ruby/gems</tt>.
 
 == REQUIREMENTS:
 
-* Fortran 90/95/2003 compiler
-* Ruby with Rubygems package manager
+* Fortran compiler (and setting FC environment variable to point to it)
+* Ruby
 * The fortran Rubygem
 
 == INSTALL:

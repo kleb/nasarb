@@ -5,20 +5,19 @@
 
 == DESCRIPTION:
 
-Fortran 90/95/2003 utilities.
+Fortran utilities.
 
 Currently, only provides Fortran 90/95/2003 dependencies.
 
 == SYNOPSIS:
 
-  require 'rubygems'
   require 'fortran'
 
   Fortran::Dependencies.new( 'main.f90' ).dependencies
 
 == REQUIREMENTS:
 
-* Ruby with Rubygems
+* Ruby
 
 == INSTALL:
 
