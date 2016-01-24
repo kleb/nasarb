@@ -10,7 +10,7 @@ require 'getoptlong'
 
 include Funit
 
-prog_source_dir = nil
+prog_source_dirs = ['.']
   
 opts = GetoptLong.new(
  ['--help',    '-h', GetoptLong::NO_ARGUMENT],
@@ -48,7 +48,9 @@ but for some such as Sun's f95 compiler you will need: -M
           EOF
           exit
         end
-        prog_source_dir = arg
+        prog_source_dirs << arg.split
+        prog_source_dirs.flatten!
+        prog_source_dirs.uniq!
     end
   rescue => err
     puts err
@@ -56,11 +58,7 @@ but for some such as Sun's f95 compiler you will need: -M
   end
 end
 
-if(prog_source_dir.nil?) then
-  Funit::run_tests
-else
-  Funit::run_tests(prog_source_dir)
-end
+Funit::run_tests(prog_source_dirs)
 
 #--
 # Copyright 2006-2007 United States Government as represented by

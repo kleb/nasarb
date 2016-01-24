@@ -15,7 +15,7 @@ module Funit
     
     include Funit #FIXME
 
-    def initialize suite_name, suite_content=''
+    def initialize( suite_name, suite_content, wrap_with_module )
       @line_number = 'blank'
       @suite_name = suite_name
       @suite_content = suite_content
@@ -23,21 +23,38 @@ module Funit
       File.delete(suite_name+"_fun.f90") if File.exists?(suite_name+"_fun.f90")
       super(suite_name+"_fun.f90","w")
       @tests, @setup, @teardown = [], [], []
+      header
+      @wrap_with_module = wrap_with_module
+      module_wrapper if @wrap_with_module
       top_wrapper
       expand
       close
     end
 
-    def top_wrapper
-      puts <<-TOP
+    def header
+      puts <<-HEADER
 ! #{@suite_name}_fun.f90 - a unit test suite for #{@suite_name}.f90
 !
 ! #{File.basename $0} generated this file from #{@suite_name}.fun
-! at #{Time.now}
 
+      HEADER
+    end
+
+    def module_wrapper
+      puts <<-MODULE_WRAPPER
+module #{@suite_name}_mod
+contains
+  include '#@suite_name.f90'
+end module #{@suite_name}_mod
+
+      MODULE_WRAPPER
+    end
+
+    def top_wrapper
+      puts <<-TOP
 module #{@suite_name}_fun
 
- use #{@suite_name}
+ use #{ @wrap_with_module ? @suite_name+'_mod' : @suite_name }
 
  implicit none
 
@@ -138,14 +155,14 @@ module #{@suite_name}_fun
     end
 
     def close
-      puts "\n subroutine Setup"
+      puts "\n subroutine funit_setup"
       puts @setup
       puts "  noAssertFailed = .true."
-      puts " end subroutine Setup\n\n"
+      puts " end subroutine funit_setup\n\n"
 
-      puts "\n subroutine Teardown"
+      puts "\n subroutine funit_teardown"
       puts @teardown
-      puts " end subroutine Teardown\n\n"
+      puts " end subroutine funit_teardown\n\n"
 
       puts <<-NEXTONE
 
@@ -160,9 +177,9 @@ module #{@suite_name}_fun
       NEXTONE
 
       @tests.each do |test_name|
-        puts "\n  call Setup"
+        puts "\n  call funit_setup"
         puts "  call #{test_name}"
-        puts "  call Teardown"
+        puts "  call funit_teardown"
       end
 
       puts <<-LASTONE

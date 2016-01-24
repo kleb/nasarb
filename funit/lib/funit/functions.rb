@@ -22,9 +22,9 @@ module Funit
       write(*,*) "<%= test_suite %> test suite:"
       call test_<%= test_suite %> &
         ( numTests(<%= i+1 %>), numAsserts(<%= i+1 %>), numAssertsTested(<%= i+1 %>), numFailures(<%= i+1 %>) )
-      write(*,*) "Passed", numAssertsTested(<%= i+1 %>), "of", numAsserts(<%= i+1 %>), &
-                 "possible asserts comprising", numTests(<%= i+1 %>)-numFailures(<%= i+1 %>), &
-                 "of", numTests(<%= i+1 %>), "tests."
+      write(*,1) numAssertsTested(<%= i+1 %>), numAsserts(<%= i+1 %>), &
+        numTests(<%= i+1 %>)-numFailures(<%= i+1 %>), numTests(<%= i+1 %>)
+    1 format('Passed ',i0,' of ',i0,' possible asserts comprising ',i0,' of ',i0,' tests.')
       <% end -%>
 
       write(*,*)
@@ -55,7 +55,7 @@ module Funit
     all:testrunner
 
     testrunner: $(OBJ)
-    <%= "\t#{ENV['FC']} #{ENV['FCFLAGS']}" %> -o TestRunner $(OBJ)
+    <%= "\t#{ENV['FC']} #{ENV['FCFLAGS']} #{ENV['LDFLAGS']}" %> -o TestRunner $(OBJ)
 
     <% file_dependencies.each do |source,dep| -%>
     <%= "#{source.sub(/\.f90/i,'.o')}: #{source} #{dep.map{ |d| d.sub(/\.f90/i,'.o') }.join(' ')}" %>
@@ -111,20 +111,15 @@ module Funit
     $stderr.puts "\n *Warning: #{message} [#{test_suite}.fun:#$.]"
   end
 
-  def compile_tests(test_suites,prog_source_dir='.')
+  def compile_tests(test_suites,prog_source_dirs=['.'])
     puts "computing dependencies"
 
-    # calculates parameters
-    if ( prog_source_dir=='.' ) then
-      sourceflag = ""
-    else
-#      prog_source_dir = File.expand_path(prog_source_dir)  # commented as it doesn't seem necessary
-      sourceflag = " "+ ENV['FSFLAG'] + prog_source_dir
+    sourceflag = ''
+    if ENV['FSFLAG'] then
+      sourceflag = prog_source_dirs.map{|pd| ENV['FSFLAG']+pd }.join(' ')
     end
-    current_dir = `pwd`.chomp
-    sp = ['.'] + (prog_source_dir.empty? ? [] : [prog_source_dir])
+    dependencies = Fortran::Dependencies.new(:search_paths=>prog_source_dirs)
 
-    dependencies = Fortran::Dependencies.new(:search_paths=> sp)
     puts "locating associated source files and sorting for compilation"
     dependencies.source_file_dependencies('TestRunner.f90')
     file_dependencies = dependencies.file_dependencies

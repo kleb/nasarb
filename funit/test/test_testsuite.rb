@@ -17,7 +17,7 @@ class TestTestSuite < Test::Unit::TestCase
   end 
 
   def test_nonexistent_funit_file_is_not_created
-    Funit::TestSuite.new 'dummyf90test'
+    Funit::TestSuite.new 'dummyf90test', '', false
     assert !File.exists?("dummyf90test.fun")
     assert !File.exists?("dummyf90test_fun.f90")
   end
@@ -35,31 +35,31 @@ class TestTestSuite < Test::Unit::TestCase
 
   def test_bare_minimum_funit_file_compiles
     create_funit_file ""
-    Funit::TestSuite.new 'dummyf90test'
+    Funit::TestSuite.new 'dummyf90test', '', false
     assert system(@@compileCommand)
   end
 
   def test_module_variables_allowed
     create_funit_file "integer :: a"
-    Funit::TestSuite.new 'dummyf90test'
+    Funit::TestSuite.new 'dummyf90test', '', false
     assert system(@@compileCommand)
   end
 
   def test_blank_setup_compiles
     create_funit_file "beginSetup\nendSetup"
-    Funit::TestSuite.new 'dummyf90test'
+    Funit::TestSuite.new 'dummyf90test', '', false
     assert system(@@compileCommand)
   end
 
   def test_blank_test_gives_warning
     create_funit_file "beginTest bob\nendTest"
-    Funit::TestSuite.new 'dummyf90test'
+    Funit::TestSuite.new 'dummyf90test', '', false
     assert system(@@compileCommand)
   end
 
   def test_single_assert_test_compiles
     create_funit_file "beginTest assertTrue\nAssertTrue(.true.)\nendTest"
-    Funit::TestSuite.new 'dummyf90test'
+    Funit::TestSuite.new 'dummyf90test', '', false
     assert system(@@compileCommand)
   end
 
@@ -71,7 +71,7 @@ class TestTestSuite < Test::Unit::TestCase
   AssertEqual(1,a(1,1))
  endTest
     MATRIX
-    Funit::TestSuite.new 'dummyf90test'
+    Funit::TestSuite.new 'dummyf90test', '', false
     assert system(@@compileCommand)
   end
 
@@ -83,7 +83,7 @@ class TestTestSuite < Test::Unit::TestCase
   AssertRealEqual(1.0,real_var)
  endTest
     REALEQUALS
-    Funit::TestSuite.new 'dummyf90test'
+    Funit::TestSuite.new 'dummyf90test', '', false
     assert system(@@compileCommand)
   end
 
@@ -98,13 +98,13 @@ class TestTestSuite < Test::Unit::TestCase
   balance = 0.5*(left+right)
  end function balance
     REQUALSFUNC
-    Funit::TestSuite.new 'dummyf90test'
+    Funit::TestSuite.new 'dummyf90test', '', false
     assert system(@@compileCommand)
   end
 
   def test_ignore_commented_test
     create_funit_file "XbeginTest bob\nendTest"
-    Funit::TestSuite.new 'dummyf90test'
+    Funit::TestSuite.new 'dummyf90test', '', false
     assert_no_match( /Testbob/i, IO.readlines('dummyf90test_fun.f90').join )
   end
 

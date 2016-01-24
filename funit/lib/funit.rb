@@ -1,5 +1,4 @@
 begin
-  require 'rubygems'
   require 'fortran'
 rescue LoadError
   STDERR.puts "gem install fortran"
@@ -14,12 +13,12 @@ require 'fileutils'
 
 module Funit
 
-  VERSION = '0.10.2'
+  VERSION = '0.11.1'
 
   ##
   # run all tests
 
-  def run_tests(prog_source_dir='.')
+  def run_tests(prog_source_dirs=['.'])
     Compiler.new# a test for compiler env set (FIXME: remove this later)
     write_test_runner( test_files = parse_command_line )
     test_suites = []
@@ -27,13 +26,18 @@ module Funit
       tf_content = IO.read(test_file+'.fun')
       tf_content.scan(/test_suite\s+(\w+)(.*?)end\s+test_suite/m).each{|ts|
         ts_name = $1
+        ts_content = $2
         if((!File.exist?(ts_name+"_fun.f90")) || File.mtime(ts_name+"_fun.f90") < File.mtime(test_file+".fun")) then
-          TestSuite.new(ts_name, $2)
+          if ( File.read(ts_name+'.f90').match(/\s*module\s+#{ts_name}/i) ) then
+            TestSuite.new(ts_name, ts_content, false)
+          else
+            TestSuite.new(ts_name, ts_content, true)
+          end
         end
         test_suites.push(ts_name)
       }
     }
-    compile_tests(test_suites,prog_source_dir)
+    compile_tests(test_suites,prog_source_dirs)
     exit 1 unless system "env PATH='.' TestRunner"
   end
 

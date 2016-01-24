@@ -1,24 +1,24 @@
-FUnit
+= funit
 
-* http://rubyforge.org/projects/nasarb
-* http://nasarb.rubyforge.org
+* https://github.com/kleb/nasarb/tree/master/funit
+* https://rubygems.org/gems/funit
 
 == DESCRIPTION:
 
-FUnit is a unit testing framework for Fortran.
+funit is a unit testing framework for Fortran.
 
 Unit tests are written as Fortran fragments that use a small
-set of testing-specific keywords and functions.  FUnit transforms
+set of testing-specific keywords and functions.  funit transforms
 these fragments into valid Fortran code, compiles, links, and
 runs them against the code under test.
 
-FUnit is {opinionated software}[http://www.oreillynet.com/pub/a/network/2005/08/30/ruby-rails-david-heinemeier-hansson.html], which values convention over
-configuration. Specifically, FUnit,
+funit is
+{opinionated software}[http://www.oreillynet.com/pub/a/network/2005/08/30/ruby-rails-david-heinemeier-hansson.html],
+which values convention over configuration. Specifically, funit requires,
 
-* requires a Fortran 95 compiler,
-* only supports testing routines contained in modules,
-* requires tests to be stored along side the code under test, and
-* requires test files to be named appropriately.
+* a Fortran 95 compiler,
+* tests to be stored along side the code under test, and
+* test files to be named appropriately.
 
 == FEATURES/PROBLEMS:
 
@@ -72,9 +72,9 @@ and run the tests, viz,
   gas_physics test suite:
   Passed 2 of 2 possible asserts comprising 1 of 1 tests.
 
-This and other examples come with the FUnit distribution in the
+This and other examples come with the funit distribution in the
 <tt>examples</tt> directory.  There is also an emacs mode in
-the <tt>utils</tt> directory.  If you installed the FUnit via Rubygems,
+the <tt>utils</tt> directory.  If you installed the funit via Rubygems,
 these directories can be found in your Rubygems library directory, e.g., <tt>/usr/local/lib/ruby/gems</tt>.
 
 == REQUIREMENTS:
@@ -89,10 +89,11 @@ these directories can be found in your Rubygems library directory, e.g., <tt>/us
 * Set FC environment variable to point to a Fortran compiler:
   * <tt>export FC=/path/of/Fortran/compiler</tt> (sh)
   * <tt>setenv FC /path/of/Fortran/compiler</tt> (csh)
+* Other influential environment variables: FCFLAGS and LDFLAGS
 
 == LICENSE:
 
-FUnit is released under the NASA Open Source Agreement -- see License.txt[link:files/License_txt.html] for details.
+funit is released under the NASA Open Source Agreement -- see License.txt[link:files/License_txt.html] for details.
 
 == ORIGIN:
 
@@ -112,10 +113,10 @@ rewrote the framework in Ruby[http://www.ruby-lang.org].
 
 == TODO:
 
-* To avoid Fortran's 32-character limit, don't add test name during translation.
+* To avoid Fortran's 32-character limit, don't add test name during translation
+  or allow another method for naming longer tests altogether.
 * Add assertions that capture stops, warning messages, and other exits.
 * For compilation, use internal rake task instead of an external makefile.
-* Allow users to specify dependency search paths (currently hardwired).
 * To increase portability, create stand-alone executables with Erik Veenstra's
   RubyScript2Exe[http://www.erikveen.dds.nl/rubyscript2exe/].
 * Make FUnit self-tests fail gracefully if Fortran compiler is not found.
