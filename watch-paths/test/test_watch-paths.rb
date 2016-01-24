@@ -24,7 +24,7 @@ class TestWatchPaths < Test::Unit::TestCase
     begin
       dumped_manifest = { :file => :chksum }
       @wp.dump dumped_manifest
-      assert File.exists?(WatchPaths::MANIFEST)
+      assert File.exist?(WatchPaths::MANIFEST)
       loaded_manifest = @wp.load
       assert loaded_manifest == dumped_manifest
       assert_equal 1, loaded_manifest.size
@@ -55,7 +55,7 @@ class TestWatchPaths < Test::Unit::TestCase
     changes = @wp.watch( ['fixture'] )
     assert_equal 1, changes.size
     assert changes.keys.include?('fixture')
-    assert_equal ['a_file'], changes['fixture']
+    assert_equal '["a_file"]', changes['fixture']
   end
   def teardown
     rm_rf 'fixture'

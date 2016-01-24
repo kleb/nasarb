@@ -1,12 +1,13 @@
-watch-paths
+= watch-paths
 
-* http://nasarb.rubyforge.org/watch-paths
-* http://rubyforge.org/projects/nasarb
-* mailto:Bil.Kleb@nasa.gov
+* https://github.com/kleb/nasarb/tree/master/watch-paths
+* https://rubygems.org/gems/watch-paths
 
 == DESCRIPTION:
 
 Scan a set of pathnames for file changes according to check sums.
+
+Occasionally useful when you need act when some set of files changes.
 
 == FEATURES/PROBLEMS:
 

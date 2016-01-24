@@ -1,5 +1,6 @@
 require 'yaml'
 require 'fileutils'
+require 'digest'
 
 include FileUtils
 
@@ -10,7 +11,7 @@ $r ||= false
 
 class WatchPaths
 
-  VERSION = '1.2.0'
+  VERSION = '1.3.0'
 
   ##
   # File used to record checksums in each path scanned
@@ -60,7 +61,7 @@ class WatchPaths
     chksum_manifest = {}
     files = Dir['*'].select{ |f| File.file? f }
     files.each do |file|
-      chksum_manifest[file] = `md5sum #{file}`.split.first
+      chksum_manifest[file] = Digest::MD5.file(file).hexdigest
     end
     chksum_manifest
   end
