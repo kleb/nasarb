@@ -7,4 +7,4 @@ A home for NASA's open source Ruby software:
 * namelists (Generates webpage for creating namelists found in Fortran programs.)
 * uq4sim (Uncertainty quantification for simulation.)
 
-![Image of NASA logo](https://www.github.com/kleb/nasarb/images/nasa_meatball.png)
+![Image of NASA logo](https://raw.githubusercontent.com/kleb/nasarb/master/images/nasa_meatball.png)
