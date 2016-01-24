@@ -1,4 +1,4 @@
-# NASA.rb ![Image of NASA logo](https://raw.githubusercontent.com/kleb/nasarb/master/images/nasa_meatball.png)
+# ![Image of NASA logo](https://raw.githubusercontent.com/kleb/nasarb/master/images/nasa_meatball.png).rb
 
 A home for NASA's open source Ruby software:
 * funit (Fortran unit testing framework.) [![Gem Version](https://img.shields.io/gem/v/funit.svg)](https://rubygems.org/gems/funit)
