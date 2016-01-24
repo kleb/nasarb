@@ -1,6 +1,6 @@
 require 'test/unit'
 require 'funit'
-require 'ftools' # FIXME: migrate to fileutils
+require 'fileutils'
 
 class TestFunit < Test::Unit::TestCase
 
@@ -10,34 +10,34 @@ class TestFunit < Test::Unit::TestCase
   include Funit::Assertions # FIXME
 
   def setup
-    File.rm_f(*Dir["dummyunit*"])
-    File.rm_f(*Dir["unit*"])
-    File.rm_f(*Dir["another*"])
-    File.rm_f(*Dir["ydsbe*"])
-    File.rm_f(*Dir["lmzd*"])
-    File.rm_f(*Dir["ldfdl*"])
-    File.rm_f(*Dir["ydsbe*"])
-    File.rm_f(*Dir["*TestRunner*"])
+    FileUtils.rm_f Dir.glob("dummyunit*")
+    FileUtils.rm_f Dir.glob("unit*")
+    FileUtils.rm_f Dir.glob("another*")
+    FileUtils.rm_f Dir.glob("ydsbe*")
+    FileUtils.rm_f Dir.glob("lmzd*")
+    FileUtils.rm_f Dir.glob("ldfdl*")
+    FileUtils.rm_f Dir.glob("ydsbe*")
+    FileUtils.rm_f Dir.glob("*TestRunner*")
   end
 
   def teardown
-    File.rm_f(*Dir["dummyunit*"])
-    File.rm_f(*Dir["unit*"])
-    File.rm_f(*Dir["another*"])
-    File.rm_f(*Dir["ydsbe*"])
-    File.rm_f(*Dir["lmzd*"])
-    File.rm_f(*Dir["ldfdl*"])
-    File.rm_f(*Dir["ydsbe*"])
-    File.rm_f(*Dir["*TestRunner*"])
+    FileUtils.rm_f Dir.glob("dummyunit*")
+    FileUtils.rm_f Dir.glob("unit*")
+    FileUtils.rm_f Dir.glob("another*")
+    FileUtils.rm_f Dir.glob("ydsbe*")
+    FileUtils.rm_f Dir.glob("lmzd*")
+    FileUtils.rm_f Dir.glob("ldfdl*")
+    FileUtils.rm_f Dir.glob("ydsbe*")
+    FileUtils.rm_f Dir.glob("*TestRunner*")
   end
 
   def test_empty_test_runner_created_and_compilable
     write_test_runner []
-    assert File.exists?("TestRunner.f90"), 'TestRunner.f90 not created.'
+    assert File.exist?("TestRunner.f90"), 'TestRunner.f90 not created.'
     compile_tests []
-    assert File.exists?("makeTestRunner"), 'makeTestRunner.f90 not created.'
+    assert File.exist?("makeTestRunner"), 'makeTestRunner.f90 not created.'
     assert system("make -f makeTestRunner"), 'make -f makeTestRunner failed.'
-    assert File.exists?("TestRunner"), 'TestRunner executable not created.'
+    assert File.exist?("TestRunner"), 'TestRunner executable not created.'
   end
 
   def test_is_equal
@@ -92,7 +92,7 @@ class TestFunit < Test::Unit::TestCase
       f.puts "begin test_suite unit\ntest a_gets_set\n Assert_Equal(5, a)\nend test\nend test_suite"
     end
     assert_nothing_raised{run_tests}
- end
+  end
 
   def test_should_accommodate_cap_F_extensions
     File.open('unit.F90','w') do |f|
@@ -102,7 +102,7 @@ class TestFunit < Test::Unit::TestCase
       f.puts "begin test_suite unit\ntest a_gets_set\n Assert_Equal(1, a)\nend test\nend test_suite"
     end
     assert_nothing_raised{run_tests}
- end
+  end
 
   def test_requested_modules
     tu_assert_equal ["asdfga"], requested_modules(["asdfga"])
@@ -116,7 +116,7 @@ class TestFunit < Test::Unit::TestCase
 
   def test_funit_exists_method
     module_name = "ydsbe"
-    File.rm_f(module_name+".fun")
+    FileUtils.rm_f module_name+".fun"
     tu_assert_equal false, funit_exists?(module_name)
     system "touch "+module_name+".fun"
     assert funit_exists?(module_name)

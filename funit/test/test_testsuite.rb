@@ -18,8 +18,8 @@ class TestTestSuite < Test::Unit::TestCase
 
   def test_nonexistent_funit_file_is_not_created
     Funit::TestSuite.new 'dummyf90test', '', false
-    assert !File.exists?("dummyf90test.fun")
-    assert !File.exists?("dummyf90test_fun.f90")
+    assert !File.exist?("dummyf90test.fun")
+    assert !File.exist?("dummyf90test_fun.f90")
   end
 
   def create_funit_file funit_contents

@@ -2,8 +2,6 @@
 
 # Main fUnit routine
 
-begin require 'rubygems'; rescue LoadError; end
-
 $:.push "#{File.dirname $0}/../lib"
 require 'funit'
 require 'getoptlong'

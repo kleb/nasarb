@@ -71,7 +71,7 @@ module Funit
   end
 
   def funit_exists?(module_name)
-    File.exists? "#{module_name}.fun"
+    File.exist? "#{module_name}.fun"
   end
 
   def parse_command_line
