@@ -21,7 +21,7 @@ Occasionally useful when you need act when some set of files changes.
 
 == REQUIREMENTS:
 
-* Ruby with Rubygems
+* Ruby
 
 == INSTALL:
 
