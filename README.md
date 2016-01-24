@@ -6,3 +6,5 @@ A home for NASA's open source Ruby software:
 * watch-paths (Poor man's file monitoring.) [![Gem Version](https://img.shields.io/gem/v/watch-paths.svg)](https://rubygems.org/gems/watch-paths)
 * namelists (Generates webpage for creating namelists found in Fortran programs.)
 * uq4sim (Uncertainty quantification for simulation.)
+
+![Image of NASA logo](https://www.github.com/kleb/nasarb/images/nasa_meatball.png)
