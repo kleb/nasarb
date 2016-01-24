@@ -31,20 +31,20 @@ module Fortran
     end
 
     def modules_used_in( file )
-      modules = IO.readlines( file ).map do |line|
+      IO.readlines( file ).map do |line|
         $1.downcase if line.match USE_MODULE_REGEX
       end.uniq.compact
     end
 
     def modules_defined_in( file )
-      modules = IO.readlines( file ).map do |line| 
+      IO.readlines( file ).map do |line| 
         $1.downcase if line.match MODULE_DEF_REGEX
       end.uniq.compact
     end
 
-    def build_dictionary_of_modules( files )
+    def build_dictionary_of_modules( array_of_file_names )
       file_containing_module = {}
-      files.each do |file|
+      array_of_file_names.each do |file|
         modules_defined_in( file ).each{ |mod| file_containing_module[mod]=file }
       end
       file_containing_module
@@ -96,7 +96,7 @@ module Fortran
         next if @parsed.include?(file)
         @parsed.push file
         dependencies file
-      end.to_s
+      end.join
     end
 
     def source_file_dependencies( head_f90 )

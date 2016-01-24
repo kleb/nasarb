@@ -50,7 +50,7 @@ class TestFortran < Test::Unit::TestCase
 
   def test_create_module_definition_hash
     assert_equal %w[circle rectangle_fun3d],
-    @dep.build_dictionary_of_modules( 'shapes.f90' ).keys.sort
+    @dep.build_dictionary_of_modules( ['shapes.f90'] ).keys.sort
   end
 
   def test_locating_all_fortran_files_in_search_path

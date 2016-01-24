@@ -1,8 +1,7 @@
-fortran
+= fortran
 
-* http://nasarb.rubyforge.org/fortran
-* http://rubyforge.org/projects/nasarb
-* mailto:Bil.Kleb@nasa.gov
+* https://github.com/kleb/nasarb/tree/master/fortran
+* https://rubygems.org/gems/fortran
 
 == DESCRIPTION:
 
