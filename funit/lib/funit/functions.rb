@@ -24,7 +24,7 @@ module Funit
         ( numTests(<%= i+1 %>), numAsserts(<%= i+1 %>), numAssertsTested(<%= i+1 %>), numFailures(<%= i+1 %>) )
       write(*,1) numAssertsTested(<%= i+1 %>), numAsserts(<%= i+1 %>), &
         numTests(<%= i+1 %>)-numFailures(<%= i+1 %>), numTests(<%= i+1 %>)
-    1 format('Passed ',i0,' of ',i0,' possible asserts comprising ',i0,' of ',i0,' tests.')
+  <%= i+1 %> format('Passed ',i0,' of ',i0,' possible asserts comprising ',i0,' of ',i0,' tests.')
       <% end -%>
 
       write(*,*)
