@@ -6,7 +6,7 @@ real :: seconds
 setup
   NotInitialized = .TRUE.
   last    = 0
-  seconds = HUGE(0.0)
+  seconds = 0.0
 end setup
 
 test SystemDateAndTimeWorks
@@ -42,22 +42,23 @@ end test
 test InitiallyReturnsZero
   seconds = secSinceLast()
   Assert_Real_Equal( 0.0, seconds )
-  call timeDelay(seconds)
+  call timeDelay
   seconds = secSinceLast()
   Assert_True( seconds /= 0.0 )
 end test
 
-subroutine timeDelay (sum)
-  integer :: i
-  real    :: sum
+subroutine timeDelay
+  integer :: i, sum
   do i = 1, 1000000
    sum = sum + i
   enddo
+  print*, sum
 end subroutine timeDelay
 
 test ComputesSeconds
   seconds = secSinceLast()
-  call timeDelay (seconds)
+  call timeDelay
+  print*, seconds
   seconds = secSinceLast()
   Assert_True( seconds > 0.0 )
 end test
@@ -67,7 +68,7 @@ test ComputesSecondsSpecial
 
   seconds = secSinceLast()
   dateAndTime1 = last
-  call timeDelay (seconds)
+  call timeDelay
   seconds = secSinceLast()
   dateAndTime2 = last
   expectedSeconds = secBetween(dateAndTime1,dateAndTime2)
