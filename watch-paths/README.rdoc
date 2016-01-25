@@ -1,7 +1,9 @@
 = watch-paths
 
-* https://github.com/kleb/nasarb/tree/master/watch-paths
-* https://rubygems.org/gems/watch-paths
+home  :: https://rubygems.org/gems/watch-paths
+code  :: https://github.com/kleb/nasarb/tree/master/watch-paths
+bugs  :: https://github.com/kleb/nasarb/issues
+rdoc  :: http://www.rubydoc.info/gems/watch-paths
 
 == DESCRIPTION:
 

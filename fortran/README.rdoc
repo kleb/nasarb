@@ -1,7 +1,9 @@
 = fortran
 
-* https://github.com/kleb/nasarb/tree/master/fortran
-* https://rubygems.org/gems/fortran
+home  :: https://rubygems.org/gems/fortran
+code  :: https://github.com/kleb/nasarb/tree/master/fortran
+bugs  :: https://github.com/kleb/nasarb/issues
+rdoc  :: http://www.rubydoc.info/gems/fortran
 
 == DESCRIPTION:
 
