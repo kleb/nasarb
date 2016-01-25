@@ -1,7 +1,7 @@
-History.txt
+History.rdoc
 License.txt
 Manifest.txt
-README.txt
+README.rdoc
 Rakefile
 bin/funit
 examples/CFD/FluxFunctions.f90

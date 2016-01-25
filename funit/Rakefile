@@ -1,6 +1,7 @@
 # -*- ruby -*-
 
 require 'hoe'
+Hoe.plugin :rdoc
 
 Hoe.spec 'funit' do |funit|
   funit.group_name  = 'nasarb'

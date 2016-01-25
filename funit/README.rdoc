@@ -1,7 +1,8 @@
 = funit
 
-* https://github.com/kleb/nasarb/tree/master/funit
-* https://rubygems.org/gems/funit
+home  :: https://github.com/kleb/nasarb/tree/master/funit
+bugs  :: https://github.com/kleb/nasarb/issues
+other :: https://rubygems.org/gems/funit
 
 == DESCRIPTION:
 
