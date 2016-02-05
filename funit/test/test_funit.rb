@@ -1,6 +1,7 @@
 require 'test/unit'
 require 'funit'
 require 'fileutils'
+require 'ostruct'
 
 class TestFunit < Test::Unit::TestCase
 
@@ -18,6 +19,9 @@ class TestFunit < Test::Unit::TestCase
     FileUtils.rm_f Dir.glob("ldfdl*")
     FileUtils.rm_f Dir.glob("ydsbe*")
     FileUtils.rm_f Dir.glob("*TestRunner*")
+    @@funit_data = OpenStruct.new
+    @@funit_data.prog_source_dirs = ['.']
+    @@funit_data.c_code = Funit::C_compile.new
   end
 
   def teardown
@@ -34,7 +38,7 @@ class TestFunit < Test::Unit::TestCase
   def test_empty_test_runner_created_and_compilable
     write_test_runner []
     assert File.exist?("TestRunner.f90"), 'TestRunner.f90 not created.'
-    compile_tests []
+    compile_tests([],@@funit_data)
     assert File.exist?("makeTestRunner"), 'makeTestRunner.f90 not created.'
     assert system("make -f makeTestRunner"), 'make -f makeTestRunner failed.'
     assert File.exist?("TestRunner"), 'TestRunner executable not created.'
@@ -75,7 +79,7 @@ class TestFunit < Test::Unit::TestCase
     File.open('unit.fun','w') do |f|
       f.puts "test_suite unit\ntest a_gets_set\nAssert_Equal(5,a)\nend test\nend test_suite"
     end
-    assert_nothing_raised{run_tests}
+    assert_nothing_raised{run_tests(@@funit_data)}
   end
 
   def test_should_accommodate_doubly_embedded_use_dependencies
@@ -91,7 +95,7 @@ class TestFunit < Test::Unit::TestCase
     File.open('unit.fun','w') do |f|
       f.puts "begin test_suite unit\ntest a_gets_set\n Assert_Equal(5, a)\nend test\nend test_suite"
     end
-    assert_nothing_raised{run_tests}
+    assert_nothing_raised{run_tests(@@funit_data)}
   end
 
   def test_should_accommodate_cap_F_extensions
@@ -101,7 +105,7 @@ class TestFunit < Test::Unit::TestCase
     File.open('unit.fun','w') do |f|
       f.puts "begin test_suite unit\ntest a_gets_set\n Assert_Equal(1, a)\nend test\nend test_suite"
     end
-    assert_nothing_raised{run_tests}
+    assert_nothing_raised{run_tests(@@funit_data)}
   end
 
   def test_requested_modules
