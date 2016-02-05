@@ -1,3 +1,18 @@
+== 1.1.0 / 2016-02-05
+
+* 1 minor enhancement
+  * make included files available for possible dependencies
+
+== 1.1.0 / 2016-01-15
+
+* 1 minor enhancement
+  * parse included (inlined) files for module use statments
+
+== 1.1.0 / 2009-10-28
+
+* 1 minor enhancement
+  * allow two modules to be defined per source file
+
 == 1.0.3 / 2007-11-16
 
 * 1 bug fix
