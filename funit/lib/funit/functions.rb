@@ -51,14 +51,15 @@ module Funit
     # <%= File.basename $0 %> generated this file on <%= Time.now %>.
 
     OBJ=<%= required_objects.join(' ') %>
+    LDFLAGS=<%= c_code.print_linker_flags %>
 
     all:testrunner
 
     testrunner: $(OBJ)
-    <%= "\t#{ENV['FC']} #{ENV['FCFLAGS']} #{ENV['LDFLAGS']}" %> -o TestRunner $(OBJ)
+    <%= "\t#{ENV['FC']} #{ENV['FCFLAGS']} #{ENV['LDFLAGS']}" %> -o TestRunner $(OBJ) $(LDFLAGS)
 
     <% file_dependencies.each do |source,dep| -%>
-    <%= "#{source.sub(/\.f90/i,'.o')}: #{source} #{dep.map{ |d| d.sub(/\.f90/i,'.o') }.join(' ')}" %>
+    <%= "#{source.sub(/\.f90/i,'.o')}: #{source} #{dep.map{ |d| d.sub(/\.f90/i,'.o') }.join(' ')} #{inlined_dependencies[source].join(' ')}" %>
     <%= "\t(cd #{File.dirname(source)}; #{ENV['FC']} #{ENV['FCFLAGS']} #{sourceflag} -c #{File.basename(source)})" %>
     <% end -%>
   }.gsub(/^    /,''), nil, '-' ) # turn off newlines for <% -%>
@@ -111,7 +112,10 @@ module Funit
     $stderr.puts "\n *Warning: #{message} [#{test_suite}.fun:#$.]"
   end
 
-  def compile_tests(test_suites,prog_source_dirs=['.'])
+  def compile_tests(test_suites,funit_data)
+    prog_source_dirs = funit_data.prog_source_dirs
+    c_code = funit_data.c_code
+
     puts "computing dependencies"
 
     sourceflag = ''
@@ -123,6 +127,7 @@ module Funit
     puts "locating associated source files and sorting for compilation"
     dependencies.source_file_dependencies('TestRunner.f90')
     file_dependencies = dependencies.file_dependencies
+    inlined_dependencies = dependencies.inlined_dependencies
     required_objects = file_dependencies.values.flatten.uniq.map{|s|s.sub(/\.f90/i,'.o')}
     required_objects << 'TestRunner.o'
 
