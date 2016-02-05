@@ -3,7 +3,7 @@ module Fortran
   ##
   # This version of Fortran library
 
-  VERSION = '1.0.3'
+  VERSION = '1.3.0'
 
   ##
   # Find Fortran dependencies
@@ -17,16 +17,19 @@ module Fortran
     
     USE_MODULE_REGEX = /^\s*use\s+(\w+)/i
     MODULE_DEF_REGEX = /^\s*module\s+(\w+)/i
+    MODULE_INCLUDE_REGEX = /\s*include\s+('|")(\w+\.(f|F)90)('|")/i
  
     FILE_EXTENSION = /\.f90$/i
   
-    attr_reader :file_dependencies, :source_files
+    attr_reader :file_dependencies, :source_files, :inlined_dependencies
 
     def initialize( config=OPTIONS )
       @config = config
       OPTIONS.each{ |opt,default| @config[opt] = default unless @config.has_key? opt }
       @parsed, @file_dependencies, @source_files = [], {}, []
+      @inlined_dependencies = {}
       @hash = build_hash_of_modules_in_files
+      @included_files = build_hash_of_non_module_files
       self
     end
 
@@ -39,6 +42,12 @@ module Fortran
     def modules_defined_in( file )
       IO.readlines( file ).map do |line| 
         $1.downcase if line.match MODULE_DEF_REGEX
+      end.uniq.compact
+    end
+
+    def files_included_in( file )
+      IO.readlines( file ).map do |line|
+        $2 if line.match MODULE_INCLUDE_REGEX
       end.uniq.compact
     end
 
@@ -58,8 +67,38 @@ module Fortran
       source.map!{ |file| file.sub(/^\.\//,'') }# strip leading ./
     end
 
+    def build_hash_of_non_module_files
+      files = find_fortran_files
+      included_files = {}
+      files.each do |file|
+        unless file_is_module?(file)
+          included_files[File.basename(file)] = file
+        end
+      end
+      included_files
+    end
+
+    def file_is_module?(file)
+      IO.readlines( file ).map do |line|
+        return true if line.match MODULE_DEF_REGEX
+      end
+      return false
+    end
+
     def build_hash_of_modules_in_files
       build_dictionary_of_modules find_fortran_files
+    end
+
+    def modules_in_included_files( file )
+      files_included_in( file ).map do |included_file|
+        modules_used_in(@included_files[included_file])
+      end.flatten.uniq.compact
+    end
+
+    def included_files_in_module( file )
+      files_included_in( file ).map do |included_file|
+        @included_files[included_file]
+      end.flatten.uniq.compact
     end
 
     def makefile_dependency_line( source )
@@ -101,8 +140,13 @@ module Fortran
 
     def source_file_dependencies( head_f90 )
       modules_head_uses = modules_used_in( head_f90 )
+      modules_head_uses += modules_in_included_files( head_f90 )
       required_f90s = modules_head_uses.map{ |mod| @hash[mod] }.compact
+      required_f90s.delete_if{ |f| f == head_f90 }
+      required_inlined = included_files_in_module( head_f90 )
+      required_inlined.delete_if{ |f| f == head_f90 }
       @file_dependencies[head_f90] = required_f90s
+      @inlined_dependencies[head_f90] = required_inlined
       required_f90s.each do |required_f90|
         next if @parsed.include?(required_f90)
         source_file_dependencies( required_f90 )
