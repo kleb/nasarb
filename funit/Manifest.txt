@@ -18,6 +18,7 @@ lib/funit/assertions.rb
 lib/funit/compiler.rb
 lib/funit/functions.rb
 lib/funit/testsuite.rb
+lib/funit/c_tools.rb
 pitch/slides.tex
 test/test_compiler.rb
 test/test_functions.rb
