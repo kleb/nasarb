@@ -1,3 +1,29 @@
+=== 0.12.3 / 2016-2-05
+
+* 1 minor enhancement
+  * Enable funit to track inlined function dependencies in makefile
+
+* 1 bug fix
+  * reverting back to gem fortran, since access to original gem has been restored
+
+=== 0.12.2 / 2016-1-20
+
+* 1 minor enhancement
+  * Enable funit to read files with .F90 extension
+
+=== 0.12.1 / 2016-1-19
+
+* 1 bug fix
+  * Changed required gem fortran -> fortran_dependencies to track forked gem of "fortran"
+
+=== 0.12.0 / 2016-1-14
+
+* major enhancement
+  * Allow user to specify C/C++ code needed by fortran unit test
+
+* minor enhancement
+  * Refactored option input using optparse
+
 === 0.11.1 / 2009-11-01
 
 * 1 bug fix
