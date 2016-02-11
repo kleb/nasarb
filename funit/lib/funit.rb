@@ -14,7 +14,7 @@ require 'fileutils'
 
 module Funit
 
-  VERSION = '0.12.3'
+  VERSION = '0.12.4'
 
   ##
   # run all tests

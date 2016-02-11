@@ -91,7 +91,7 @@ these directories can be found in your Rubygems library directory, e.g., <tt>/us
 * Set FC environment variable to point to a Fortran compiler:
   * <tt>export FC=/path/of/Fortran/compiler</tt> (sh)
   * <tt>setenv FC /path/of/Fortran/compiler</tt> (csh)
-* Other influential environment variables: FCFLAGS and LDFLAGS
+* Other influential environment variables: FCFLAGS, LDFLAGS, and MAKE_OPTS
 
 == LICENSE:
 
