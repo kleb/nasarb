@@ -133,7 +133,8 @@ module Funit
 
     File.open("makeTestRunner", "w") {|file| file.puts MAKEFILE.result(binding)}
 
-    compile = "make -f makeTestRunner"
+    make_options = ENV['MAKE_OPTS']
+    compile = "make #{make_options} -f makeTestRunner"
 
     raise "Compile failed." unless system compile
   end

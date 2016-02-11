@@ -47,6 +47,7 @@ OptionParser.new do |opts|
   
  opts.on_tail("-h", "--help", "Detailed overview of funit options") do
    puts opts
+   Funit::print_env_flags
    exit
  end
 

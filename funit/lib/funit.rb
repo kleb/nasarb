@@ -74,6 +74,26 @@ but for some such as Sun's f95 compiler you will need: -M
     exit
     end
   end
+
+  def print_env_flags
+    puts <<-EOF
+
+Some influential environment variables:
+
+  FC            fortran compiler command
+  FCFLAGS       fortran compiler flags
+  LDFLAGS       linker flags
+
+  CC            C compiler command
+  CFLAGS        C compiler flags
+
+  CXX           C++ compiler command
+  CXXFLAGS      C++ compiler flags
+
+  MAKE_OPTS     make commandline options (e.g. "-j")
+
+    EOF
+  end
 end
 
 #--
